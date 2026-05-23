@@ -31,11 +31,88 @@ backdrop-filter:blur(6px)
 0%,100%{transform:translateY(-50%) translateX(0)}
 50%{transform:translateY(-50%) translateX(4px)}
 }
+
+
+
+#transitionOverlay{
+position:fixed;
+inset:0;
+pointer-events:none;
+opacity:0;
+z-index:999;
+overflow:hidden;
+transition:opacity .35s ease;
+}
+
+#transitionOverlay::before{
+content:'';
+position:absolute;
+inset:-20%;
+background:
+linear-gradient(135deg,
+transparent 0%,
+transparent 32%,
+rgba(59,130,246,.12) 42%,
+rgba(147,51,234,.22) 50%,
+rgba(59,130,246,.12) 58%,
+transparent 68%,
+transparent 100%),
+radial-gradient(circle at center,
+rgba(147,51,234,.10),
+transparent 60%);
+transform:translateX(-120%) skewX(-18deg) scale(1.1);
+filter:blur(18px);
+}
+
+#transitionOverlay.active{
+opacity:1;
+}
+
+#transitionOverlay.active::before{
+animation:cinematicSwipe .65s cubic-bezier(.22,.61,.36,1) forwards;
+}
+
+@keyframes cinematicSwipe{
+0%{
+transform:translateX(-120%) skewX(-18deg) scale(1.08);
+opacity:0;
+}
+15%{
+opacity:.9;
+}
+45%{
+opacity:1;
+}
+100%{
+transform:translateX(120%) skewX(-18deg) scale(1);
+opacity:0;
+}
+}
+
 .gallery-arrow.left{left:22px}
 .gallery-arrow.right{right:22px}
+
+#homePage,
+#productPage{
+transition:opacity .32s ease, transform .45s cubic-bezier(.22,.61,.36,1);
+will-change:opacity,transform;
+}
+
+.page-hidden{
+opacity:0;
+transform:translateY(10px) scale(.992);
+pointer-events:none;
+}
+
+.page-visible{
+opacity:1;
+transform:translateY(0) scale(1);
+}
 </style>
 </head>
 <body>
+
+<div id="transitionOverlay"></div>
 
 <!-- TOP BAR -->
 <div class="sticky top-0 z-50 border-b border-white/5 bg-gradient-to-r from-[hsla(215,99%,42%,0.22)] to-[hsla(275,90%,36%,0.22)] backdrop-blur-xl">
@@ -77,9 +154,10 @@ Contacto
 </div>
 
 <!-- HOME PAGE -->
-<div id="homePage">
+<div id="homePage" class="page-visible">
 <section class="max-w-5xl mx-auto px-5 py-24">
 <div class="text-center">
+
 <h1 class="text-6xl md:text-8xl font-black tracking-tight">KORI.FILMS</h1>
 <p class="mt-5 text-zinc-500 uppercase tracking-[0.35em] text-sm md:text-base">PRODUCTOS</p>
 </div>
@@ -116,7 +194,7 @@ Mattebox modular compatible con filtros 4x4 y 4x5 para filmmakers y rigs cinemat
 </div>
 
 <!-- PRODUCT PAGE -->
-<div id="productPage" class="hidden">
+<div id="productPage" class="hidden page-hidden">
 <section class="max-w-5xl mx-auto px-5 py-10">
 
 <h1 class="text-5xl md:text-7xl font-black text-center mb-10">
@@ -617,9 +695,9 @@ if(popupPrice){
 }
 
 const extras=[]
-if(selectedExtras.reducers)extras.push('Kit reductores')
-if(selectedExtras.adapter)extras.push('Adaptador 4x5')
-if(selectedExtras.engraving)extras.push('Grabado')
+if(selectedExtras.reducers)extras.push('Kit reductores de filtros desde 77mm a 37mm')
+if(selectedExtras.adapter)extras.push('Adaptador 4x5 a filtros redondos de 77mm')
+if(selectedExtras.engraving)extras.push('Grabado personalizado')
 
 const summaryExtras=document.getElementById('summaryExtras')
 if(summaryExtras){
@@ -687,7 +765,7 @@ function sendToWhatsApp(){
  const engraving=document.getElementById('summaryEngraving')?.innerText||'No agregado'
  const extras=document.getElementById('summaryExtras')?.innerText||'Sin extras'
 
- const message=`Hola Kori Kamera Store 👋%0A%0AQuiero comprar un Mattebox MBK-V4.%0A%0A━━━━━━━━━━━━━━━%0A📦 DETALLE DE COMPRA%0A━━━━━━━━━━━━━━━%0A🎨 Color: ${currentColor}%0A🧩 Extras: ${extras}%0A✍️ Grabado: ${engraving}%0A🚚 Entrega: ${shippingMethod}%0A💰 Total: ${document.getElementById('popupFinalPrice').innerText}%0A%0A━━━━━━━━━━━━━━━%0A👤 DATOS CLIENTE%0A━━━━━━━━━━━━━━━%0A🙍 Nombre: ${name}%0A📱 Teléfono: ${phone}`
+ const message=`Hola Kori Kamera Store, quiero comprar un MBK-V4.%0A%0ANombre: ${name}%0ATeléfono: ${phone}%0AColor: ${currentColor.charAt(0)+currentColor.slice(1).toLowerCase()}%0AExtras: ${extras || 'Sin extras'}%0AEntrega: ${shippingMethod}%0ATotal: ${document.getElementById('popupFinalPrice').innerText}`
 
  window.open(`https://wa.me/56950870076?text=${message}`,'_blank')
 }
@@ -736,15 +814,67 @@ if(popup){
 }
 
 function openMatteboxPage(){
- document.getElementById('homePage').classList.add('hidden')
- document.getElementById('productPage').classList.remove('hidden')
- window.scrollTo({top:0,behavior:'smooth'})
+ const overlay=document.getElementById('transitionOverlay')
+ const home=document.getElementById('homePage')
+ const product=document.getElementById('productPage')
+ 
+ if(overlay){
+  overlay.classList.add('active')
+ }
+
+ home.classList.remove('page-visible')
+ home.classList.add('page-hidden')
+
+ setTimeout(()=>{
+  home.classList.add('hidden')
+
+  product.classList.remove('hidden')
+
+  requestAnimationFrame(()=>{
+   product.classList.remove('page-hidden')
+   product.classList.add('page-visible')
+  })
+
+  window.scrollTo({top:0,behavior:'smooth'})
+ },170)
+
+ setTimeout(()=>{
+  if(overlay){
+   overlay.classList.remove('active')
+  }
+ },560)
 }
 
 function goHome(){
- document.getElementById('productPage').classList.add('hidden')
- document.getElementById('homePage').classList.remove('hidden')
- window.scrollTo({top:0,behavior:'smooth'})
+ const overlay=document.getElementById('transitionOverlay')
+ const home=document.getElementById('homePage')
+ const product=document.getElementById('productPage')
+ 
+ if(overlay){
+  overlay.classList.add('active')
+ }
+
+ product.classList.remove('page-visible')
+ product.classList.add('page-hidden')
+
+ setTimeout(()=>{
+  product.classList.add('hidden')
+
+  home.classList.remove('hidden')
+
+  requestAnimationFrame(()=>{
+   home.classList.remove('page-hidden')
+   home.classList.add('page-visible')
+  })
+
+  window.scrollTo({top:0,behavior:'smooth'})
+ },170)
+
+ setTimeout(()=>{
+  if(overlay){
+   overlay.classList.remove('active')
+  }
+ },560)
 }
 
 function toggleMenu(){
