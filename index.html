@@ -731,8 +731,9 @@ if(productGallery){
 function selectColor(button){
  document.querySelectorAll('.color-button').forEach(btn=>btn.classList.remove('active-color'))
  button.classList.add('active-color')
+
  currentColor=button.querySelector('div').innerText.trim().toUpperCase()
- currentProductIndex=0
+
  updateProductGallery()
 }
 
