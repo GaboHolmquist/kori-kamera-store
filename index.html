@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kori Kamera Store</title>
+<link rel="icon" type="image/png" href="favicon.png" />
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+html{scroll-behavior:smooth}body{background:#000;color:#fff;font-family:sans-serif}@media(min-width:1024px){body{zoom:.85}}.hidden{display:none}.dropdown-menu{opacity:0;pointer-events:none;transform:translateY(-10px);transition:all .25s ease}.dropdown-menu.active{opacity:1;pointer-events:auto;transform:translateY(0)}.gallery-main{transition:transform .35s ease}.gallery-main:hover{transform:scale(1.07)}.gallery-thumb{transition:all .3s ease}.gallery-thumb:hover{transform:scale(1.03)}.gallery-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;font-size:18px;color:rgba(255,255,255,.5);pointer-events:none;animation:floatArrow 2.2s ease-in-out infinite}.gallery-arrow.left{left:18px}.gallery-arrow.right{right:18px}@keyframes floatArrow{0%,100%{transform:translateY(-50%) translateX(0)}50%{transform:translateY(-50%) translateX(3px)}}.clapper-transition{position:fixed;inset:0;z-index:9999;pointer-events:none;animation:fadeOverlay .76s forwards}.clapper-fullscreen{position:absolute;inset:0;background:linear-gradient(90deg,hsla(215,99%,52%,.08),hsla(275,90%,46%,.08));overflow:hidden}.clapper-fullscreen:before{content:'';position:absolute;inset:-50%;background:repeating-linear-gradient(-45deg,rgba(255,255,255,.05) 0 38px,transparent 38px 76px);animation:clapperMove .6s ease forwards}@keyframes clapperMove{from{transform:translateX(-30%) translateY(-30%) rotate(-8deg)}to{transform:translateX(0) translateY(0) rotate(-8deg)}}@keyframes fadeOverlay{0%,78%{opacity:1}100%{opacity:0}}*{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.12) transparent}*::-webkit-scrollbar{width:6px;height:6px}*::-webkit-scrollbar-track{background:transparent}*::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:999px}*::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.22)}
+</style>
+</head>
+<body>
+<!-- HOME PAGE -->
+  <div id="homePage">
+
+    <!-- TOP BAR HOME -->
+    <div class="sticky top-0 z-50 border-b border-white/5 bg-gradient-to-r from-[hsla(215,99%,42%,0.24)] to-[hsla(275,90%,36%,0.24)] backdrop-blur-xl brightness-[1.32] saturate-[1.44]">
+      <div class="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
+        <button onclick="goHome()" class="text-xl md:text-2xl font-black tracking-tight hover:opacity-80 transition-opacity">
+          KORI KAMERA STORE
+        </button>
+
+        <div class="relative">
+          <button onclick="toggleMenuHome()"
+            class="w-12 h-12 rounded-2xl border border-white/10 bg-white/5 flex flex-col items-center justify-center gap-1.5">
+            <div class="w-5 h-[2px] bg-white rounded-full"></div>
+            <div class="w-5 h-[2px] bg-white rounded-full"></div>
+            <div class="w-5 h-[2px] bg-white rounded-full"></div>
+          </button>
+
+          <div id="dropdownMenuHome"
+            class="dropdown-menu absolute right-0 mt-3 w-52 rounded-3xl border border-white/10 bg-zinc-950/95 backdrop-blur-xl overflow-hidden shadow-2xl">
+            <button onclick="goHome(); toggleMenuHome()" class="w-full text-left px-5 py-4 border-b border-white/5 hover:bg-white/5">
+              Inicio
+            </button>
+
+            <button onclick="openProductPage(); toggleMenuHome()" class="w-full text-left px-5 py-4 border-b border-white/5 hover:bg-white/5">
+              MBK-V4
+            </button>
+
+            <a href="https://www.instagram.com/korikamerastore/" target="_blank" class="block w-full text-left px-5 py-4 border-b border-white/5 hover:bg-white/5">
+              Instagram
+            </a>
+
+            <a href="https://wa.me/056950870076" target="_blank" class="block w-full text-left px-5 py-4 hover:bg-white/5">
+              Contacto
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="max-w-7xl mx-auto px-5 py-20">
+
+      <div class="text-center">
+        <h1 class="text-6xl md:text-8xl font-black tracking-tight">
+          KORI.FILMS
+        </h1>
+
+        <p class="mt-5 text-zinc-500 uppercase tracking-[0.35em] text-sm md:text-base">
+          PRODUCTOS
+        </p>
+      </div>
+
+      <div class="mt-14 max-w-3xl mx-auto">
+
+        <button onclick="openProductPage()"
+          class="w-full text-left rounded-[40px] border border-white/10 bg-zinc-900/80 overflow-hidden backdrop-blur-xl hover:scale-[1.01] transition-all duration-300">
+
+          <div class="aspect-video bg-zinc-800 flex items-center justify-center text-zinc-500">
+            RIG / PRODUCTO PREVIEW
+          </div>
+
+          <div class="p-6 md:p-8">
+
+            <div class="flex items-center justify-between gap-4 flex-wrap">
+
+              <div>
+                <h2 class="text-3xl md:text-4xl font-bold">
+                  MATTEBOX MBK-V4
+                </h2>
+
+                <p class="mt-3 text-zinc-400 leading-relaxed max-w-xl">
+                  Mattebox modular compatible con filtros 4x4 y 4x5 para filmmakers y rigs cinematográficos modernos.
+                </p>
+              </div>
+
+              <div class="flex items-center gap-3 rounded-full bg-green-950/60 border border-green-900/40 px-4 py-2">
+                <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+                <span class="text-green-300 text-sm font-medium">
+                  Disponible
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </button>
+
+      </div>
+
+      <a
+        href="https://www.instagram.com/korikamerastore/"
+        target="_blank"
+        class="mt-10 mx-auto w-fit flex items-center gap-3 rounded-full border border-white/10 bg-gradient-to-r from-[hsl(215,99%,34%)]/70 to-purple-950/70 px-6 py-3 hover:scale-[1.02] transition-all duration-300">
+        <div class="w-3 h-3 rounded-full bg-[hsl(215,99%,60%)]"></div>
+
+        <span class="text-sm md:text-base text-zinc-200 font-medium">
+          Síguenos en Instagram
+        </span>
+      </a>
+
+    </section>
+
+  </div>
+
+  <!-- PRODUCT PAGE -->
+  <div id="productPage" class="hidden">
+
+  <!-- TOP BAR -->
+  <div class="sticky top-0 z-50 border-b border-white/5 bg-gradient-to-r from-[hsla(215,99%,42%,0.24)] to-[hsla(275,90%,36%,0.24)] backdrop-blur-xl brightness-[1.32] saturate-[1.44]">
+    <div class="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
+      <button onclick="goHome()" class="text-xl md:text-2xl font-black tracking-tight hover:opacity-80 transition-opacity">
+          KORI KAMERA STORE
+        </button>
+
+      <div class="relative">
+        <button onclick="toggleMenu()"
+          class="w-12 h-12 rounded-2xl border border-white/10 bg-white/5 flex flex-col items-center justify-center gap-1.5">
+          <div class="w-5 h-[2px] bg-white rounded-full"></div>
+          <div class="w-5 h-[2px] bg-white rounded-full"></div>
+          <div class="w-5 h-[2px] bg-white rounded-full"></div>
+        </button>
+
+        <div id="dropdownMenu"
+          class="dropdown-menu absolute right-0 mt-3 w-52 rounded-3xl border border-white/10 bg-zinc-950/95 backdrop-blur-xl overflow-hidden shadow-2xl">
+          <button onclick="goHome(); toggleMenu()" class="w-full text-left px-5 py-4 border-b border-white/5 hover:bg-white/5">
+            Inicio
+          </button>
+
+          <button onclick="document.getElementById('mainImage').scrollIntoView({ behavior: 'smooth' }); toggleMenu()" class="w-full text-left px-5 py-4 border-b border-white/5 hover:bg-white/5">
+            MBK-V4
+          </button>
+
+          <a href="https://www.instagram.com/korikamerastore/" target="_blank" class="block w-full text-left px-5 py-4 border-b border-white/5 hover:bg-white/5">
+            Instagram
+          </a>
+
+          <a href="https://wa.me/056950870076" target="_blank" class="block w-full text-left px-5 py-4 hover:bg-white/5">
+            Contacto
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="max-w-7xl mx-auto px-5 pt-4 pb-12 md:pt-6 md:pb-20">
+
+    <div class="pb-5 md:pb-7 flex items-center justify-center text-center">
+      <h1 class="text-5xl md:text-7xl font-black tracking-tight">
+        MATTEBOX MBK-V4
+      </h1>
+    </div>
+
+    <!-- RIG GALLERY -->
+    <div class="relative rounded-[35px] border border-white/10 overflow-hidden bg-zinc-900">
+
+      <div class="gallery-arrow left">‹</div>
+      <div class="gallery-arrow right">›</div>
+
+      <div id="rigGallery"
+        onclick="changeRigGalleryByClick(event)"
+        class="gallery-main cursor-pointer aspect-video flex items-center justify-center text-zinc-500 select-none">
+        RIG FOTO 1
+      </div>
+
+      <div class="grid grid-cols-5 gap-2 p-4 border-t border-white/10">
+        <button onclick="document.getElementById('rigGallery').innerText='RIG FOTO 1'" class="gallery-thumb aspect-video rounded-xl border border-white/10 bg-zinc-800">
+          <div class="w-full h-full flex items-center justify-center text-[10px] text-zinc-400">
+            PREVIEW
+          </div>
+        </button>
+
+        <button onclick="document.getElementById('rigGallery').innerText='RIG FOTO 2'" class="gallery-thumb aspect-video rounded-xl border border-white/10 bg-zinc-800">
+          <div class="w-full h-full flex items-center justify-center text-[10px] text-zinc-400">
+            PREVIEW
+          </div>
+        </button>
+
+        <button onclick="document.getElementById('rigGallery').innerText='RIG FOTO 3'" class="gallery-thumb aspect-video rounded-xl border border-white/10 bg-zinc-800">
+          <div class="w-full h-full flex items-center justify-center text-[10px] text-zinc-400">
+            PREVIEW
+          </div>
+        </button>
+
+        <button onclick="document.getElementById('rigGallery').innerText='RIG FOTO 4'" class="gallery-thumb aspect-video rounded-xl border border-white/10 bg-zinc-800">
+          <div class="w-full h-full flex items-center justify-center text-[10px] text-zinc-400">
+            PREVIEW
+          </div>
+        </button>
+
+        <button onclick="document.getElementById('rigGallery').innerText='RIG FOTO 5'" class="gallery-thumb aspect-video rounded-xl border border-white/10 bg-zinc-800">
+          <div class="w-full h-full flex items-center justify-center text-[10px] text-zinc-400">
+            PREVIEW
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- VIDEO -->
+      <div class="mt-12 rounded-[35px] border border-white/10 overflow-hidden bg-zinc-800/80 backdrop-blur-xl">
+
+        <div class="aspect-video flex items-center justify-center text-zinc-500 bg-zinc-900/40">
+          VIDEO UNBOXING 16:9
+        </div>
+
+        <div class="p-6 border-t border-white/10">
+          <h2 class="text-3xl md:text-4xl font-bold">
+            Unboxing y configuración rápida
+          </h2>
+
+          <p class="mt-4 text-zinc-400 leading-relaxed">
+            Muestra cómo instalar adaptadores, insertar filtros y visualizar cada color disponible del mattebox.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- PRODUCT GALLERY -->
+      <div class="mt-12 relative rounded-[35px] border border-white/10 overflow-hidden bg-zinc-900">
+
+        <div class="gallery-arrow left">‹</div>
+        <div class="gallery-arrow right">›</div>
+
+        <div id="mainImage"
+          onclick="changeProductGalleryByClick(event)"
+          class="gallery-main cursor-pointer aspect-video flex items-center justify-center text-zinc-500 select-none">
+          MADERA · FOTO 1
+        </div>
+
+        <div class="grid grid-cols-5 gap-2 p-4 border-t border-white/10">
+          <button class="gallery-thumb aspect-video rounded-xl border border-white/10 bg-zinc-800"></button>
+          <button class="gallery-thumb aspect-video rounded-xl border border-white/10 bg-zinc-800"></button>
+          <button class="gallery-thumb aspect-video rounded-xl border border-white/10 bg-zinc-800"></button>
+          <button class="gallery-thumb aspect-video rounded-xl border border-white/10 bg-zinc-800"></button>
+          <button class="gallery-thumb aspect-video rounded-xl border border-white/10 bg-zinc-800"></button>
+        </div>
+      </div>
+
+      <!-- CONFIG -->
+      <div class="mt-12">
+        <p class="text-zinc-400 mb-4 uppercase tracking-[0.25em] text-sm">
+          Colores disponibles
+        </p>
+
+        <div class="grid gap-3">
+
+          <button onclick="selectColor(this, 'MADERA')" class="color-button active-color w-full flex items-center justify-between rounded-2xl border border-white bg-white text-black px-5 py-4 transition-all hover:scale-[1.01]">
+            <span>Madera</span>
+            <div class="w-5 h-5 rounded-full bg-[#9c6b3f]"></div>
+          </button>
+
+          <button onclick="selectColor(this, 'NEGRO')" class="color-button w-full flex items-center justify-between rounded-2xl border border-white/10 bg-black px-5 py-4 transition-all hover:scale-[1.01]">
+            <span>Negro</span>
+            <div class="w-5 h-5 rounded-full bg-black border border-white/20"></div>
+          </button>
+
+          <button onclick="selectColor(this, 'OLIVA')" class="color-button w-full flex items-center justify-between rounded-2xl border border-white/10 bg-black px-5 py-4 transition-all hover:scale-[1.01]">
+            <span>Oliva</span>
+            <div class="w-5 h-5 rounded-full bg-[#556b2f]"></div>
+          </button>
+
+          <button onclick="selectColor(this, 'GRIS')" class="color-button w-full flex items-center justify-between rounded-2xl border border-white/10 bg-black px-5 py-4 transition-all hover:scale-[1.01]">
+            <span>Gris</span>
+            <div class="w-5 h-5 rounded-full bg-[#777777]"></div>
+          </button>
+
+          <button onclick="selectColor(this, 'LAVA')" class="color-button w-full flex items-center justify-between rounded-2xl border border-white/10 bg-black px-5 py-4 transition-all hover:scale-[1.01]">
+            <span>Lava</span>
+            <div class="w-5 h-5 rounded-full bg-gradient-to-r from-yellow-700 to-red-800"></div>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- VIDEO -->
+      <div class="mt-12 rounded-[35px] border border-white/10 overflow-hidden bg-zinc-800/80 backdrop-blur-xl">
+
+        <div class="aspect-video flex items-center justify-center text-zinc-500 bg-zinc-900/40">
+          VIDEO UNBOXING 16:9
+        </div>
+
+        <div class="p-6 border-t border-white/10">
+          <h2 class="text-3xl md:text-4xl font-bold">
+            Unboxing y configuración rápida
+          </h2>
+
+          <p class="mt-4 text-zinc-400 leading-relaxed">
+            Muestra cómo instalar adaptadores, insertar filtros y visualizar cada color disponible del mattebox.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- MOUNTS -->
+      <div class="mt-12">
+        <p class="text-zinc-400 mb-4 uppercase tracking-[0.25em] text-sm">
+          Opciones de montaje incluidas
+        </p>
+
+        <div class="space-y-3">
+          <div class="rounded-2xl border border-white/10 bg-black/50 px-5 py-4">
+            Directo 114mm
+          </div>
+
+          <div class="rounded-2xl border border-white/10 bg-black/50 px-5 py-4">
+            Adaptador a 95mm
+          </div>
+
+          <div class="rounded-2xl border border-white/10 bg-black/50 px-5 py-4">
+            Adaptador a rosca de filtro 77mm
+          </div>
+        </div>
+      </div>
+
+      <!-- EXTRAS -->
+      <div class="mt-12">
+        <div class="flex items-center justify-between gap-4 mb-4 flex-wrap">
+          <p class="text-zinc-400 uppercase tracking-[0.25em] text-sm">
+            Extras
+          </p>
+
+          <p class="text-xs text-green-300 rounded-full border border-green-900/40 bg-green-950/30 px-4 py-2">
+            Comprando el kit + adaptador obtienes grabado gratis
+          </p>
+        </div>
+
+        <div class="space-y-3">
+
+          <label class="flex items-center justify-between rounded-2xl border border-white/10 bg-black/50 px-5 py-4 cursor-pointer hover:border-white/20 transition-all">
+            <div class="flex items-center gap-3">
+              <input type="checkbox" id="kitCheckbox" class="extra-checkbox w-4 h-4" data-price="20000" onchange="handleBundleOffer(); updatePrice()">
+              <span>Kit reductores de filtros desde 77 a 39mm</span>
+            </div>
+            <span class="text-zinc-400">+$20.000</span>
+          </label>
+
+          <label class="flex items-center justify-between rounded-2xl border border-white/10 bg-black/50 px-5 py-4 cursor-pointer hover:border-white/20 transition-all">
+            <div class="flex items-center gap-3">
+              <input type="checkbox" id="adapterCheckbox" class="extra-checkbox w-4 h-4" data-price="15000" onchange="handleBundleOffer(); updatePrice()">
+              <span>Adaptador 4x5 a filtros redondos de 77mm</span>
+            </div>
+            <span class="text-zinc-400">+$15.000</span>
+          </label>
+
+          <div class="rounded-2xl border border-white/10 bg-black/50 p-5 hover:border-white/20 transition-all">
+
+            <label class="flex items-center justify-between cursor-pointer">
+              <div class="flex items-center gap-3">
+                <input type="checkbox" id="engravingCheckbox" class="extra-checkbox w-4 h-4" data-price="10000" onchange="toggleEngravingField(); updatePrice()">
+                <span>Grabado personalizado</span>
+              </div>
+
+              <span id="engravingPriceLabel" class="text-zinc-400">+$10.000</span>
+            </label>
+
+            <div id="engravingField" class="hidden mt-5">
+
+              <input
+                id="engravingText"
+                type="text"
+                maxlength="15"
+                placeholder="EJ: GABOHOLMQUIST"
+                oninput="this.value = this.value.toUpperCase()"
+                class="w-full rounded-2xl border border-white/10 bg-black/40 px-5 py-4 outline-none focus:border-white/30 transition-all text-white placeholder:text-zinc-500 font-bold uppercase tracking-wide"
+              />
+
+              <p class="mt-3 text-sm text-zinc-500 leading-relaxed">
+                Solo letras en mayúscula y negrita. El nombre será impreso en el color seleccionado como base e irá en la parte frontal de la bandera del mattebox.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <a href="https://wa.me/056950870076?text=Hola%20Kori Kamera Store,%20quiero%20cotizar%20adaptadores%20personalizados%20para%20el%20MBK-V4" target="_blank"
+          class="group block mt-6 rounded-2xl border border-green-900/40 bg-green-950/60 px-5 py-5 hover:bg-green-900/50 hover:border-green-700/50 transition-all duration-300 hover:scale-[1.01] cursor-pointer">
+          <p class="text-sm text-zinc-400 mb-2">
+            ¿Necesitas algo más específico?
+          </p>
+
+          <div class="flex items-center justify-between gap-4">
+            <p class="font-medium text-green-200 leading-relaxed">
+              Hablar directo al WhatsApp para cotizar adaptadores personalizados para tu set de lentes.
+            </p>
+
+            <div class="text-green-300 text-2xl group-hover:translate-x-1 transition-transform duration-300">
+              →
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- PRICE -->
+      <div class="border-t border-white/10 mt-12 pt-8 flex items-center justify-between gap-4 flex-wrap">
+
+        <div>
+          <p class="text-zinc-400 text-sm uppercase tracking-[0.25em]">
+            Precio final
+          </p>
+
+          <h3 id="finalPrice" class="text-4xl md:text-5xl font-black mt-2">
+            $79.990
+          </h3>
+        </div>
+
+        <button onclick="openPurchasePopup()" class="px-8 py-5 rounded-2xl bg-white text-black font-semibold hover:scale-[1.02] transition-all duration-300 shadow-2xl">
+          Comprar
+        </button>
+
+      </div>
+
+          <a
+        href="https://www.instagram.com/korikamerastore/"
+        target="_blank"
+        class="mt-10 mx-auto w-fit flex items-center gap-3 rounded-full border border-white/10 bg-gradient-to-r from-[hsl(215,99%,34%)]/70 to-purple-950/70 px-6 py-3 hover:scale-[1.02] transition-all duration-300">
+        <div class="w-3 h-3 rounded-full bg-[hsl(215,99%,60%)]"></div>
+
+        <span class="text-sm md:text-base text-zinc-200 font-medium">
+          Síguenos en Instagram
+        </span>
+      </a>
+
+    </section>
+  </section>
+
+  <!-- PURCHASE POPUP -->
+  <div id="purchasePopup" class="hidden fixed inset-0 z-[9998] bg-black/70 backdrop-blur-md overflow-y-auto p-5">
+
+    <div class="w-full max-w-xl mx-auto my-10 rounded-[35px] border border-white/10 bg-zinc-950 p-7 max-h-[90vh] overflow-y-auto">
+
+      <h2 class="text-3xl md:text-4xl font-black">
+        Resumen de compra
+      </h2>
+
+      <div class="mt-8 space-y-5">
+
+        <div>
+          <p class="text-zinc-400 mb-4 uppercase tracking-[0.25em] text-sm">
+            Nombre
+          </p>
+
+          <input
+            id="customerName"
+            type="text"
+            placeholder="Tu nombre"
+            class="w-full rounded-2xl border border-white/10 bg-black/40 px-5 py-4 outline-none focus:border-white/30 transition-all text-white placeholder:text-zinc-500 mb-5"
+          />
+
+          <p class="text-zinc-400 mb-4 uppercase tracking-[0.25em] text-sm">
+            Número de contacto
+          </p>
+
+          <input
+            id="customerPhone"
+            type="tel"
+            value="+56 9 "
+            onfocus="if(this.value === '+56 9 ') this.setSelectionRange(this.value.length, this.value.length)"
+            oninput="if(!this.value.startsWith('+56 9 ')) this.value = '+56 9 ' + this.value.replace(/\+56 9 /g, '')"
+            placeholder="XXXX XXXX"
+            class="w-full rounded-2xl border border-white/10 bg-black/40 px-5 py-4 outline-none focus:border-white/30 transition-all text-white placeholder:text-zinc-500"
+          />
+        </div>
+
+        <div>
+          <p class="text-zinc-400 mb-4 uppercase tracking-[0.25em] text-sm">
+            Método de entrega
+          </p>
+
+          <div class="space-y-3">
+
+            <label class="flex items-center justify-between rounded-2xl border border-white/10 bg-black/40 px-5 py-4 cursor-pointer hover:border-white/20 transition-all">
+              <div class="flex items-center gap-3">
+                <input type="radio" name="shipping" value="Bluexpress / Chilexpress - $5.990" data-price="5990" onchange="updateShipping(this)">
+                <span>Bluexpress / Chilexpress</span>
+              </div>
+
+              <span class="text-zinc-400">+$5.990</span>
+            </label>
+
+            <label class="flex items-center justify-between rounded-2xl border border-white/10 bg-black/40 px-5 py-4 cursor-pointer hover:border-white/20 transition-all">
+              <div class="flex items-center gap-3">
+                <input type="radio" name="shipping" value="Envío Express - $9.990" data-price="9990" onchange="updateShipping(this)">
+                <span>Envío Express</span>
+              </div>
+
+              <span class="text-zinc-400">+$9.990</span>
+            </label>
+
+            <label class="flex items-center justify-between rounded-2xl border border-white/10 bg-black/40 px-5 py-4 cursor-pointer hover:border-white/20 transition-all">
+              <div class="flex items-center gap-3">
+                <input type="radio" name="shipping" value="Retiro gratis Metro Ecuador" data-price="0" onchange="updateShipping(this)">
+                <span>Retiro Metro Ecuador</span>
+              </div>
+
+              <span class="text-green-300">Gratis</span>
+            </label>
+
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between border-b border-white/5 pb-4 gap-4">
+          <span class="text-zinc-400">
+            Color seleccionado
+          </span>
+
+          <span id="popupColor" class="font-semibold">
+            Madera
+          </span>
+        </div>
+
+        <div class="flex items-center justify-between border-b border-white/5 pb-4 gap-4">
+          <span class="text-zinc-400">
+            Extras
+          </span>
+
+          <span id="popupExtras" class="font-semibold text-right">
+            Ninguno
+          </span>
+        </div>
+
+        <div id="popupEngravingWrapper" class="hidden flex items-center justify-between border-b border-white/5 pb-4 gap-4">
+          <span class="text-zinc-400">
+            Grabado
+          </span>
+
+          <span id="popupEngraving" class="font-semibold text-right uppercase">
+          </span>
+        </div>
+
+        <div class="flex items-center justify-between border-b border-white/5 pb-4 gap-4">
+          <span class="text-zinc-400">
+            Total
+          </span>
+
+          <span id="popupPrice" class="text-2xl font-black">
+            $79.990
+          </span>
+        </div>
+
+        <div class="flex items-center justify-between border-b border-white/5 pb-4 gap-4">
+          <span class="text-zinc-400">
+            Entrega
+          </span>
+
+          <span id="popupShipping" class="font-semibold text-right">
+            No seleccionada
+          </span>
+        </div>
+
+      </div>
+
+      <div class="mt-8 rounded-2xl border border-yellow-900/40 bg-yellow-950/30 p-5">
+        <p class="text-yellow-200 leading-relaxed text-sm md:text-base">
+          Todos los mattebox son fabricados bajo pedido. El tiempo estimado de producción y despacho es de aproximadamente 4 días hábiles.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-3 mt-8">
+
+        <button id="confirmPurchaseButton" onclick="handlePurchase()" class="w-full py-5 rounded-2xl bg-white text-black font-semibold hover:scale-[1.01] transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+          Proceder con la compra
+        </button>
+
+        <button onclick="closePurchasePopup()" class="w-full py-5 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300">
+          Cancelar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('dropdownMenu').classList.toggle('active')
+    }
+
+    function toggleMenuHome() {
+      document.getElementById('dropdownMenuHome').classList.toggle('active')
+    }
+
+    document.addEventListener('click', function(event) {
+
+      const homeMenu = document.getElementById('dropdownMenuHome')
+      const productMenu = document.getElementById('dropdownMenu')
+
+      const homeButton = event.target.closest('[onclick="toggleMenuHome()"]')
+      const productButton = event.target.closest('[onclick="toggleMenu()"]')
+
+      if (!event.target.closest('#dropdownMenuHome') && !homeButton) {
+        homeMenu.classList.remove('active')
+      }
+
+      if (!event.target.closest('#dropdownMenu') && !productButton) {
+        productMenu.classList.remove('active')
+      }
+    })
+
+    function pageTransition(show,hide){const t=document.createElement('div');t.className='clapper-transition';t.innerHTML='<div class="clapper-fullscreen"></div>';document.body.appendChild(t);setTimeout(()=>{document.getElementById(hide).classList.add('hidden');document.getElementById(show).classList.remove('hidden');window.scrollTo({top:0,behavior:'auto'})},380);setTimeout(()=>t.remove(),760)}
+
+function openProductPage(){pageTransition('productPage','homePage')}
+
+    function goHome(){pageTransition('homePage','productPage')}
+
+    let shippingPrice = 0
+
+    function updatePrice() {
+      let total = 79990 + shippingPrice
+
+      document.querySelectorAll('.extra-checkbox').forEach((checkbox) => {
+        if (checkbox.checked) {
+          total += parseInt(checkbox.dataset.price)
+        }
+      })
+
+      document.getElementById('finalPrice').innerText =
+        '$' + total.toLocaleString('es-CL')
+    }
+
+    function updateShipping(input) {
+
+      shippingPrice = parseInt(input.dataset.price)
+
+      updatePrice()
+
+      document.getElementById('popupShipping').innerText =
+        input.value
+
+      document.getElementById('popupPrice').innerText =
+        document.getElementById('finalPrice').innerText
+
+      validatePurchaseForm()
+    }
+
+    function selectColor(button, colorName) {
+
+      document.querySelectorAll('.color-button').forEach((btn) => {
+        btn.classList.remove('bg-white', 'text-black', 'border-white')
+        btn.classList.add('bg-black', 'text-white', 'border-white/10')
+      })
+
+      button.classList.remove('bg-black', 'text-white', 'border-white/10')
+      button.classList.add('bg-white', 'text-black', 'border-white')
+
+      document.getElementById('mainImage').innerText =
+        colorName + ' · FOTO 1'
+    }
+
+    function validatePurchaseForm() {
+
+      const selectedShipping =
+        document.querySelector('input[name="shipping"]:checked')
+
+      const customerName =
+        document.getElementById('customerName').value.trim()
+
+      const phoneNumber =
+        document.getElementById('customerPhone').value.trim()
+
+      const button =
+        document.getElementById('confirmPurchaseButton')
+
+      if (selectedShipping && phoneNumber.length >= 8 && customerName.length >= 2) {
+        button.disabled = false
+      } else {
+        button.disabled = true
+      }
+    }
+
+    document.addEventListener('change', validatePurchaseForm)
+    document.addEventListener('input', validatePurchaseForm)
+
+    function openPurchasePopup() {
+
+      const selectedColor =
+        document.querySelector('.color-button.bg-white span').innerText
+
+      const selectedExtras = []
+
+      document.querySelectorAll('.extra-checkbox').forEach((checkbox) => {
+        if (checkbox.checked) {
+          selectedExtras.push(
+            checkbox.parentElement.querySelector('span').innerText
+          )
+        }
+      })
+
+      document.getElementById('popupColor').innerText = selectedColor
+
+      document.getElementById('popupExtras').innerText =
+        selectedExtras.length > 0 ? selectedExtras.join(', ') : 'Ninguno'
+
+      const engravingText =
+        document.getElementById('engravingText')?.value?.trim()
+
+      const popupEngravingWrapper =
+        document.getElementById('popupEngravingWrapper')
+
+      const popupEngraving =
+        document.getElementById('popupEngraving')
+
+      if (engravingText) {
+        popupEngravingWrapper.classList.remove('hidden')
+        popupEngraving.innerText = engravingText
+      } else {
+        popupEngravingWrapper.classList.add('hidden')
+      }
+
+      document.getElementById('popupPrice').innerText =
+        document.getElementById('finalPrice').innerText
+
+      const selectedShipping =
+        document.querySelector('input[name="shipping"]:checked')
+
+      document.getElementById('popupShipping').innerText =
+        selectedShipping ? selectedShipping.value : 'No seleccionada'
+
+      document.body.style.overflow = 'hidden'
+
+      document.getElementById('purchasePopup').classList.remove('hidden')
+    }
+
+    function closePurchasePopup() {
+      document.body.style.overflow = 'auto'
+
+      document.getElementById('purchasePopup').classList.add('hidden')
+    }
+
+    let currentRigImage = 1
+    let currentProductImage = 1
+
+    function updateRigGallery() {
+      document.getElementById('rigGallery').innerText =
+        'RIG FOTO ' + currentRigImage
+    }
+
+    function updateProductGallery() {
+      document.getElementById('mainImage').innerText =
+        'FOTO ' + currentProductImage
+    }
+
+    function changeRigGalleryByClick(event) {
+
+      const width = event.currentTarget.offsetWidth
+      const clickX = event.offsetX
+
+      if (clickX > width / 2) {
+        currentRigImage++
+        if (currentRigImage > 5) currentRigImage = 1
+      } else {
+        currentRigImage--
+        if (currentRigImage < 1) currentRigImage = 5
+      }
+
+      updateRigGallery()
+    }
+
+    function changeProductGalleryByClick(event) {
+
+      const width = event.currentTarget.offsetWidth
+      const clickX = event.offsetX
+
+      if (clickX > width / 2) {
+        currentProductImage++
+        if (currentProductImage > 5) currentProductImage = 1
+      } else {
+        currentProductImage--
+        if (currentProductImage < 1) currentProductImage = 5
+      }
+
+      updateProductGallery()
+    }
+
+    function handleBundleOffer(){
+      const kit=document.getElementById('kitCheckbox')
+      const adapter=document.getElementById('adapterCheckbox')
+      const engraving=document.getElementById('engravingCheckbox')
+      const label=document.getElementById('engravingPriceLabel')
+
+      if(kit.checked&&adapter.checked){
+        engraving.checked=true
+        engraving.dataset.price='0'
+        label.innerText='GRATIS'
+        document.getElementById('engravingField').classList.remove('hidden')
+      }else{
+        engraving.dataset.price='10000'
+        label.innerText='+$10.000'
+      }
+
+      updatePrice()
+    }
+
+    function toggleEngravingField(){
+      const field=document.getElementById('engravingField')
+      const check=document.getElementById('engravingCheckbox')
+      field.classList.toggle('hidden',!check.checked)
+    }
+
+    function handlePurchase(){
+      const name=document.getElementById('customerName').value.trim()
+      const phone=document.getElementById('customerPhone').value.trim()
+      const color=document.querySelector('.color-button.bg-white span').innerText
+      const extras=[...document.querySelectorAll('.extra-checkbox:checked')].map(c=>c.parentElement.querySelector('span').innerText)
+      const shipping=document.querySelector('input[name="shipping"]:checked')
+      const engraving=document.getElementById('engravingText')?.value?.trim()
+      const total=document.getElementById('finalPrice').innerText
+
+      let msg=`Hola Kori Kamera Store, quiero comprar un MBK-V4.%0A%0ANombre: ${name}%0ATeléfono: ${phone}%0AColor: ${color}%0AExtras: ${extras.length?extras.join(', '):'Ninguno'}`
+      if(engraving)msg+=`%0AGrabado: ${engraving}`
+      msg+=`%0AEntrega: ${shipping?shipping.value:'No seleccionada'}%0ATotal: ${total}`
+
+      window.open(`https://wa.me/056950870076?text=${msg}`,'_blank')
+    }
+  </script>
+</body>
+</html>
