@@ -165,7 +165,7 @@ Contacto
 <div class="mt-14 max-w-3xl mx-auto">
 <button onclick="openMatteboxPage()" class="w-full text-left rounded-[40px] border border-white/10 bg-zinc-900/80 overflow-hidden backdrop-blur-xl hover:scale-[1.01] transition-all duration-300">
 <div class="aspect-video bg-zinc-800 flex items-center justify-center text-zinc-500">
-RIG / PRODUCTO PREVIEW
+<img src="assets/mattebox/olive/00001.jpeg" class="w-full h-full object-cover" />
 </div>
 
 <div class="p-6 md:p-8">
@@ -257,7 +257,7 @@ VIDEO UNBOXING
 <div class="gallery-arrow right">›</div>
 
 <div id="productGallery" onclick="handleProductGalleryClick(event)" class="aspect-video cursor-pointer flex items-center justify-center text-zinc-500 transition-all duration-500">
-MADERA · FOTO 1
+<img src="assets/mattebox/obsidian/00001.jpeg" class="w-full h-full object-cover" />
 </div>
 
 <div id="productDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
@@ -278,68 +278,98 @@ Colores disponibles
 <div class="grid grid-cols-5 gap-3">
 
 <button onclick="selectColor(this)" class="color-button active-color rounded-2xl border border-white/10 bg-black p-2 text-sm overflow-hidden">
-<div class="font-bold text-center mb-2">Madera</div>
-<div class="h-16 rounded-xl bg-gradient-to-br from-[#7a5230] to-[#3d2818] border border-white/10"></div>
-</button>
-
-<button onclick="selectColor(this)" class="color-button rounded-2xl border border-white/10 bg-black p-2 text-sm overflow-hidden">
-<div class="font-bold text-center mb-2">Negro</div>
+<div class="font-bold text-center mb-2">Obsidian</div>
 <div class="h-16 rounded-xl bg-gradient-to-br from-[#1f1f1f] to-[#000000] border border-white/10"></div>
 </button>
 
 <button onclick="selectColor(this)" class="color-button rounded-2xl border border-white/10 bg-black p-2 text-sm overflow-hidden">
-<div class="font-bold text-center mb-2">Oliva</div>
+<div class="font-bold text-center mb-2">Sand</div>
+<div class="h-16 rounded-xl bg-gradient-to-br from-[#c8b299] to-[#7b6048] border border-white/10"></div>
+</button>
+
+<button onclick="selectColor(this)" class="color-button rounded-2xl border border-white/10 bg-black p-2 text-sm overflow-hidden">
+<div class="font-bold text-center mb-2">Olive</div>
 <div class="h-16 rounded-xl bg-gradient-to-br from-[#5e6b3b] to-[#2c321a] border border-white/10"></div>
 </button>
 
 <button onclick="selectColor(this)" class="color-button rounded-2xl border border-white/10 bg-black p-2 text-sm overflow-hidden">
 <div class="font-bold text-center mb-2">Lava</div>
-<div class="h-16 rounded-xl bg-gradient-to-br from-[#c96b1d] via-[#892020] to-[#2b0909] border border-white/10"></div>
+<div class="h-16 rounded-xl bg-gradient-to-br from-[#7c2d12] to-[#2b0b05] border border-white/10"></div>
 </button>
 
 <button onclick="selectColor(this)" class="color-button rounded-2xl border border-white/10 bg-black p-2 text-sm overflow-hidden">
-<div class="font-bold text-center mb-2">Silver</div>
-<div class="h-16 rounded-xl bg-gradient-to-br from-[#d1d5db] via-[#8e939b] to-[#4b5563] border border-white/10"></div>
+<div class="font-bold text-center mb-2">Arctic</div>
+<div class="h-16 rounded-xl bg-gradient-to-br from-[#f3f4f6] to-[#9ca3af] border border-white/10"></div>
 </button>
 
 </div>
 </div>
 
 <!-- EXTRAS -->
+<!-- LAYOUT LOCKED: estructura aprobada visualmente. No modificar orden, tamaños, espaciados ni jerarquía sin nueva revisión visual. -->
 <div class="mt-10">
-<div class="mb-5 flex justify-center">
-<div class="rounded-full border border-green-900/40 bg-green-950/30 px-5 py-3 text-sm text-green-300 text-center">
+
+<div class="flex justify-center mb-6">
+<div class="rounded-full border border-green-500/20 bg-green-500/10 px-6 py-3 text-sm text-green-300 font-medium text-center max-w-fit">
 Por la compra del kit reductores + adaptador el grabado sale gratis.
 </div>
 </div>
 
-<div class="grid grid-cols-3 gap-3">
-<button onclick="toggleExtra('reducers',this)" class="extra-button rounded-2xl border border-white/10 bg-black p-5 text-center">
-<div class="font-medium leading-snug">Kit de reductores de filtros de 77mm a 37mm</div>
-<div class="text-zinc-400 text-sm mt-2">+$20.000</div>
+<div class="grid md:grid-cols-3 gap-4">
+
+<button onclick="toggleExtra('reducers',this)" class="extra-option rounded-[28px] border border-white/10 bg-black p-6 text-center transition-all duration-300 min-h-[140px] flex flex-col justify-center">
+<h3 class="font-semibold text-[18px] leading-snug max-w-[260px] mx-auto">
+Kit de reductores de filtros de 77mm a 37mm
+</h3>
+
+<p class="mt-4 text-zinc-400 text-[18px] font-semibold">
++$20.000
+</p>
 </button>
 
-<button onclick="toggleExtra('adapter',this)" class="extra-button rounded-2xl border border-white/10 bg-black p-5 text-center">
-<div class="font-medium leading-snug">Adaptador de filtro redondo 4x5 a 77mm</div>
-<div class="text-zinc-400 text-sm mt-2">+$15.000</div>
+<button onclick="toggleExtra('adapter',this)" class="extra-option rounded-[28px] border border-white/10 bg-black p-6 text-center transition-all duration-300 min-h-[140px] flex flex-col justify-center">
+<h3 class="font-semibold text-[18px] leading-snug max-w-[260px] mx-auto">
+Adaptador de filtro redondo 4x5 a 77mm
+</h3>
+
+<p class="mt-4 text-zinc-400 text-[18px] font-semibold">
++$15.000
+</p>
 </button>
 
-<button id="engravingButton" onclick="toggleEngraving(this)" class="extra-button rounded-2xl border border-white/10 bg-black p-5 text-center">
-<div class="font-medium leading-snug">Personalizar con nombre en la bandera</div>
-<div id="engravingPrice" class="text-zinc-400 text-sm mt-2">+$10.000</div>
+<button id="engravingButton" onclick="toggleEngraving(this)" class="extra-option rounded-[28px] border border-white/10 bg-black p-6 text-center transition-all duration-300 min-h-[140px] flex flex-col justify-center">
+<h3 class="font-semibold text-[18px] leading-snug max-w-[260px] mx-auto">
+Personalizar con nombre en la bandera
+</h3>
+
+<p class="mt-4 text-zinc-400 text-[18px] font-semibold">
+<span id="engravingPrice">+$10.000</span>
+</p>
 </button>
+
 </div>
 
-<div id="engravingExpanded" class="hidden rounded-[28px] border border-white/10 bg-white/5 p-5 mt-4">
-<div class="grid md:grid-cols-[1.2fr_1fr] gap-5 items-center">
-<div>
-<h3 class="text-lg font-semibold mb-2">Grabado personalizado</h3>
-<p class="text-sm text-zinc-400 leading-relaxed">
+<div id="engravingExpanded" class="hidden mt-5 rounded-[32px] border border-white/10 bg-black px-5 md:px-6 py-6">
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+
+<div class="max-w-md">
+<h3 class="text-[20px] font-bold mb-3">
+Grabado personalizado
+</h3>
+
+<p class="text-zinc-400 leading-relaxed text-base">
 Solo letras en mayúscula y negrita. El nombre será impreso en el color seleccionado.
 </p>
 </div>
 
-<input maxlength="15" placeholder="EJ: GABOHOLMQUIST" class="w-full rounded-2xl border border-white/10 bg-black/40 px-5 py-4 text-center uppercase font-bold outline-none" />
+<input 
+id="engravingInput"
+type="text" 
+maxlength="18" 
+placeholder="EJ: GABOHOLMQUIST"
+class="w-full md:w-[390px] rounded-[22px] border border-white/10 bg-black px-6 py-5 text-center text-[18px] font-black uppercase tracking-tight text-zinc-300 outline-none transition-all duration-300 focus:border-white/20 placeholder:text-zinc-500"
+/>
+
 </div>
 </div>
 </div>
@@ -426,7 +456,7 @@ class="w-full rounded-2xl border border-white/10 bg-black/40 px-5 py-4 outline-n
 Teléfono
 </p>
 
-<input id="customerPhone" value="+56 9 " oninput="validatePurchaseForm()"
+<input id="customerPhone" value="+56 9 " oninput="formatChilePhone(this);validatePurchaseForm()"
 class="w-full rounded-2xl border border-white/10 bg-black/40 px-5 py-4 outline-none focus:border-white/30 transition-all text-white placeholder:text-zinc-500" />
 </div>
 
@@ -478,7 +508,7 @@ Método de entrega
 
 <div class="flex items-center justify-between gap-4 py-3 border-b border-white/5">
 <span class="text-zinc-500">Color seleccionado</span>
-<span id="summaryColor" class="font-semibold">Madera</span>
+<span id="summaryColor" class="font-semibold">OBSIDIAN</span>
 </div>
 
 <div class="flex items-center justify-between gap-4 py-3 border-b border-white/5">
@@ -555,7 +585,7 @@ function updateRigGallery(){
  const dots=document.querySelectorAll('#rigDots div')
  dots.forEach((dot,index)=>{
   dot.className='w-2 h-2 rounded-full '+(index===currentRigIndex?'bg-white/90':'bg-white/30')
- })
+  })
 }
 
 function nextRigImage(){
@@ -599,20 +629,60 @@ if(rigGallery){
 setInterval(nextRigImage,20000)
 
 const productImages={
- MADERA:['MADERA · FOTO 1','MADERA · FOTO 2','MADERA · FOTO 3','MADERA · FOTO 4','MADERA · FOTO 5'],
- NEGRO:['NEGRO · FOTO 1','NEGRO · FOTO 2','NEGRO · FOTO 3','NEGRO · FOTO 4','NEGRO · FOTO 5'],
- OLIVA:['OLIVA · FOTO 1','OLIVA · FOTO 2','OLIVA · FOTO 3','OLIVA · FOTO 4','OLIVA · FOTO 5'],
- LAVA:['LAVA · FOTO 1','LAVA · FOTO 2','LAVA · FOTO 3','LAVA · FOTO 4','LAVA · FOTO 5'],
- SILVER:['SILVER · FOTO 1','SILVER · FOTO 2','SILVER · FOTO 3','SILVER · FOTO 4','SILVER · FOTO 5']
+ OBSIDIAN:[
+  '00001.jpeg',
+  '00002.jpeg',
+  '00003.jpeg',
+  '00004.jpeg',
+  '00005.jpeg'
+ ],
+
+ SAND:[
+  '00001.jpeg',
+  '00002.jpeg',
+  '00003.jpeg',
+  '00004.jpeg',
+  '00005.jpeg'
+ ],
+
+ OLIVE:[
+  '00001.jpeg',
+  '00002.jpeg',
+  '00003.jpeg',
+  '00004.jpeg',
+  '00005.jpeg'
+ ],
+
+ LAVA:[
+  '00001.jpeg',
+  '00002.jpeg',
+  '00003.jpeg',
+  '00004.jpeg',
+  '00005.jpeg'
+ ],
+
+ ARCTIC:[
+  '00001.jpeg',
+  '00002.jpeg',
+  '00003.jpeg',
+  '00004.jpeg',
+  '00005.jpeg'
+ ]
 }
 
-let currentColor='MADERA'
+let currentColor='OBSIDIAN'
 let currentProductIndex=0
 
 function updateProductGallery(){
  const gallery=document.getElementById('productGallery')
  if(!gallery)return
- gallery.innerText=productImages[currentColor][currentProductIndex]
+ 
+ gallery.innerHTML=`
+ <img 
+ src="assets/mattebox/${currentColor.toLowerCase()}/${productImages[currentColor][currentProductIndex]}"
+ class="w-full h-full object-cover"
+ />
+ `
 
  const dots=document.querySelectorAll('#productDots div')
  dots.forEach((dot,index)=>{
@@ -723,24 +793,27 @@ function toggleExtra(type,button){
 
 function toggleEngraving(button){
  selectedExtras.engraving=!selectedExtras.engraving
- button.classList.toggle('active-color')
+
+ button.classList.toggle('active-color',selectedExtras.engraving)
 
  const expanded=document.getElementById('engravingExpanded')
  if(expanded){
-  expanded.classList.toggle('hidden')
+  expanded.classList.toggle('hidden',!selectedExtras.engraving)
  }
 
  const summary=document.getElementById('summaryEngraving')
- const input=document.querySelector('#engravingExpanded input')
+ const input=document.getElementById('engravingInput')
 
  if(summary){
   summary.innerText=selectedExtras.engraving?'Pendiente':'No agregado'
  }
 
- if(input){
+ if(input && !input.dataset.bound){
+  input.dataset.bound='true'
+
   input.addEventListener('input',()=>{
    if(summary){
-    summary.innerText=input.value||'Pendiente'
+    summary.innerText=input.value.trim()||'Pendiente'
    }
   })
  }
@@ -770,12 +843,39 @@ function sendToWhatsApp(){
  window.open(`https://wa.me/56950870076?text=${message}`,'_blank')
 }
 
+function formatChilePhone(input){
+ let value=input.value.replace(/\D/g,'')
+
+ if(value.startsWith('56')){
+  value=value.slice(2)
+ }
+
+ if(value.startsWith('9')){
+  value=value.slice(1)
+ }
+
+ value=value.slice(0,8)
+
+ let formatted='+56 9 '
+
+ if(value.length>0){
+  if(value.length<=4){
+   formatted+=value
+  }else{
+   formatted+=value.slice(0,4)+' '+value.slice(4)
+  }
+ }
+
+ input.value=formatted
+}
+
 function validatePurchaseForm(){
  const name=document.getElementById('customerName')?.value.trim()||''
  const phone=document.getElementById('customerPhone')?.value.trim()||''
  const purchaseButton=document.getElementById('purchaseButton')
 
- const validPhone=phone.length>7 && phone.includes('+56 9')
+ const phoneDigits=phone.replace(/\D/g,'').replace(/^569/,'')
+ const validPhone=phone.startsWith('+56 9 ') && phoneDigits.length===8
  const validName=name.length>1
  const validShipping=shippingMethod.length>0
 
@@ -885,6 +985,24 @@ function toggleMenu(){
 }
 
 
+
+const phoneInput=document.getElementById('customerPhone')
+
+if(phoneInput){
+ phoneInput.addEventListener('focus',()=>{
+  if(phoneInput.value.trim()===''){
+   phoneInput.value='+56 9 '
+  }
+ })
+
+ phoneInput.addEventListener('keydown',(e)=>{
+  const protectedLength=6
+
+  if((e.key==='Backspace' || e.key==='Delete') && phoneInput.selectionStart<=protectedLength){
+   e.preventDefault()
+  }
+ })
+}
 
 window.addEventListener('click',(event)=>{
  const menu=document.getElementById('dropdownMenu')
