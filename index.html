@@ -173,7 +173,7 @@ Contacto
 <div>
 <h2 class="text-3xl md:text-4xl font-bold">MATTE BOX MBK-V4</h2>
 <p class="mt-3 text-zinc-400 leading-relaxed max-w-xl">
-Matte Box modular compatible con filtros 4x4 y 4x5 para filmmakers y rigs cinematográficos modernos.
+Matte Box para filtros 4x4 y 4x5 diseñado para filmmakers y rigs cinematográficos modernos.
 </p>
 </div>
 
@@ -206,7 +206,7 @@ MATTE BOX MBK-V4
 <div class="gallery-arrow left">‹</div>
 <div class="gallery-arrow right">›</div>
 
-<div id="rigGallery" onclick="handleRigGalleryClick(event)" class="aspect-video cursor-pointer flex items-center justify-center text-zinc-500 select-none transition-all duration-500">
+<div id="rigGallery" onclick="handleRigGalleryClick(event)" class="cursor-pointer flex items-center justify-center text-zinc-500 select-none transition-all duration-500" style="aspect-ratio:4/5;">
 RIG FOTO 1
 </div>
 
@@ -225,21 +225,21 @@ RIG FOTO 1
 <div class="rounded-[28px] border border-white/10 bg-white/5 p-6">
 <h3 class="text-2xl font-semibold">Ligero</h3>
 <p class="mt-4 text-zinc-400 leading-relaxed">
-Aproximadamente 150g de peso, ideal para estabilizadores y rigs compactos.
+110g sin bandera y 150g con bandera instalada. Ideal para trabajo handheld y gimbals compactos.<br><span class="text-sm text-zinc-500 italic">*Sin adaptadores ni filtros.</span>
 </p>
 </div>
 
 <div class="rounded-[28px] border border-white/10 bg-white/5 p-6">
-<h3 class="text-2xl font-semibold">Personalizable</h3>
+<h3 class="text-2xl font-semibold">Customizable</h3>
 <p class="mt-4 text-zinc-400 leading-relaxed">
-Compatible con distintos colores, accesorios y grabado frontal.
+Disponible en distintos colores y nombre personalizado frontal para adaptarse a tu rig.
 </p>
 </div>
 
 <div class="rounded-[28px] border border-white/10 bg-white/5 p-6">
-<h3 class="text-2xl font-semibold">Diseño cinematográfico</h3>
+<h3 class="text-2xl font-semibold">Filtros</h3>
 <p class="mt-4 text-zinc-400 leading-relaxed">
-Compatible con filtros 4x4 y 4x5 gracias a su sistema modular.
+Dos slots para filtros 4x5 o 4x4, bayoneta de 114mm e incluye adaptador a 95mm.
 </p>
 </div>
 </div>
@@ -248,6 +248,22 @@ Compatible con filtros 4x4 y 4x5 gracias a su sistema modular.
 <div class="mt-10 rounded-[35px] border border-white/10 overflow-hidden bg-zinc-900">
 <div class="aspect-video flex items-center justify-center text-zinc-500">
 VIDEO UNBOXING
+</div>
+</div>
+
+<!-- PACKAGE CONTENT -->
+<div class="mt-10 rounded-[35px] border border-white/10 bg-white/5 px-6 py-10 text-center">
+<p class="text-zinc-500 uppercase tracking-[0.35em] text-xs mb-5">
+Contenido del paquete
+</p>
+
+<div class="max-w-2xl mx-auto space-y-3 text-lg md:text-xl text-zinc-200 leading-relaxed font-medium">
+<p>1 x Matte Box 114mm</p>
+<p>1 x adaptador a 95mm</p>
+<p>1 x bandera extraíble</p>
+<p>1 x repuesto para tapa de slots</p>
+<p>1 x adaptador a rosca de filtro 77mm</p>
+<p>1 x bolsa de transporte</p>
 </div>
 </div>
 
@@ -311,21 +327,25 @@ Colores disponibles
 
 <div class="flex justify-center mb-6">
 <div class="rounded-full border border-green-500/20 bg-green-500/10 px-6 py-3 text-sm text-green-300 font-medium text-center max-w-fit">
-Por la compra del kit reductores + adaptador el grabado sale gratis.
+Por la compra del kit reductores + adaptador el nombre personalizado sale gratis.
 </div>
 </div>
 
 <div class="grid md:grid-cols-3 gap-4">
 
-<button onclick="toggleExtra('reducers',this)" class="extra-option rounded-[28px] border border-white/10 bg-black p-6 text-center transition-all duration-300 min-h-[140px] flex flex-col justify-center">
+<div class="relative opacity-50 cursor-not-allowed rounded-[28px] border border-white/10 bg-black p-6 text-center min-h-[140px] flex flex-col justify-center select-none">
+<div class="absolute top-3 left-1/2 -translate-x-1/2 text-[11px] uppercase tracking-[0.25em] text-red-300 font-semibold">
+No disponible
+</div>
+
 <h3 class="font-semibold text-[18px] leading-snug max-w-[260px] mx-auto">
 Kit de reductores de filtros de 77mm a 37mm
 </h3>
 
-<p class="mt-4 text-zinc-400 text-[18px] font-semibold">
+<p class="mt-4 text-zinc-500 text-[18px] font-semibold">
 +$20.000
 </p>
-</button>
+</div>
 
 <button onclick="toggleExtra('adapter',this)" class="extra-option rounded-[28px] border border-white/10 bg-black p-6 text-center transition-all duration-300 min-h-[140px] flex flex-col justify-center">
 <h3 class="font-semibold text-[18px] leading-snug max-w-[260px] mx-auto">
@@ -354,7 +374,7 @@ Personalizar con nombre en la bandera
 
 <div class="max-w-md">
 <h3 class="text-[20px] font-bold mb-3">
-Grabado personalizado
+Nombre personalizado
 </h3>
 
 <p class="text-zinc-400 leading-relaxed text-base">
@@ -400,8 +420,11 @@ Hablar directo al WhatsApp para cotizar adaptadores personalizados para tu set d
 Precio final
 </p>
 <h2 id="finalPrice" class="text-5xl font-black mt-2">
-$79.990
+$89.990
 </h2>
+<p class="text-zinc-500 text-sm mt-2">
+Incluye IVA
+</p>
 </div>
 
 <button onclick="openPopup()" class="px-8 py-5 rounded-2xl bg-white text-black font-semibold">
@@ -490,10 +513,10 @@ Método de entrega
 </div>
 </button>
 
-<button onclick="selectShipping('Retiro Metro Ecuador',0,this)" class="shipping-button rounded-2xl border border-white/10 bg-black/50 p-5 text-left transition-all duration-300">
+<button onclick="selectShipping('Retiro Metro Ecuador o Tobalaba',0,this)" class="shipping-button rounded-2xl border border-white/10 bg-black/50 p-5 text-left transition-all duration-300">
 <div class="flex items-center justify-between gap-4">
 <div>
-<div class="font-semibold">Retiro Metro Ecuador</div>
+<div class="font-semibold">Retiro Metro Ecuador o Tobalaba</div>
 <div class="text-zinc-400 text-sm mt-1">Coordinación directa</div>
 </div>
 <div class="text-green-300 font-medium">Gratis</div>
@@ -517,7 +540,7 @@ Método de entrega
 </div>
 
 <div class="flex items-center justify-between gap-4 py-3 border-b border-white/5">
-<span class="text-zinc-500">Grabado</span>
+<span class="text-zinc-500">Nombre personalizado</span>
 <span id="summaryEngraving" class="font-semibold uppercase">No agregado</span>
 </div>
 
@@ -537,8 +560,13 @@ $85.980
 </h3>
 </div>
 
-<div class="text-right text-sm text-zinc-500 max-w-[220px]">
-Fabricación estimada de 4 días hábiles.
+<div class="text-right max-w-[240px] leading-relaxed">
+<p class="uppercase tracking-[0.18em] text-[11px] text-zinc-400 font-semibold mb-1">
+Fabricación estimada
+</p>
+<p class="text-base text-zinc-200 font-medium">
+5 días hábiles
+</p>
 </div>
 </div>
 
@@ -549,7 +577,12 @@ Fabricación estimada de 4 días hábiles.
 <div class="flex items-start gap-4">
 <div class="w-3 h-3 rounded-full bg-yellow-400 mt-1.5 shrink-0"></div>
 <div>
-<h3 class="font-semibold text-sm text-yellow-200 mb-1">Fabricación artesanal</h3>
+<h3 class="font-semibold text-sm text-yellow-200 mb-1">
+Fabricación artesanal por 
+<a href="https://www.instagram.com/gabo3dprint/" target="_blank" class="underline underline-offset-2 hover:text-yellow-100 transition-colors duration-300">
+@gabo3Dprint
+</a>
+</h3>
 <p class="text-xs leading-relaxed text-yellow-100/75">
 Todos los Matte Box son fabricados y ensamblados manualmente. Los tiempos de fabricación pueden variar según demanda, colores seleccionados y personalización.
 </p>
@@ -738,7 +771,7 @@ function selectColor(button){
 }
 
 const selectedExtras={reducers:false,adapter:false,engraving:false}
-const basePrice=79990
+const basePrice=89990
 let shippingPrice=5990
 let shippingMethod='Bluexpress'
 
@@ -768,7 +801,7 @@ if(popupPrice){
 const extras=[]
 if(selectedExtras.reducers)extras.push('Kit reductores de filtros desde 77mm a 37mm')
 if(selectedExtras.adapter)extras.push('Adaptador 4x5 a filtros redondos de 77mm')
-if(selectedExtras.engraving)extras.push('Grabado personalizado')
+if(selectedExtras.engraving)extras.push('Nombre personalizado')
 
 const summaryExtras=document.getElementById('summaryExtras')
 if(summaryExtras){
