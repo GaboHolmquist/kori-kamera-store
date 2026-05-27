@@ -136,7 +136,7 @@ Inicio
 </button>
 
 <button onclick="openMatteboxPage();toggleMenu();window.scrollTo({top:0,behavior:'smooth'})" class="w-full text-left px-5 py-4 border-b border-white/5 hover:bg-white/5 transition-all duration-300">
-MBK-V4
+MKB-V4
 </button>
 
 <a href="https://www.instagram.com/korikamerastore/" target="_blank" class="block w-full text-left px-5 py-4 border-b border-white/5 hover:bg-white/5 transition-all duration-300">
@@ -171,9 +171,9 @@ Contacto
 <div class="p-6 md:p-8">
 <div class="flex items-center justify-between gap-4 flex-wrap">
 <div>
-<h2 class="text-3xl md:text-4xl font-bold">MATTE BOX MBK-V4</h2>
+<h2 class="text-3xl md:text-4xl font-bold">MATTE BOX MKB-V4</h2>
 <p class="mt-3 text-zinc-400 leading-relaxed max-w-xl">
-Matte Box para filtros 4x4 y 4x5 diseñado para filmmakers y rigs cinematográficos modernos.
+Matte Box para filtros 4x4 y 4x5 diseñado para filmmakers y rigs cinematográficos modernos. Para lentes de 114mm, 95mm, 80mm y personalizados.
 </p>
 </div>
 
@@ -198,7 +198,7 @@ Matte Box para filtros 4x4 y 4x5 diseñado para filmmakers y rigs cinematográfi
 <section class="max-w-5xl mx-auto px-5 py-10">
 
 <h1 class="text-5xl md:text-7xl font-black text-center mb-10">
-MATTE BOX MBK-V4
+MATTE BOX MKB-V4
 </h1>
 
 <!-- RIG GALLERY -->
@@ -260,9 +260,9 @@ Contenido del paquete
 <div class="max-w-2xl mx-auto space-y-3 text-lg md:text-xl text-zinc-200 leading-relaxed font-medium">
 <p>1 x Matte Box 114mm</p>
 <p>1 x adaptador a 95mm</p>
+<p>1 x adaptador a 80mm</p>
 <p>1 x bandera extraíble</p>
 <p>1 x repuesto para tapa de slots</p>
-<p>1 x adaptador a rosca de filtro 77mm</p>
 <p>1 x bolsa de transporte</p>
 </div>
 </div>
@@ -331,10 +331,10 @@ Por la compra del kit reductores + adaptador el nombre personalizado sale gratis
 </div>
 </div>
 
-<div class="grid md:grid-cols-3 gap-4">
+<div class="grid md:grid-cols-4 gap-4 items-stretch">
 
-<div class="relative opacity-50 cursor-not-allowed rounded-[28px] border border-white/10 bg-black p-6 text-center min-h-[140px] flex flex-col justify-center select-none">
-<div class="absolute top-3 left-1/2 -translate-x-1/2 text-[11px] uppercase tracking-[0.25em] text-red-300 font-semibold">
+<div class="relative pt-8 opacity-50 cursor-not-allowed rounded-[28px] border border-white/10 bg-black p-6 text-center min-h-[140px] flex flex-col justify-center select-none overflow-hidden">
+<div class="absolute top-3 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.18em] text-red-300 font-semibold whitespace-nowrap">
 No disponible
 </div>
 
@@ -363,7 +363,17 @@ Personalizar con nombre en la bandera
 </h3>
 
 <p class="mt-4 text-zinc-400 text-[18px] font-semibold">
-<span id="engravingPrice">+$10.000</span>
+<span id="engravingPrice">+$8.000</span>
+</p>
+</button>
+
+<button id="customAdapterButton" onclick="toggleCustomAdapter(this)" class="extra-option rounded-[28px] border border-white/10 bg-black p-6 text-center transition-all duration-300 min-h-[140px] flex flex-col justify-center">
+<h3 class="font-semibold text-[18px] leading-snug max-w-[260px] mx-auto">
+Adaptador personalizado
+</h3>
+
+<p class="mt-4 text-zinc-400 text-[18px] font-semibold">
++$8.000
 </p>
 </button>
 
@@ -378,24 +388,70 @@ Nombre personalizado
 </h3>
 
 <p class="text-zinc-400 leading-relaxed text-base">
-Solo letras en mayúscula y negrita. El nombre será impreso en el color seleccionado.
+Agrega el nombre o alias que quieres grabar en la bandera frontal.<br>
+<span class="text-sm text-zinc-500 italic">Máximo 15 caracteres. Todo el texto será en mayúsculas y negrita.</span>
 </p>
 </div>
 
 <input 
 id="engravingInput"
-type="text" 
-maxlength="18" 
-placeholder="EJ: GABOHOLMQUIST"
-class="w-full md:w-[390px] rounded-[22px] border border-white/10 bg-black px-6 py-5 text-center text-[18px] font-black uppercase tracking-tight text-zinc-300 outline-none transition-all duration-300 focus:border-white/20 placeholder:text-zinc-500"
+type="text"
+maxlength="15"
+placeholder="GABOHOLMQUIST"
+class="w-full md:w-[240px] rounded-[22px] border border-white/10 bg-black px-4 py-5 text-center text-[18px] font-black tracking-tight text-zinc-300 outline-none transition-all duration-300 focus:border-white/20 placeholder:text-zinc-500 uppercase"
 />
 
 </div>
 </div>
+
+<div id="customAdapterExpanded" class="hidden mt-5 rounded-[32px] border border-white/10 bg-black px-5 md:px-6 py-6">
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+
+<div class="max-w-md">
+<h3 class="text-[20px] font-bold mb-3">
+Adaptador personalizado
+</h3>
+
+<p class="text-zinc-400 leading-relaxed text-base">
+Mide el diámetro externo de tu lente y agrégalo en mm.<br>
+Ej: 5cm = 50mm.<br><br>
+Cualquier duda puede ser resuelta directamente por WhatsApp.
+</p>
+</div>
+
+<div class="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+
+<div class="relative w-full md:w-[180px]">
+<input 
+id="customAdapterInput"
+type="text"
+maxlength="3"
+placeholder="80"
+class="w-full rounded-[22px] border border-white/10 bg-black px-6 py-5 pr-16 text-center text-[28px] font-black tracking-tight text-zinc-300 outline-none transition-all duration-300 focus:border-white/20 placeholder:text-zinc-500"
+/>
+
+<div class="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-500 font-semibold text-lg pointer-events-none">
+mm
+</div>
+</div>
+
+<input 
+id="customLensInput"
+type="text"
+maxlength="18"
+placeholder="LUMIX"
+class="w-full md:w-[220px] rounded-[22px] border border-white/10 bg-black px-5 py-5 text-center text-[18px] font-black tracking-tight uppercase text-zinc-300 outline-none transition-all duration-300 focus:border-white/20 placeholder:text-zinc-500"
+/>
+
+</div>
+
+</div>
+</div>
+
 </div>
 
 <!-- CUSTOM ADAPTER CTA -->
-<a href="https://wa.me/56950870076?text=Hola%20Kori%20Kamera%20Store,%20quiero%20adaptadores%20personalizados%20para%20mi%20set%20de%20lentes" target="_blank" class="mt-10 flex items-center justify-between gap-5 rounded-[28px] border border-green-900/30 bg-gradient-to-r from-green-950/80 to-green-900/40 px-5 py-5 hover:scale-[1.01] transition-all duration-300 group">
+<a href="https://wa.me/56950870076?text=Hola%20Kori%20Kamera%20Store,%20quiero%20adaptadores%20personalizados%20para%20mi%20set%20de%20lentes" class="mt-10 flex items-center justify-between gap-5 rounded-[28px] border border-green-900/30 bg-gradient-to-r from-green-950/80 to-green-900/40 px-5 py-5 hover:scale-[1.01] transition-all duration-300 group" target="_blank" class="mt-10 flex items-center justify-between gap-5 rounded-[28px] border border-green-900/30 bg-gradient-to-r from-green-950/80 to-green-900/40 px-5 py-5 hover:scale-[1.01] transition-all duration-300 group">
 
 <div>
 <p class="text-xs uppercase tracking-[0.25em] text-green-400/70 mb-2">
@@ -453,7 +509,7 @@ Resumen de compra
 </p>
 
 <h2 class="text-3xl md:text-5xl font-black leading-none">
-MATTE BOX MBK-V4
+MATTE BOX MKB-V4
 </h2>
 </div>
 
@@ -770,7 +826,7 @@ function selectColor(button){
  updateProductGallery()
 }
 
-const selectedExtras={reducers:false,adapter:false,engraving:false}
+const selectedExtras={reducers:false,adapter:false,engraving:false,customAdapter:false}
 const basePrice=89990
 let shippingPrice=5990
 let shippingMethod='Bluexpress'
@@ -779,16 +835,17 @@ function updateFinalPrice(){
  let total=basePrice
  if(selectedExtras.reducers)total+=20000
  if(selectedExtras.adapter)total+=15000
+ if(selectedExtras.customAdapter)total+=8000
 
  const engravingFree=selectedExtras.reducers&&selectedExtras.adapter
 
  if(selectedExtras.engraving&&!engravingFree){
-  total+=10000
+  total+=8000
  }
 
  const engravingPrice=document.getElementById('engravingPrice')
  if(engravingPrice){
-  engravingPrice.innerText=engravingFree?'Gratis':'+$10.000'
+  engravingPrice.innerText=engravingFree?'Gratis':'+$8.000'
  }
 
  document.getElementById('finalPrice').innerText='$'+total.toLocaleString('es-CL')
@@ -802,10 +859,16 @@ const extras=[]
 if(selectedExtras.reducers)extras.push('Kit reductores de filtros desde 77mm a 37mm')
 if(selectedExtras.adapter)extras.push('Adaptador 4x5 a filtros redondos de 77mm')
 if(selectedExtras.engraving)extras.push('Nombre personalizado')
+if(selectedExtras.customAdapter){
+ const customValue=document.getElementById('customAdapterInput')?.value?.trim()||''
+ const customLens=document.getElementById('customLensInput')?.value?.trim()||''
+ const customText=`${customValue ? customValue+'mm' : ''}${customLens ? ' '+customLens : ''}`.trim()
+ extras.push(`Adaptador personalizado${customText ? ' '+customText : ''}`)
+}
 
 const summaryExtras=document.getElementById('summaryExtras')
 if(summaryExtras){
- summaryExtras.innerText=extras.length?extras.join(' + '):'Sin extras'
+ summaryExtras.innerHTML=extras.length?extras.map(extra=>`<div>${extra}</div>`).join(''):'Sin extras'
 }
 
 const summaryColor=document.getElementById('summaryColor')
@@ -822,6 +885,19 @@ if(summaryShipping){
 function toggleExtra(type,button){
  selectedExtras[type]=!selectedExtras[type]
  button.classList.toggle('active-color')
+ updateFinalPrice()
+}
+
+function toggleCustomAdapter(button){
+ selectedExtras.customAdapter=!selectedExtras.customAdapter
+
+ button.classList.toggle('active-color',selectedExtras.customAdapter)
+
+ const expanded=document.getElementById('customAdapterExpanded')
+ if(expanded){
+  expanded.classList.toggle('hidden',!selectedExtras.customAdapter)
+ }
+
  updateFinalPrice()
 }
 
@@ -872,7 +948,7 @@ function sendToWhatsApp(){
  const engraving=document.getElementById('summaryEngraving')?.innerText||'No agregado'
  const extras=document.getElementById('summaryExtras')?.innerText||'Sin extras'
 
- const message=`Hola Kori Kamera Store, quiero comprar un MBK-V4.%0A%0ANombre: ${name}%0ATeléfono: ${phone}%0AColor: ${currentColor.charAt(0)+currentColor.slice(1).toLowerCase()}%0AExtras: ${extras || 'Sin extras'}%0AEntrega: ${shippingMethod}%0ATotal: ${document.getElementById('popupFinalPrice').innerText}`
+ const message=`Hola Kori Kamera Store, quiero comprar un MKB-V4.%0A%0ANombre: ${name}%0ATeléfono: ${phone}%0AColor: ${currentColor.charAt(0)+currentColor.slice(1).toLowerCase()}%0AExtras: ${extras || 'Sin extras'}%0AEntrega: ${shippingMethod}%0ATotal: ${document.getElementById('popupFinalPrice').innerText}`
 
  window.open(`https://wa.me/56950870076?text=${message}`,'_blank')
 }
