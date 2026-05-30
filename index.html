@@ -103,6 +103,18 @@ animation:galleryFade .5s cubic-bezier(.22,.61,.36,1);
 @keyframes galleryFade{
 0%{
 opacity:.0;
+filter:blur(4px);
+}
+
+100%{
+opacity:1;
+filter:blur(0px);
+}
+}
+
+@keyframes galleryFadeRig{
+0%{
+opacity:.0;
 transform:scale(1.015);
 filter:blur(4px);
 }
@@ -112,6 +124,10 @@ opacity:1;
 transform:scale(1);
 filter:blur(0px);
 }
+}
+
+.rig-gallery-transition{
+animation:galleryFadeRig .5s cubic-bezier(.22,.61,.36,1);
 }
 
 #homePage,
@@ -774,13 +790,30 @@ Cancelar
 </div>
 
 <script>
-const rigImages=['RIG FOTO 1','RIG FOTO 2','RIG FOTO 3','RIG FOTO 4','RIG FOTO 5','RIG FOTO 6']
+const rigImages=[
+ '00001.jpeg',
+ '00002.jpeg',
+ '00003.jpeg',
+ '00004.jpeg',
+ '00005.jpeg',
+ '00006.jpeg'
+]
 let currentRigIndex=0
 
 function updateRigGallery(){
  const gallery=document.getElementById('rigGallery')
  if(!gallery)return
- gallery.innerText=rigImages[currentRigIndex]
+
+ gallery.classList.remove('rig-gallery-transition')
+ void gallery.offsetWidth
+ gallery.classList.add('rig-gallery-transition')
+
+ gallery.innerHTML=`
+<img
+src="assets/rig/${rigImages[currentRigIndex]}"
+class="w-full h-full object-cover"
+/>
+`
 
  const dots=document.querySelectorAll('#rigDots div')
  dots.forEach((dot,index)=>{
