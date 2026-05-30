@@ -114,8 +114,8 @@ filter:blur(0px);
 
 @keyframes galleryFadeRig{
 0%{
-opacity:.15;
-filter:blur(3px);
+opacity:.55;
+filter:blur(1.5px);
 }
 
 100%{
@@ -125,7 +125,7 @@ filter:blur(0px);
 }
 
 .rig-gallery-transition{
-animation:galleryFadeRig .42s cubic-bezier(.22,.61,.36,1);
+animation:galleryFadeRig .65s ease;
 }
 
 #rigGallery img,
@@ -245,7 +245,7 @@ Contacto
 <div class="mt-14 max-w-3xl mx-auto">
 <button onclick="openMatteboxPage()" class="w-full text-left rounded-[40px] border border-white/10 bg-zinc-900/80 overflow-hidden backdrop-blur-xl hover:scale-[1.01] transition-all duration-300">
 <div class="aspect-video bg-zinc-800 flex items-center justify-center text-zinc-500">
-<img src="assets/rig/portada.jpeg" class="w-full h-full object-cover" />
+<img src="assets/rig/portada.jpeg" fetchpriority="high" loading="eager" decoding="sync" class="w-full h-full object-cover" />
 </div>
 
 <div class="p-6 md:p-8">
@@ -814,12 +814,18 @@ function updateRigGallery(){
  void gallery.offsetWidth
  gallery.classList.add('rig-gallery-transition')
 
- gallery.innerHTML=`
-<img
-src="assets/rig/${rigImages[currentRigIndex]}"
-class="w-full h-full object-cover"
-/>
-`
+ const nextImage=new Image()
+nextImage.fetchPriority='high'
+nextImage.loading='eager'
+nextImage.decoding='sync'
+nextImage.src=`assets/rig/${rigImages[currentRigIndex]}`
+nextImage.className='w-full h-full object-cover'
+nextImage.decoding='async'
+
+nextImage.onload=()=>{
+ gallery.innerHTML=''
+ gallery.appendChild(nextImage)
+}
 
  const dots=document.querySelectorAll('#rigDots div')
  dots.forEach((dot,index)=>{
@@ -865,7 +871,7 @@ if(rigGallery){
  },{passive:true})
 }
 
-setInterval(nextRigImage,20000)
+setInterval(nextRigImage,10000)
 
 const productImages={
  OBSIDIAN:[
@@ -1299,7 +1305,19 @@ function preloadImages(){
  // Cache persistente para evitar flashes
  window.preloadedImages=window.preloadedImages||[]
 
- // Precarga galería rig
+ // Precarga inmediata portada y primera imagen
+const priorityImages=['portada.jpeg','00001.jpeg']
+
+priorityImages.forEach(image=>{
+ const img=new Image()
+ img.fetchPriority='high'
+ img.loading='eager'
+ img.decoding='sync'
+ img.src=`assets/rig/${image}`
+ window.preloadedImages.push(img)
+})
+
+// Precarga galería rig
  rigImages.forEach(image=>{
   const img=new Image()
   img.decoding='async'
@@ -1325,20 +1343,4 @@ preloadImages()
 
 // Inicializa la primera imagen del rig al cargar la página
 updateRigGallery()
-updateProductGallery()
-updateFinalPrice()
-
-window.addEventListener('click',(event)=>{
- const menu=document.getElementById('dropdownMenu')
- const menuButton=event.target.closest('button[onclick="toggleMenu()"]')
- const insideMenu=event.target.closest('#dropdownMenu')
-
- if(menu && !menu.classList.contains('hidden') && !insideMenu && !menuButton){
-  menu.classList.add('hidden')
- }
-})
-</script>
-
-<!-- Preview refresh trigger -->
-</body>
-</html>
+updateProductGalle
