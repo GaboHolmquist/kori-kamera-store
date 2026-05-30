@@ -239,7 +239,7 @@ Contacto
 <div class="mt-14 max-w-3xl mx-auto">
 <button onclick="openMatteboxPage()" class="w-full text-left rounded-[40px] border border-white/10 bg-zinc-900/80 overflow-hidden backdrop-blur-xl hover:scale-[1.01] transition-all duration-300">
 <div class="aspect-video bg-zinc-800 flex items-center justify-center text-zinc-500">
-<img src="assets/rig/portada.jpeg" class="w-full h-full object-cover" />
+<img src="assets/rig/00001.jpeg" class="w-full h-full object-cover" />
 </div>
 
 <div class="p-6 md:p-8">
@@ -1281,6 +1281,36 @@ if(phoneInput){
   }
  })
 }
+
+// =========================================
+// IMAGE PRELOAD
+// Precarga imágenes para que los cambios
+// entre galerías sean casi instantáneos
+// =========================================
+
+function preloadImages(){
+
+ // Precarga galería rig
+ rigImages.forEach(image=>{
+  const img=new Image()
+  img.src=`assets/rig/${image}`
+ })
+
+ // Precarga todas las galerías de colores
+ Object.keys(productImages).forEach(color=>{
+  productImages[color].forEach(image=>{
+   const img=new Image()
+   img.src=`assets/mattebox/${color.toLowerCase()}/${image}`
+  })
+ })
+}
+
+preloadImages()
+
+// Inicializa la primera imagen del rig al cargar la página
+updateRigGallery()
+updateProductGallery()
+updateFinalPrice()
 
 window.addEventListener('click',(event)=>{
  const menu=document.getElementById('dropdownMenu')
