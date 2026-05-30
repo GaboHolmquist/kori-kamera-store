@@ -97,41 +97,43 @@ opacity:0;
 /* ========================================= */
 
 .gallery-transition{
-animation:galleryFade .5s cubic-bezier(.22,.61,.36,1);
+animation:galleryFade .55s cubic-bezier(.16,1,.3,1);
 }
 
 @keyframes galleryFade{
 0%{
-opacity:.0;
-filter:blur(4px);
+opacity:0;
+filter:blur(6px);
+transform:scale(1.015);
 }
-
 100%{
 opacity:1;
 filter:blur(0px);
+transform:scale(1);
 }
 }
 
 @keyframes galleryFadeRig{
 0%{
-opacity:.55;
-filter:blur(1.5px);
+opacity:0;
+filter:blur(5px);
+transform:scale(1.012);
 }
-
 100%{
 opacity:1;
 filter:blur(0px);
+transform:scale(1);
 }
 }
 
 .rig-gallery-transition{
-animation:galleryFadeRig .65s ease;
+animation:galleryFadeRig .6s cubic-bezier(.16,1,.3,1);
 }
 
 #rigGallery img,
 #productGallery img{
 background:#000;
-will-change:opacity,filter;
+will-change:opacity,filter,transform;
 backface-visibility:hidden;
 transform:translateZ(0);
 }
@@ -245,7 +247,7 @@ Contacto
 <div class="mt-14 max-w-3xl mx-auto">
 <button onclick="openMatteboxPage()" class="w-full text-left rounded-[40px] border border-white/10 bg-zinc-900/80 overflow-hidden backdrop-blur-xl hover:scale-[1.01] transition-all duration-300">
 <div class="aspect-video bg-zinc-800 flex items-center justify-center text-zinc-500">
-<img src="assets/rig/portada.jpeg" fetchpriority="high" loading="eager" decoding="sync" class="w-full h-full object-cover" />
+<img src="assets/rig/portada.jpeg" class="w-full h-full object-cover" />
 </div>
 
 <div class="p-6 md:p-8">
@@ -326,8 +328,16 @@ Dos slots para filtros 4x5 o 4x4, bayoneta de 114mm e incluye adaptador a 95mm.
 
 <!-- VIDEO -->
 <div class="mt-10 rounded-[35px] border border-white/10 overflow-hidden bg-zinc-900">
-<div class="aspect-video flex items-center justify-center text-zinc-500">
-VIDEO UNBOXING
+<div class="aspect-video">
+<video
+src="assets/video/videoM.mp4"
+autoplay
+loop
+muted
+playsinline
+preload="auto"
+class="w-full h-full object-cover"
+></video>
 </div>
 </div>
 
@@ -814,18 +824,12 @@ function updateRigGallery(){
  void gallery.offsetWidth
  gallery.classList.add('rig-gallery-transition')
 
- const nextImage=new Image()
-nextImage.fetchPriority='high'
-nextImage.loading='eager'
-nextImage.decoding='sync'
-nextImage.src=`assets/rig/${rigImages[currentRigIndex]}`
-nextImage.className='w-full h-full object-cover'
-nextImage.decoding='async'
-
-nextImage.onload=()=>{
- gallery.innerHTML=''
- gallery.appendChild(nextImage)
-}
+ gallery.innerHTML=`
+<img
+src="assets/rig/${rigImages[currentRigIndex]}"
+class="w-full h-full object-cover"
+/>
+`
 
  const dots=document.querySelectorAll('#rigDots div')
  dots.forEach((dot,index)=>{
@@ -871,7 +875,7 @@ if(rigGallery){
  },{passive:true})
 }
 
-setInterval(nextRigImage,10000)
+setInterval(nextRigImage,20000)
 
 const productImages={
  OBSIDIAN:[
@@ -1301,46 +1305,59 @@ if(phoneInput){
 // =========================================
 
 function preloadImages(){
-
- // Cache persistente para evitar flashes
  window.preloadedImages=window.preloadedImages||[]
 
- // Precarga inmediata portada y primera imagen
-const priorityImages=['portada.jpeg','00001.jpeg']
-
-priorityImages.forEach(image=>{
- const img=new Image()
- img.fetchPriority='high'
- img.loading='eager'
- img.decoding='sync'
- img.src=`assets/rig/${image}`
- window.preloadedImages.push(img)
-})
-
-// Precarga galería rig
- rigImages.forEach(image=>{
+ // Función helper para crear imagen precargada
+ function loadImg(src,priority){
   const img=new Image()
-  img.decoding='async'
-  img.loading='eager'
-  img.fetchPriority='high'
-  img.src=`assets/rig/${image}`
+  img.decoding=priority?'sync':'async'
+  img.fetchPriority=priority?'high':'low'
+  img.src=src
   window.preloadedImages.push(img)
- })
+  return img
+ }
 
- // Precarga todas las galerías de colores
- Object.keys(productImages).forEach(color=>{
-  productImages[color].forEach(image=>{
-   const img=new Image()
-   img.decoding='async'
-   img.loading='eager'
-   img.src=`assets/mattebox/${color.toLowerCase()}/${image}`
-   window.preloadedImages.push(img)
+ // Primeras imágenes de cada galería con máxima prioridad
+ loadImg('assets/rig/'+rigImages[0],true)
+ loadImg('assets/mattebox/obsidian/'+productImages['OBSIDIAN'][0],true)
+
+ // El resto se carga en background sin bloquear
+ requestIdleCallback(()=>{
+  // Rig: resto de imágenes
+  rigImages.slice(1).forEach(img=>loadImg('assets/rig/'+img,false))
+
+  // Producto activo: resto de imágenes del color actual
+  productImages[currentColor].slice(1).forEach(img=>{
+   loadImg('assets/mattebox/'+currentColor.toLowerCase()+'/'+img,false)
   })
- })
+
+  // Demás colores: en segundo plano
+  Object.keys(productImages).filter(c=>c!==currentColor).forEach(color=>{
+   productImages[color].forEach(img=>{
+    loadImg('assets/mattebox/'+color.toLowerCase()+'/'+img,false)
+   })
+  })
+ },{timeout:2000})
 }
 
 preloadImages()
 
 // Inicializa la primera imagen del rig al cargar la página
 updateRigGallery()
-updateProductGalle
+updateProductGallery()
+updateFinalPrice()
+
+window.addEventListener('click',(event)=>{
+ const menu=document.getElementById('dropdownMenu')
+ const menuButton=event.target.closest('button[onclick="toggleMenu()"]')
+ const insideMenu=event.target.closest('#dropdownMenu')
+
+ if(menu && !menu.classList.contains('hidden') && !insideMenu && !menuButton){
+  menu.classList.add('hidden')
+ }
+})
+</script>
+
+<!-- Preview refresh trigger -->
+</body>
+</html>
