@@ -93,49 +93,33 @@ opacity:0;
 .gallery-arrow.right{right:22px}
 
 /* ========================================= */
-/* GALLERY FADE TRANSITION */
+/* GALLERY CROSSFADE — dos capas apiladas    */
 /* ========================================= */
 
-.gallery-transition{
-animation:galleryFade .55s cubic-bezier(.16,1,.3,1);
+.gallery-wrap{
+position:relative;
+width:100%;
+height:100%;
+background:#111;
 }
 
-@keyframes galleryFade{
-0%{
-opacity:0;
-filter:blur(6px);
-transform:scale(1.015);
-}
-100%{
-opacity:1;
-filter:blur(0px);
-transform:scale(1);
-}
-}
-
-@keyframes galleryFadeRig{
-0%{
-opacity:0;
-filter:blur(5px);
-transform:scale(1.012);
-}
-100%{
-opacity:1;
-filter:blur(0px);
-transform:scale(1);
-}
-}
-
-.rig-gallery-transition{
-animation:galleryFadeRig .6s cubic-bezier(.16,1,.3,1);
-}
-
-#rigGallery img,
-#productGallery img{
-background:#000;
-will-change:opacity,filter,transform;
+.gallery-layer{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+transition:opacity .55s cubic-bezier(.4,0,.2,1);
+will-change:opacity;
 backface-visibility:hidden;
+}
+
+.gallery-layer img{
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
 transform:translateZ(0);
+backface-visibility:hidden;
 }
 
 #homePage,
@@ -288,8 +272,11 @@ MATTE BOX MKB-V4
 <div class="gallery-arrow left">‹</div>
 <div class="gallery-arrow right">›</div>
 
-<div id="rigGallery" onclick="handleRigGalleryClick(event)" class="cursor-pointer flex items-center justify-center text-zinc-500 select-none transition-all duration-500" style="aspect-ratio:4/5;">
-RIG FOTO 1
+<div id="rigGallery" onclick="handleRigGalleryClick(event)" class="cursor-pointer select-none" style="aspect-ratio:4/5;position:relative;overflow:hidden;">
+<div class="gallery-wrap">
+<div id="rigLayerA" class="gallery-layer" style="opacity:1;z-index:2;"><img src="assets/rig/00001.jpeg" /></div>
+<div id="rigLayerB" class="gallery-layer" style="opacity:0;z-index:1;"><img src="" /></div>
+</div>
 </div>
 
 <div id="rigDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
@@ -362,8 +349,11 @@ Contenido del paquete
 <div class="gallery-arrow left">‹</div>
 <div class="gallery-arrow right">›</div>
 
-<div id="productGallery" onclick="handleProductGalleryClick(event)" class="cursor-pointer flex items-center justify-center text-zinc-500 transition-all duration-500" style="aspect-ratio:4/3;">
-<img src="assets/mattebox/obsidian/00001.jpeg" class="w-full h-full object-cover" />
+<div id="productGallery" onclick="handleProductGalleryClick(event)" class="cursor-pointer" style="aspect-ratio:4/3;position:relative;overflow:hidden;">
+<div class="gallery-wrap">
+<div id="prodLayerA" class="gallery-layer" style="opacity:1;z-index:2;"><img src="assets/mattebox/obsidian/00001.jpeg" /></div>
+<div id="prodLayerB" class="gallery-layer" style="opacity:0;z-index:1;"><img src="" /></div>
+</div>
 </div>
 
 <div id="productDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
@@ -806,6 +796,34 @@ Cancelar
 </div>
 
 <script>
+// =========================================
+// CROSSFADE GALLERY — sistema de dos capas
+// =========================================
+
+let rigActiveLayer='A'
+let prodActiveLayer='A'
+
+function crossfade(layerAId,layerBId,activeRef,newSrc,setActive){
+ const layerA=document.getElementById(layerAId)
+ const layerB=document.getElementById(layerBId)
+ if(!layerA||!layerB)return
+
+ const active=activeRef==='A'?layerA:layerB
+ const inactive=activeRef==='A'?layerB:layerA
+
+ // Precarga la nueva imagen antes de mostrarla
+ const img=new Image()
+ img.onload=()=>{
+  inactive.querySelector('img').src=newSrc
+  inactive.style.zIndex='3'
+  active.style.zIndex='2'
+  inactive.style.opacity='1'
+  active.style.opacity='0'
+  setActive(activeRef==='A'?'B':'A')
+ }
+ img.src=newSrc
+}
+
 const rigImages=[
  '00001.jpeg',
  '00002.jpeg',
@@ -817,24 +835,12 @@ const rigImages=[
 let currentRigIndex=0
 
 function updateRigGallery(){
- const gallery=document.getElementById('rigGallery')
- if(!gallery)return
-
- gallery.classList.remove('rig-gallery-transition')
- void gallery.offsetWidth
- gallery.classList.add('rig-gallery-transition')
-
- gallery.innerHTML=`
-<img
-src="assets/rig/${rigImages[currentRigIndex]}"
-class="w-full h-full object-cover"
-/>
-`
-
+ const src='assets/rig/'+rigImages[currentRigIndex]
+ crossfade('rigLayerA','rigLayerB',rigActiveLayer,src,(v)=>{rigActiveLayer=v})
  const dots=document.querySelectorAll('#rigDots div')
- dots.forEach((dot,index)=>{
-  dot.className='w-2 h-2 rounded-full '+(index===currentRigIndex?'bg-white/90':'bg-white/30')
-  })
+ dots.forEach((dot,i)=>{
+  dot.className='w-2 h-2 rounded-full '+(i===currentRigIndex?'bg-white/90':'bg-white/30')
+ })
 }
 
 function nextRigImage(){
@@ -854,92 +860,34 @@ function handleRigGalleryClick(event){
 }
 
 let rigTouchStartX=0
-
 const rigGallery=document.getElementById('rigGallery')
 if(rigGallery){
- rigGallery.addEventListener('touchstart',(e)=>{
-  rigTouchStartX=e.changedTouches[0].screenX
- },{passive:true})
-
+ rigGallery.addEventListener('touchstart',(e)=>{rigTouchStartX=e.changedTouches[0].screenX},{passive:true})
  rigGallery.addEventListener('touchend',(e)=>{
-  const touchEndX=e.changedTouches[0].screenX
-  const diff=touchEndX-rigTouchStartX
-
-  if(Math.abs(diff)>40){
-   if(diff>0){
-    prevRigImage()
-   }else{
-    nextRigImage()
-   }
-  }
+  const diff=e.changedTouches[0].screenX-rigTouchStartX
+  if(Math.abs(diff)>40){diff>0?prevRigImage():nextRigImage()}
  },{passive:true})
 }
 
 setInterval(nextRigImage,20000)
 
 const productImages={
- OBSIDIAN:[
-  '00001.jpeg',
-  '00002.jpeg',
-  '00003.jpeg',
-  '00004.jpeg',
-  '00005.jpeg'
- ],
-
- SAND:[
-  '00001.jpeg',
-  '00002.jpeg',
-  '00003.jpeg',
-  '00004.jpeg',
-  '00005.jpeg'
- ],
-
- OLIVE:[
-  '00001.jpeg',
-  '00002.jpeg',
-  '00003.jpeg',
-  '00004.jpeg',
-  '00005.jpeg'
- ],
-
- LAVA:[
-  '00001.jpeg',
-  '00002.jpeg',
-  '00003.jpeg',
-  '00004.jpeg',
-  '00005.jpeg'
- ],
-
- ARCTIC:[
-  '00001.jpeg',
-  '00002.jpeg',
-  '00003.jpeg',
-  '00004.jpeg',
-  '00005.jpeg'
- ]
+ OBSIDIAN:['00001.jpeg','00002.jpeg','00003.jpeg','00004.jpeg','00005.jpeg'],
+ SAND:['00001.jpeg','00002.jpeg','00003.jpeg','00004.jpeg','00005.jpeg'],
+ OLIVE:['00001.jpeg','00002.jpeg','00003.jpeg','00004.jpeg','00005.jpeg'],
+ LAVA:['00001.jpeg','00002.jpeg','00003.jpeg','00004.jpeg','00005.jpeg'],
+ ARCTIC:['00001.jpeg','00002.jpeg','00003.jpeg','00004.jpeg','00005.jpeg']
 }
 
 let currentColor='OBSIDIAN'
 let currentProductIndex=0
 
 function updateProductGallery(){
- const gallery=document.getElementById('productGallery')
- if(!gallery)return
- 
- gallery.classList.remove('gallery-transition')
-void gallery.offsetWidth
-gallery.classList.add('gallery-transition')
-
-gallery.innerHTML=`
- <img 
- src="assets/mattebox/${currentColor.toLowerCase()}/${productImages[currentColor][currentProductIndex]}"
- class="w-full h-full object-cover"
- />
- `
-
+ const src='assets/mattebox/'+currentColor.toLowerCase()+'/'+productImages[currentColor][currentProductIndex]
+ crossfade('prodLayerA','prodLayerB',prodActiveLayer,src,(v)=>{prodActiveLayer=v})
  const dots=document.querySelectorAll('#productDots div')
- dots.forEach((dot,index)=>{
-  dot.className='w-2 h-2 rounded-full '+(index===currentProductIndex?'bg-white/90':'bg-white/30')
+ dots.forEach((dot,i)=>{
+  dot.className='w-2 h-2 rounded-full '+(i===currentProductIndex?'bg-white/90':'bg-white/30')
  })
 }
 
@@ -960,33 +908,20 @@ function handleProductGalleryClick(event){
 }
 
 let productTouchStartX=0
-
 const productGallery=document.getElementById('productGallery')
 if(productGallery){
- productGallery.addEventListener('touchstart',(e)=>{
-  productTouchStartX=e.changedTouches[0].screenX
- },{passive:true})
-
+ productGallery.addEventListener('touchstart',(e)=>{productTouchStartX=e.changedTouches[0].screenX},{passive:true})
  productGallery.addEventListener('touchend',(e)=>{
-  const touchEndX=e.changedTouches[0].screenX
-  const diff=touchEndX-productTouchStartX
-
-  if(Math.abs(diff)>40){
-   if(diff>0){
-    prevProductImage()
-   }else{
-    nextProductImage()
-   }
-  }
+  const diff=e.changedTouches[0].screenX-productTouchStartX
+  if(Math.abs(diff)>40){diff>0?prevProductImage():nextProductImage()}
  },{passive:true})
 }
 
 function selectColor(button){
  document.querySelectorAll('.color-button').forEach(btn=>btn.classList.remove('active-color'))
  button.classList.add('active-color')
-
  currentColor=button.querySelector('div').innerText.trim().toUpperCase()
-
+ currentProductIndex=0
  updateProductGallery()
 }
 
@@ -1305,39 +1240,28 @@ if(phoneInput){
 // =========================================
 
 function preloadImages(){
- window.preloadedImages=window.preloadedImages||[]
+ window.preloadedImages=window.preloadedImages||{}
 
- // Función helper para crear imagen precargada
- function loadImg(src,priority){
+ function cache(src){
+  if(window.preloadedImages[src])return
   const img=new Image()
-  img.decoding=priority?'sync':'async'
-  img.fetchPriority=priority?'high':'low'
   img.src=src
-  window.preloadedImages.push(img)
-  return img
+  window.preloadedImages[src]=img
  }
 
- // Primeras imágenes de cada galería con máxima prioridad
- loadImg('assets/rig/'+rigImages[0],true)
- loadImg('assets/mattebox/obsidian/'+productImages['OBSIDIAN'][0],true)
+ // Primeras imágenes de ambas galerías — prioritarias
+ cache('assets/rig/'+rigImages[0])
+ cache('assets/rig/'+rigImages[1])
+ cache('assets/mattebox/obsidian/'+productImages['OBSIDIAN'][0])
+ cache('assets/mattebox/obsidian/'+productImages['OBSIDIAN'][1])
 
- // El resto se carga en background sin bloquear
+ // Resto en idle
  requestIdleCallback(()=>{
-  // Rig: resto de imágenes
-  rigImages.slice(1).forEach(img=>loadImg('assets/rig/'+img,false))
-
-  // Producto activo: resto de imágenes del color actual
-  productImages[currentColor].slice(1).forEach(img=>{
-   loadImg('assets/mattebox/'+currentColor.toLowerCase()+'/'+img,false)
+  rigImages.forEach(f=>cache('assets/rig/'+f))
+  Object.keys(productImages).forEach(color=>{
+   productImages[color].forEach(f=>cache('assets/mattebox/'+color.toLowerCase()+'/'+f))
   })
-
-  // Demás colores: en segundo plano
-  Object.keys(productImages).filter(c=>c!==currentColor).forEach(color=>{
-   productImages[color].forEach(img=>{
-    loadImg('assets/mattebox/'+color.toLowerCase()+'/'+img,false)
-   })
-  })
- },{timeout:2000})
+ },{timeout:3000})
 }
 
 preloadImages()
