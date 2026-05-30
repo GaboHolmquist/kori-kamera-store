@@ -114,20 +114,26 @@ filter:blur(0px);
 
 @keyframes galleryFadeRig{
 0%{
-opacity:.0;
-transform:scale(1.015);
-filter:blur(4px);
+opacity:.15;
+filter:blur(3px);
 }
 
 100%{
 opacity:1;
-transform:scale(1);
 filter:blur(0px);
 }
 }
 
 .rig-gallery-transition{
-animation:galleryFadeRig .5s cubic-bezier(.22,.61,.36,1);
+animation:galleryFadeRig .42s cubic-bezier(.22,.61,.36,1);
+}
+
+#rigGallery img,
+#productGallery img{
+background:#000;
+will-change:opacity,filter;
+backface-visibility:hidden;
+transform:translateZ(0);
 }
 
 #homePage,
@@ -1290,17 +1296,27 @@ if(phoneInput){
 
 function preloadImages(){
 
+ // Cache persistente para evitar flashes
+ window.preloadedImages=window.preloadedImages||[]
+
  // Precarga galería rig
  rigImages.forEach(image=>{
   const img=new Image()
+  img.decoding='async'
+  img.loading='eager'
+  img.fetchPriority='high'
   img.src=`assets/rig/${image}`
+  window.preloadedImages.push(img)
  })
 
  // Precarga todas las galerías de colores
  Object.keys(productImages).forEach(color=>{
   productImages[color].forEach(image=>{
    const img=new Image()
+   img.decoding='async'
+   img.loading='eager'
    img.src=`assets/mattebox/${color.toLowerCase()}/${image}`
+   window.preloadedImages.push(img)
   })
  })
 }
