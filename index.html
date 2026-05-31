@@ -8,6 +8,29 @@
 <style>
 .hidden{display:none}
 body{background:#000;color:#fff;font-family:sans-serif}
+
+/* Bloquea click derecho visual y drag en imágenes y video */
+img, video{
+ -webkit-user-drag:none;
+ user-drag:none;
+ -webkit-user-select:none;
+ user-select:none;
+ pointer-events:none;
+}
+
+/* Las galerías necesitan pointer-events para el click de navegación */
+#rigGallery, #productGallery{
+ pointer-events:auto;
+}
+
+/* Capa invisible encima de cada galería para bloquear click derecho en la imagen */
+.gallery-wrap::after{
+ content:'';
+ position:absolute;
+ inset:0;
+ z-index:10;
+ pointer-events:auto;
+}
 .active-color{
 background:linear-gradient(90deg,hsla(215,99%,42%,0.34),hsla(275,90%,36%,0.34))!important;
 color:#fff!important;
@@ -205,6 +228,10 @@ Inicio
 MKB-V4
 </button>
 
+<button onclick="openTp1Page();toggleMenu()" class="w-full text-left px-5 py-4 border-b border-white/5 hover:bg-white/5 transition-all duration-300">
+FOOT RIG TP1 <span class="text-[10px] uppercase tracking-widest text-red-400 ml-2">Próx.</span>
+</button>
+
 <a href="https://www.instagram.com/korikamerastore/" target="_blank" class="block w-full text-left px-5 py-4 border-b border-white/5 hover:bg-white/5 transition-all duration-300">
 Instagram
 </a>
@@ -228,12 +255,11 @@ Contacto
 <p class="mt-5 text-zinc-500 uppercase tracking-[0.35em] text-sm md:text-base">PRODUCTOS</p>
 </div>
 
-<div class="mt-14 max-w-3xl mx-auto">
+<div class="mt-14 max-w-3xl mx-auto flex flex-col gap-5">
 <button onclick="openMatteboxPage()" class="w-full text-left rounded-[40px] border border-white/10 bg-zinc-900/80 overflow-hidden backdrop-blur-xl hover:scale-[1.01] transition-all duration-300">
 <div class="aspect-video bg-zinc-800 flex items-center justify-center text-zinc-500">
 <img src="assets/rig/portada.jpeg" class="w-full h-full object-cover" />
 </div>
-
 <div class="p-6 md:p-8">
 <div class="flex items-center justify-between gap-4 flex-wrap">
 <div>
@@ -242,7 +268,6 @@ Contacto
 Matte Box para filtros 4x4 y 4x5 diseñado para filmmakers y rigs cinematográficos modernos. Para lentes de 114mm, 95mm, 80mm y personalizados.
 </p>
 </div>
-
 <div class="flex items-center gap-3 rounded-full bg-green-950/60 border border-green-900/40 px-4 py-2">
 <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
 <span class="text-green-300 text-sm font-medium">Disponible</span>
@@ -250,6 +275,27 @@ Matte Box para filtros 4x4 y 4x5 diseñado para filmmakers y rigs cinematográfi
 </div>
 </div>
 </button>
+
+<!-- FOOT RIG TP1 — Próximamente -->
+<div class="relative w-full text-left rounded-[40px] border border-white/10 bg-zinc-900/80 overflow-hidden select-none cursor-not-allowed">
+<div class="aspect-video bg-zinc-800 flex items-center justify-center text-zinc-600 text-sm tracking-widest uppercase">
+<img src="assets/TP1/tp1 rig/portadaTP.jpeg" class="w-full h-full object-cover" onerror="this.style.display='none'" />
+</div>
+<div class="p-6 md:p-8">
+<div class="flex items-center justify-between gap-4 flex-wrap">
+<div>
+<h2 class="text-3xl md:text-4xl font-bold">FOOT RIG TP1</h2>
+<p class="mt-3 text-zinc-400 leading-relaxed max-w-xl">
+Patitas para Rods de 15mm, estas vendrán en 3 medidas para asegurar que tu rig se mantenga estable en cualquier superficie plana.
+</p>
+</div>
+<div class="flex items-center gap-3 rounded-full bg-red-950/60 border border-red-900/40 px-4 py-2">
+<div class="w-3 h-3 rounded-full bg-red-500"></div>
+<span class="text-red-300 text-sm font-medium">Próximamente</span>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 <a href="https://www.instagram.com/korikamerastore/" target="_blank" class="mt-10 mx-auto w-fit flex items-center gap-3 rounded-full border border-white/10 bg-gradient-to-r from-[hsl(215,99%,34%)]/70 to-purple-950/70 px-6 py-3 hover:scale-[1.02] transition-all duration-300 flex">
@@ -574,6 +620,90 @@ Comprar
 <div class="w-3 h-3 rounded-full bg-[hsl(215,99%,60%)]"></div>
 <span>Síguenos en Instagram</span>
 </a>
+
+</section>
+</div>
+
+<!-- TP1 PRODUCT PAGE -->
+<div id="tp1Page" class="hidden page-hidden">
+<section class="max-w-5xl mx-auto px-5 py-10">
+
+<h1 class="text-5xl md:text-7xl font-black text-center mb-4">FOOT RIG TP1</h1>
+<p class="text-center text-zinc-500 mb-10 uppercase tracking-[0.3em] text-xs">Próximamente</p>
+
+<!-- RIG GALLERY TP1 -->
+<div class="relative rounded-[35px] border border-white/10 overflow-hidden bg-zinc-900">
+<div class="gallery-arrow left">‹</div>
+<div class="gallery-arrow right">›</div>
+<div id="tp1RigGallery" onclick="handleTp1RigGalleryClick(event)" class="cursor-pointer select-none" style="aspect-ratio:4/5;position:relative;overflow:hidden;">
+<div class="gallery-wrap">
+<div id="tp1RigLayerA" class="gallery-layer" style="opacity:1;z-index:2;"><img src="assets/TP1/tp1 rig/00001.jpeg" /></div>
+<div id="tp1RigLayerB" class="gallery-layer" style="opacity:0;z-index:1;"><img src="" /></div>
+</div>
+</div>
+<div id="tp1RigDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+<div class="w-2 h-2 rounded-full bg-white/90"></div>
+<div class="w-2 h-2 rounded-full bg-white/30"></div>
+<div class="w-2 h-2 rounded-full bg-white/30"></div>
+<div class="w-2 h-2 rounded-full bg-white/30"></div>
+<div class="w-2 h-2 rounded-full bg-white/30"></div>
+<div class="w-2 h-2 rounded-full bg-white/30"></div>
+</div>
+</div>
+
+<!-- DETAILS -->
+<div class="grid md:grid-cols-3 gap-4 mt-8">
+<div class="rounded-[28px] border border-white/10 bg-white/5 p-6">
+<h3 class="text-2xl font-semibold">Estabilidad</h3>
+<p class="mt-4 text-zinc-400 leading-relaxed">Diseñadas para mantener tu rig firme en cualquier superficie plana, sin importar el peso del equipo.</p>
+</div>
+<div class="rounded-[28px] border border-white/10 bg-white/5 p-6">
+<h3 class="text-2xl font-semibold">3 Medidas</h3>
+<p class="mt-4 text-zinc-400 leading-relaxed">Disponibles en 3 tamaños distintos para adaptarse a diferentes configuraciones de rig.</p>
+</div>
+<div class="rounded-[28px] border border-white/10 bg-white/5 p-6">
+<h3 class="text-2xl font-semibold">Rods 15mm</h3>
+<p class="mt-4 text-zinc-400 leading-relaxed">Compatible con el estándar de Rods de 15mm, el más usado en rigs cinematográficos modernos.</p>
+</div>
+</div>
+
+<!-- VIDEO TP1 -->
+<div class="mt-10 rounded-[35px] border border-white/10 overflow-hidden bg-zinc-900">
+<div class="aspect-video">
+<video src="assets/TP1/tp1 video/videoTP1.mp4" autoplay loop muted playsinline preload="auto" class="w-full h-full object-cover"></video>
+</div>
+</div>
+
+<!-- PRODUCT GALLERY TP1 -->
+<div class="mt-10 relative rounded-[35px] border border-white/10 overflow-hidden bg-zinc-900">
+<div class="gallery-arrow left">‹</div>
+<div class="gallery-arrow right">›</div>
+<div id="tp1ProductGallery" onclick="handleTp1ProductGalleryClick(event)" class="cursor-pointer" style="aspect-ratio:4/3;position:relative;overflow:hidden;">
+<div class="gallery-wrap">
+<div id="tp1ProdLayerA" class="gallery-layer" style="opacity:1;z-index:2;"><img src="assets/TP1/tp1 colores/00001.jpeg" /></div>
+<div id="tp1ProdLayerB" class="gallery-layer" style="opacity:0;z-index:1;"><img src="" /></div>
+</div>
+</div>
+<div id="tp1ProductDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+<div class="w-2 h-2 rounded-full bg-white/90"></div>
+<div class="w-2 h-2 rounded-full bg-white/30"></div>
+<div class="w-2 h-2 rounded-full bg-white/30"></div>
+</div>
+</div>
+
+<!-- BLOQUEADO -->
+<div class="mt-10 rounded-[35px] border border-red-900/30 bg-red-950/20 px-8 py-16 text-center">
+<div class="flex items-center justify-center gap-3 mb-4">
+<div class="w-3 h-3 rounded-full bg-red-500"></div>
+<span class="text-red-300 uppercase tracking-[0.3em] text-xs font-semibold">Próximamente</span>
+</div>
+<h2 class="text-3xl font-black text-zinc-300 mb-3">Contenido en preparación</h2>
+<p class="text-zinc-500 max-w-sm mx-auto leading-relaxed">Este producto aún no está disponible. Síguenos en Instagram para enterarte cuando salga.</p>
+<a href="https://www.instagram.com/korikamerastore/" target="_blank" class="mt-8 inline-flex items-center gap-3 rounded-full border border-white/10 bg-gradient-to-r from-[hsl(215,99%,34%)]/70 to-purple-950/70 px-6 py-3 hover:scale-[1.02] transition-all duration-300">
+<div class="w-3 h-3 rounded-full bg-[hsl(215,99%,60%)]"></div>
+<span class="text-sm text-zinc-200 font-medium">Síguenos en Instagram</span>
+</a>
+</div>
 
 </section>
 </div>
@@ -1213,32 +1343,26 @@ function goHome(){
  const overlay=document.getElementById('transitionOverlay')
  const home=document.getElementById('homePage')
  const product=document.getElementById('productPage')
- 
- if(overlay){
-  overlay.classList.add('active')
- }
+ const tp1=document.getElementById('tp1Page')
 
- product.classList.remove('page-visible')
- product.classList.add('page-hidden')
+ if(overlay) overlay.classList.add('active')
+
+ ;[product,tp1].forEach(el=>{
+  if(el){el.classList.remove('page-visible');el.classList.add('page-hidden')}
+ })
 
  setTimeout(()=>{
-  product.classList.add('hidden')
-
+  if(product) product.classList.add('hidden')
+  if(tp1) tp1.classList.add('hidden')
   home.classList.remove('hidden')
-
   requestAnimationFrame(()=>{
    home.classList.remove('page-hidden')
    home.classList.add('page-visible')
   })
-
   window.scrollTo({top:0,behavior:'smooth'})
  },170)
 
- setTimeout(()=>{
-  if(overlay){
-   overlay.classList.remove('active')
-  }
- },560)
+ setTimeout(()=>{if(overlay) overlay.classList.remove('active')},560)
 }
 
 function toggleMenu(){
@@ -1301,6 +1425,81 @@ function preloadImages(){
 
 preloadImages()
 
+// =========================================
+// TP1 GALLERIES
+// =========================================
+
+const tp1RigImages=['00001.jpeg','00002.jpeg','00003.jpeg','00004.jpeg','00005.jpeg','00006.jpeg']
+let currentTp1RigIndex=0
+let tp1RigActiveLayer='A'
+
+function updateTp1RigGallery(){
+ const src='assets/TP1/tp1 rig/'+tp1RigImages[currentTp1RigIndex]
+ crossfade('tp1RigLayerA','tp1RigLayerB',tp1RigActiveLayer,src,(v)=>{tp1RigActiveLayer=v})
+ const dots=document.querySelectorAll('#tp1RigDots div')
+ dots.forEach((dot,i)=>{dot.className='w-2 h-2 rounded-full '+(i===currentTp1RigIndex?'bg-white/90':'bg-white/30')})
+}
+
+function nextTp1RigImage(){currentTp1RigIndex=(currentTp1RigIndex+1)%tp1RigImages.length;updateTp1RigGallery()}
+function prevTp1RigImage(){currentTp1RigIndex=(currentTp1RigIndex-1+tp1RigImages.length)%tp1RigImages.length;updateTp1RigGallery()}
+function handleTp1RigGalleryClick(event){
+ const rect=event.currentTarget.getBoundingClientRect()
+ event.clientX-rect.left<rect.width/2?prevTp1RigImage():nextTp1RigImage()
+}
+
+let tp1RigTouchX=0
+const tp1RigEl=document.getElementById('tp1RigGallery')
+if(tp1RigEl){
+ tp1RigEl.addEventListener('touchstart',(e)=>{tp1RigTouchX=e.changedTouches[0].screenX},{passive:true})
+ tp1RigEl.addEventListener('touchend',(e)=>{
+  const diff=e.changedTouches[0].screenX-tp1RigTouchX
+  if(Math.abs(diff)>40){diff>0?prevTp1RigImage():nextTp1RigImage()}
+ },{passive:true})
+}
+
+const tp1ProductImages=['00001.jpeg','00002.jpeg','00003.jpeg']
+let currentTp1ProductIndex=0
+let tp1ProdActiveLayer='A'
+
+function updateTp1ProductGallery(){
+ const src='assets/TP1/tp1 colores/'+tp1ProductImages[currentTp1ProductIndex]
+ crossfade('tp1ProdLayerA','tp1ProdLayerB',tp1ProdActiveLayer,src,(v)=>{tp1ProdActiveLayer=v})
+ const dots=document.querySelectorAll('#tp1ProductDots div')
+ dots.forEach((dot,i)=>{dot.className='w-2 h-2 rounded-full '+(i===currentTp1ProductIndex?'bg-white/90':'bg-white/30')})
+}
+
+function nextTp1ProductImage(){currentTp1ProductIndex=(currentTp1ProductIndex+1)%tp1ProductImages.length;updateTp1ProductGallery()}
+function prevTp1ProductImage(){currentTp1ProductIndex=(currentTp1ProductIndex-1+tp1ProductImages.length)%tp1ProductImages.length;updateTp1ProductGallery()}
+function handleTp1ProductGalleryClick(event){
+ const rect=event.currentTarget.getBoundingClientRect()
+ event.clientX-rect.left<rect.width/2?prevTp1ProductImage():nextTp1ProductImage()
+}
+
+let tp1ProdTouchX=0
+const tp1ProdEl=document.getElementById('tp1ProductGallery')
+if(tp1ProdEl){
+ tp1ProdEl.addEventListener('touchstart',(e)=>{tp1ProdTouchX=e.changedTouches[0].screenX},{passive:true})
+ tp1ProdEl.addEventListener('touchend',(e)=>{
+  const diff=e.changedTouches[0].screenX-tp1ProdTouchX
+  if(Math.abs(diff)>40){diff>0?prevTp1ProductImage():nextTp1ProductImage()}
+ },{passive:true})
+}
+
+function openTp1Page(){
+ const overlay=document.getElementById('transitionOverlay')
+ const home=document.getElementById('homePage')
+ const mattebox=document.getElementById('productPage')
+ const tp1=document.getElementById('tp1Page')
+ if(overlay) overlay.classList.add('active')
+ ;[home,mattebox].forEach(el=>{el.classList.remove('page-visible');el.classList.add('page-hidden','hidden')})
+ setTimeout(()=>{
+  tp1.classList.remove('hidden')
+  requestAnimationFrame(()=>{tp1.classList.remove('page-hidden');tp1.classList.add('page-visible')})
+  window.scrollTo({top:0,behavior:'smooth'})
+ },170)
+ setTimeout(()=>{if(overlay) overlay.classList.remove('active')},560)
+}
+
 // Inicializa la primera imagen del rig al cargar la página
 updateRigGallery()
 updateProductGallery()
@@ -1314,6 +1513,22 @@ window.addEventListener('click',(event)=>{
  if(menu && !menu.classList.contains('hidden') && !insideMenu && !menuButton){
   menu.classList.add('hidden')
  }
+})
+
+// Protección de imágenes y video
+document.addEventListener('contextmenu',(e)=>{
+ if(e.target.tagName==='IMG'||e.target.tagName==='VIDEO'||e.target.closest('.gallery-wrap')){
+  e.preventDefault()
+ }
+})
+
+document.addEventListener('keydown',(e)=>{
+ if((e.ctrlKey||e.metaKey)&&e.key==='s') e.preventDefault()
+ if((e.ctrlKey||e.metaKey)&&e.key==='u') e.preventDefault()
+})
+
+document.addEventListener('dragstart',(e)=>{
+ if(e.target.tagName==='IMG'||e.target.tagName==='VIDEO') e.preventDefault()
 })
 </script>
 
