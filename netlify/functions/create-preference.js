@@ -22,7 +22,8 @@ exports.handler = async (event, context) => {
       engravingText = '',
       shippingMethod = 'Bluexpress',
       invoice = false,
-      invoiceDetails = {}
+      invoiceDetails = {},
+      testMode = false // Habilitado vía query param del cliente
     } = data;
 
     // Validación mínima
@@ -34,13 +35,18 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Calcular ítems y precios en el servidor por seguridad
-    const basePrice = 89990;
+    // Definición de precios (dinámico según testMode)
+    const basePrice = testMode ? 100 : 89990;
+    const reducersPrice = testMode ? 1 : 20000;
+    const adapterPrice = testMode ? 1 : 15000;
+    const customAdapterPrice = testMode ? 1 : 8000;
+    const engravingPriceVal = testMode ? 1 : 8000;
+
     const items = [];
 
     // Ítem base (Matte Box)
     items.push({
-      title: `Matte Box MKB-V4 (${color})`,
+      title: `Matte Box MKB-V4 (${color})` + (testMode ? ' [PRUEBA]' : ''),
       quantity: 1,
       unit_price: basePrice,
       currency_id: 'CLP'
@@ -49,18 +55,18 @@ exports.handler = async (event, context) => {
     // Extras
     if (reducers) {
       items.push({
-        title: "Kit reductores de filtros (77mm a 37mm)",
+        title: "Kit reductores de filtros (77mm a 37mm)" + (testMode ? ' [PRUEBA]' : ''),
         quantity: 1,
-        unit_price: 20000,
+        unit_price: reducersPrice,
         currency_id: 'CLP'
       });
     }
 
     if (adapter) {
       items.push({
-        title: "Adaptador 4x5 a filtros redondos 77mm",
+        title: "Adaptador 4x5 a filtros redondos 77mm" + (testMode ? ' [PRUEBA]' : ''),
         quantity: 1,
-        unit_price: 15000,
+        unit_price: adapterPrice,
         currency_id: 'CLP'
       });
     }
@@ -70,19 +76,19 @@ exports.handler = async (event, context) => {
       const lens = customAdapterDetails.lens || '';
       const desc = [mm ? `${mm}mm` : '', lens].filter(Boolean).join(' — ');
       items.push({
-        title: `Adaptador personalizado: ${desc || 'Detalles por coordinar'}`,
+        title: `Adaptador personalizado: ${desc || 'Detalles por coordinar'}` + (testMode ? ' [PRUEBA]' : ''),
         quantity: 1,
-        unit_price: 8000,
+        unit_price: customAdapterPrice,
         currency_id: 'CLP'
       });
     }
 
-    const engravingFree = reducers && adapter;
+    const engravingFree = !testMode && (reducers && adapter); // En modo prueba cobramos el grabado a 1 peso también para validar
     if (engraving) {
       items.push({
-        title: `Grabado personalizado: "${engravingText || 'Pendiente'}"` + (engravingFree ? ' (Gratis)' : ''),
+        title: `Grabado personalizado: "${engravingText || 'Pendiente'}"` + (engravingFree ? ' (Gratis)' : '') + (testMode ? ' [PRUEBA]' : ''),
         quantity: 1,
-        unit_price: engravingFree ? 0 : 8000,
+        unit_price: engravingFree ? 0 : engravingPriceVal,
         currency_id: 'CLP'
       });
     }
@@ -90,16 +96,16 @@ exports.handler = async (event, context) => {
     // Costo de envío
     let shippingCost = 0;
     if (shippingMethod === 'Bluexpress') {
-      shippingCost = 5990;
+      shippingCost = testMode ? 1 : 5990;
     } else if (shippingMethod === 'Express') {
-      shippingCost = 9990;
+      shippingCost = testMode ? 1 : 9990;
     } else if (shippingMethod === 'Retiro Metro Ecuador o Tobalaba') {
       shippingCost = 0;
     }
 
     if (shippingCost > 0) {
       items.push({
-        title: `Envío: ${shippingMethod}`,
+        title: `Envío: ${shippingMethod}` + (testMode ? ' [PRUEBA]' : ''),
         quantity: 1,
         unit_price: shippingCost,
         currency_id: 'CLP'
@@ -123,7 +129,6 @@ exports.handler = async (event, context) => {
     const baseUrl = `${protocol}://${host}`;
 
     // Construir la preferencia de Mercado Pago
-    // Sanitizar teléfono (quitar caracteres no numéricos)
     const rawDigits = phone.replace(/\D/g, '');
     const phoneArea = rawDigits.startsWith('56') ? '56' : '';
     const phoneNumber = rawDigits.startsWith('56') ? rawDigits.slice(2) : rawDigits;
@@ -143,7 +148,6 @@ exports.handler = async (event, context) => {
         pending: `${baseUrl}/pago-exitoso.html`
       },
       auto_return: 'approved',
-      // Metadata útil para recuperar detalles en el webhook o en la página de éxito
       metadata: {
         customer_name: name,
         customer_phone: phone,
@@ -160,7 +164,8 @@ exports.handler = async (event, context) => {
         invoice_company: invoiceDetails.company || '',
         invoice_rut: invoiceDetails.rut || '',
         invoice_business: invoiceDetails.business || '',
-        invoice_address: invoiceDetails.address || ''
+        invoice_address: invoiceDetails.address || '',
+        test_mode: testMode
       },
       statement_descriptor: "KORI KAMERA STORE",
       payment_methods: {
@@ -170,7 +175,6 @@ exports.handler = async (event, context) => {
       }
     };
 
-    // Usar fetch global (disponible de forma nativa en Node.js 18+)
     const mpResponse = await fetch('https://api.mercadopago.com/checkout/preferences', {
       method: 'POST',
       headers: {

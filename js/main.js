@@ -139,27 +139,30 @@ function selectColor(button){
  updateProductGallery()
 }
 
+const urlParams = new URLSearchParams(window.location.search);
+const isTestMode = urlParams.get('test') === 'true';
+
 const selectedExtras={reducers:false,adapter:false,engraving:false,customAdapter:false}
-const basePrice=89990
+const basePrice = isTestMode ? 100 : 89990;
 let needsInvoice=false
-let shippingPrice=5990
+let shippingPrice = isTestMode ? 1 : 5990;
 let shippingMethod='Bluexpress'
 
 function updateFinalPrice(){
  let total=basePrice
- if(selectedExtras.reducers)total+=20000
- if(selectedExtras.adapter)total+=15000
- if(selectedExtras.customAdapter)total+=8000
+ if(selectedExtras.reducers)total+= (isTestMode ? 1 : 20000)
+ if(selectedExtras.adapter)total+= (isTestMode ? 1 : 15000)
+ if(selectedExtras.customAdapter)total+= (isTestMode ? 1 : 8000)
 
- const engravingFree=selectedExtras.reducers&&selectedExtras.adapter
+ const engravingFree = !isTestMode && (selectedExtras.reducers && selectedExtras.adapter);
 
  if(selectedExtras.engraving&&!engravingFree){
-  total+=8000
+  total+= (isTestMode ? 1 : 8000)
  }
 
  const engravingPrice=document.getElementById('engravingPrice')
  if(engravingPrice){
-  engravingPrice.innerText=engravingFree?'Gratis':'+$8.000'
+  engravingPrice.innerText=engravingFree?'Gratis':(isTestMode ? '+$1' : '+$8.000')
  }
 
  const finalPriceEl=document.getElementById('finalPrice')
@@ -260,7 +263,7 @@ function toggleEngraving(button){
 
 function selectShipping(name,price,button){
  shippingMethod=name
- shippingPrice=price
+ shippingPrice=isTestMode ? (price === 0 ? 0 : 1) : price
 
  document.querySelectorAll('.shipping-button').forEach(btn=>btn.classList.remove('active-color'))
  button.classList.add('active-color')
@@ -293,7 +296,8 @@ async function startCheckout(){
    rut: document.getElementById('invoiceRut')?.value.trim()||'',
    business: document.getElementById('invoiceBusiness')?.value.trim()||'',
    address: document.getElementById('invoiceAddress')?.value.trim()||''
-  }
+  },
+  testMode: isTestMode
  }
 
  // Guardar en localStorage para recuperarlo en la página de éxito o error
@@ -661,3 +665,13 @@ document.addEventListener('keydown',(e)=>{
 document.addEventListener('dragstart',(e)=>{
  if(e.target.tagName==='IMG'||e.target.tagName==='VIDEO') e.preventDefault()
 })
+
+if (isTestMode) {
+ const banner = document.createElement('div');
+ banner.className = 'fixed bottom-6 left-6 z-[100] bg-yellow-500 text-black font-black px-6 py-4 rounded-3xl shadow-[0_10px_30px_rgba(234,179,8,0.3)] flex items-center gap-3 text-xs uppercase tracking-wider border border-yellow-400 animate-pulse';
+ banner.innerHTML = `
+  <div class="w-3 h-3 rounded-full bg-black animate-ping"></div>
+  <span>Modo de Prueba Activo (Base: $100 / Extras: $1)</span>
+ `;
+ document.body.appendChild(banner);
+}
