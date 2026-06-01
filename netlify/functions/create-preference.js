@@ -1,3 +1,4 @@
+// Trigger Netlify rebuild with new production environment variables
 exports.handler = async (event, context) => {
   // Permitir solo peticiones POST
   if (event.httpMethod !== 'POST') {
