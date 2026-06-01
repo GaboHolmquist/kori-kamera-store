@@ -142,6 +142,8 @@ function selectColor(button){
 const urlParams = new URLSearchParams(window.location.search);
 const isTestMode = urlParams.get('test') === 'true';
 
+let activeProduct = 'MATTEBOX'; // Puede ser 'MATTEBOX' o 'TP1'
+
 const selectedExtras={reducers:false,adapter:false,engraving:false,customAdapter:false}
 const basePrice = isTestMode ? 100 : 89990;
 let needsInvoice=false
@@ -149,6 +151,30 @@ let shippingPrice = isTestMode ? 1 : 5990;
 let shippingMethod='Bluexpress'
 
 function updateFinalPrice(){
+ if (activeProduct === 'TP1') {
+  const finalPriceEl=document.getElementById('finalPrice')
+  if(finalPriceEl) finalPriceEl.innerText='$100'
+
+  const popupPrice=document.getElementById('popupFinalPrice')
+  if(popupPrice){
+   popupPrice.innerText='$100'
+  }
+
+  const summaryColor=document.getElementById('summaryColor')
+  if(summaryColor) summaryColor.innerText='Estándar'
+
+  const summaryExtras=document.getElementById('summaryExtras')
+  if(summaryExtras) summaryExtras.innerHTML='Ninguno'
+
+  const summaryEngraving=document.getElementById('summaryEngraving')
+  if(summaryEngraving) summaryEngraving.innerText='No aplica'
+
+  const summaryShipping=document.getElementById('summaryShipping')
+  if(summaryShipping) summaryShipping.innerText='Coordinación directa (Gratis)'
+  
+  return;
+ }
+
  let total=basePrice
  if(selectedExtras.reducers)total+= (isTestMode ? 1 : 20000)
  if(selectedExtras.adapter)total+= (isTestMode ? 1 : 15000)
@@ -401,6 +427,18 @@ function validatePurchaseForm(){
 }
 
 function openPopup(){
+ activeProduct = 'MATTEBOX';
+ const titleEl = document.getElementById('popupProductTitle');
+ if (titleEl) titleEl.innerText = 'MATTE BOX MKB-V4';
+ document.getElementById('popup').classList.remove('hidden')
+ updateFinalPrice()
+ validatePurchaseForm()
+}
+
+function openPurchasePopupForTP1(){
+ activeProduct = 'TP1';
+ const titleEl = document.getElementById('popupProductTitle');
+ if (titleEl) titleEl.innerText = 'FOOT RIG TP1';
  document.getElementById('popup').classList.remove('hidden')
  updateFinalPrice()
  validatePurchaseForm()

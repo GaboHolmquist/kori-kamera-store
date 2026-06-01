@@ -15,6 +15,7 @@ exports.handler = async (event, context) => {
       phone,
       color = 'OBSIDIAN',
       reducers = false,
+      placeholder1, // unused
       adapter = false,
       customAdapter = false,
       customAdapterDetails = {},
@@ -23,7 +24,8 @@ exports.handler = async (event, context) => {
       shippingMethod = 'Bluexpress',
       invoice = false,
       invoiceDetails = {},
-      testMode = false // Habilitado vía query param del cliente
+      testMode = false,
+      activeProduct = 'MATTEBOX'
     } = data;
 
     // Validación mínima
@@ -35,73 +37,84 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Definición de precios (dinámico según testMode)
-    const basePrice = testMode ? 100 : 89990;
-    const reducersPrice = testMode ? 1 : 20000;
-    const adapterPrice = testMode ? 1 : 15000;
-    const customAdapterPrice = testMode ? 1 : 8000;
-    const engravingPriceVal = testMode ? 1 : 8000;
+    // Identificar el producto
+    const isTP1 = activeProduct === 'TP1';
+
+    // Definición de precios (dinámico según testMode y producto)
+    const basePrice = isTP1 ? 100 : (testMode ? 100 : 89990);
+    const reducersPrice = isTP1 ? 0 : (testMode ? 1 : 20000);
+    const adapterPrice = isTP1 ? 0 : (testMode ? 1 : 15000);
+    const customAdapterPrice = isTP1 ? 0 : (testMode ? 1 : 8000);
+    const engravingPriceVal = isTP1 ? 0 : (testMode ? 1 : 8000);
 
     const items = [];
 
-    // Ítem base (Matte Box)
+    // Ítem base
     const testLabel = testMode ? ' [PRUEBA]' : '';
+    const productTitle = isTP1 
+      ? `Foot Rig TP1 - Estándar - ${name}`
+      : `Matte Box MKB-V4 - ${color.toUpperCase()} - ${name}${testLabel}`;
+
     items.push({
-      title: `Matte Box MKB-V4 - ${color.toUpperCase()} - ${name}${testLabel}`,
+      title: productTitle,
       quantity: 1,
       unit_price: basePrice,
       currency_id: 'CLP'
     });
 
-    // Extras
-    if (reducers) {
-      items.push({
-        title: "Kit reductores de filtros (77mm a 37mm)" + (testMode ? ' [PRUEBA]' : ''),
-        quantity: 1,
-        unit_price: reducersPrice,
-        currency_id: 'CLP'
-      });
+    // Extras (solo si no es TP1)
+    if (!isTP1) {
+      if (reducers) {
+        items.push({
+          title: "Kit reductores de filtros (77mm a 37mm)" + (testMode ? ' [PRUEBA]' : ''),
+          quantity: 1,
+          unit_price: reducersPrice,
+          currency_id: 'CLP'
+        });
+      }
+
+      if (adapter) {
+        items.push({
+          title: "Adaptador 4x5 a filtros redondos 77mm" + (testMode ? ' [PRUEBA]' : ''),
+          quantity: 1,
+          unit_price: adapterPrice,
+          currency_id: 'CLP'
+        });
+      }
+
+      if (customAdapter) {
+        const mm = customAdapterDetails.mm || '';
+        const lens = customAdapterDetails.lens || '';
+        const desc = [mm ? `${mm}mm` : '', lens].filter(Boolean).join(' — ');
+        items.push({
+          title: `Adaptador personalizado: ${desc || 'Detalles por coordinar'}` + (testMode ? ' [PRUEBA]' : ''),
+          quantity: 1,
+          unit_price: customAdapterPrice,
+          currency_id: 'CLP'
+        });
+      }
+
+      const engravingFree = !testMode && (reducers && adapter);
+      if (engraving) {
+        items.push({
+          title: `Grabado personalizado: "${engravingText || 'Pendiente'}"` + (engravingFree ? ' (Gratis)' : '') + (testMode ? ' [PRUEBA]' : ''),
+          quantity: 1,
+          unit_price: engravingFree ? 0 : engravingPriceVal,
+          currency_id: 'CLP'
+        });
+      }
     }
 
-    if (adapter) {
-      items.push({
-        title: "Adaptador 4x5 a filtros redondos 77mm" + (testMode ? ' [PRUEBA]' : ''),
-        quantity: 1,
-        unit_price: adapterPrice,
-        currency_id: 'CLP'
-      });
-    }
-
-    if (customAdapter) {
-      const mm = customAdapterDetails.mm || '';
-      const lens = customAdapterDetails.lens || '';
-      const desc = [mm ? `${mm}mm` : '', lens].filter(Boolean).join(' — ');
-      items.push({
-        title: `Adaptador personalizado: ${desc || 'Detalles por coordinar'}` + (testMode ? ' [PRUEBA]' : ''),
-        quantity: 1,
-        unit_price: customAdapterPrice,
-        currency_id: 'CLP'
-      });
-    }
-
-    const engravingFree = !testMode && (reducers && adapter); // En modo prueba cobramos el grabado a 1 peso también para validar
-    if (engraving) {
-      items.push({
-        title: `Grabado personalizado: "${engravingText || 'Pendiente'}"` + (engravingFree ? ' (Gratis)' : '') + (testMode ? ' [PRUEBA]' : ''),
-        quantity: 1,
-        unit_price: engravingFree ? 0 : engravingPriceVal,
-        currency_id: 'CLP'
-      });
-    }
-
-    // Costo de envío
+    // Costo de envío (gratis/coordinado para TP1 para que el total real sea exactamente $100 CLP)
     let shippingCost = 0;
-    if (shippingMethod === 'Bluexpress') {
-      shippingCost = testMode ? 1 : 5990;
-    } else if (shippingMethod === 'Express') {
-      shippingCost = testMode ? 1 : 9990;
-    } else if (shippingMethod === 'Retiro Metro Ecuador o Tobalaba') {
-      shippingCost = 0;
+    if (!isTP1) {
+      if (shippingMethod === 'Bluexpress') {
+        shippingCost = testMode ? 1 : 5990;
+      } else if (shippingMethod === 'Express') {
+        shippingCost = testMode ? 1 : 9990;
+      } else if (shippingMethod === 'Retiro Metro Ecuador o Tobalaba') {
+        shippingCost = 0;
+      }
     }
 
     if (shippingCost > 0) {
