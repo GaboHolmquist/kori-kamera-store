@@ -3,7 +3,18 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Kori Mattebox Preview</title>
+<title>Kori Kamera Store</title>
+<meta name="description" content="Accesorios cinematográficos fabricados a mano. Matte Box MKB-V4 y más." />
+
+<!-- Open Graph — preview en WhatsApp, Instagram, etc. -->
+<meta property="og:title" content="Kori Kamera Store" />
+<meta property="og:description" content="Accesorios cinematográficos fabricados a mano. Matte Box MKB-V4 y más." />
+<meta property="og:image" content="https://korikamera.store/preview.jpg" />
+<meta property="og:url" content="https://korikamera.store/" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:type" content="website" />
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 .hidden{display:none}
@@ -143,6 +154,15 @@ object-fit:cover;
 display:block;
 transform:translateZ(0);
 backface-visibility:hidden;
+}
+
+/* Dots siempre visibles sobre las imágenes */
+#rigDots, #productDots, #tp1RigDots, #tp1ProductDots{
+padding:5px 10px;
+border-radius:20px;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(6px);
+pointer-events:none;
 }
 
 #homePage,
@@ -325,7 +345,7 @@ MATTE BOX MKB-V4
 </div>
 </div>
 
-<div id="rigDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+<div id="rigDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
 <div class="w-2 h-2 rounded-full bg-white/90"></div>
 <div class="w-2 h-2 rounded-full bg-white/30"></div>
 <div class="w-2 h-2 rounded-full bg-white/30"></div>
@@ -402,7 +422,7 @@ Contenido del paquete
 </div>
 </div>
 
-<div id="productDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+<div id="productDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
 <div class="w-2 h-2 rounded-full bg-white/90"></div>
 <div class="w-2 h-2 rounded-full bg-white/30"></div>
 <div class="w-2 h-2 rounded-full bg-white/30"></div>
@@ -641,7 +661,7 @@ Comprar
 <div id="tp1RigLayerB" class="gallery-layer" style="opacity:0;z-index:1;"><img src="" /></div>
 </div>
 </div>
-<div id="tp1RigDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+<div id="tp1RigDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
 <div class="w-2 h-2 rounded-full bg-white/90"></div>
 <div class="w-2 h-2 rounded-full bg-white/30"></div>
 <div class="w-2 h-2 rounded-full bg-white/30"></div>
@@ -684,7 +704,7 @@ Comprar
 <div id="tp1ProdLayerB" class="gallery-layer" style="opacity:0;z-index:1;"><img src="" /></div>
 </div>
 </div>
-<div id="tp1ProductDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+<div id="tp1ProductDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
 <div class="w-2 h-2 rounded-full bg-white/90"></div>
 <div class="w-2 h-2 rounded-full bg-white/30"></div>
 <div class="w-2 h-2 rounded-full bg-white/30"></div>
