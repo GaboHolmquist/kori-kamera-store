@@ -1009,6 +1009,7 @@ function handleRigGalleryClick(event){
  const rect=event.currentTarget.getBoundingClientRect()
  const x=event.clientX-rect.left
  x<rect.width/2?prevRigImage():nextRigImage()
+ startRigInterval()
 }
 
 let rigTouchStartX=0
@@ -1017,11 +1018,20 @@ if(rigGallery){
  rigGallery.addEventListener('touchstart',(e)=>{rigTouchStartX=e.changedTouches[0].screenX},{passive:true})
  rigGallery.addEventListener('touchend',(e)=>{
   const diff=e.changedTouches[0].screenX-rigTouchStartX
-  if(Math.abs(diff)>40){diff>0?prevRigImage():nextRigImage()}
+  if(Math.abs(diff)>40){diff>0?prevRigImage():nextRigImage();startRigInterval()}
  },{passive:true})
 }
 
-setInterval(nextRigImage,20000)
+let rigInterval=null
+
+function startRigInterval(){
+ if(rigInterval) clearInterval(rigInterval)
+ rigInterval=setInterval(nextRigImage,5000)
+}
+
+function stopRigInterval(){
+ if(rigInterval){clearInterval(rigInterval);rigInterval=null}
+}
 
 const productImages={
  OBSIDIAN:['00001.jpeg','00002.jpeg','00003.jpeg','00004.jpeg','00005.jpeg'],
@@ -1349,6 +1359,11 @@ function openMatteboxPage(){
    product.classList.add('page-visible')
   })
 
+  // Arranca desde foto 1 y resetea el contador
+  currentRigIndex=0
+  updateRigGallery()
+  startRigInterval()
+
   window.scrollTo({top:0,behavior:'smooth'})
  },170)
 
@@ -1364,6 +1379,8 @@ function goHome(){
  const home=document.getElementById('homePage')
  const product=document.getElementById('productPage')
  const tp1=document.getElementById('tp1Page')
+
+ stopRigInterval()
 
  if(overlay) overlay.classList.add('active')
 
