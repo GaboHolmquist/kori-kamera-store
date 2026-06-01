@@ -41,6 +41,33 @@ exports.handler = async (event, context) => {
     // Identificar el producto
     const isTP1 = activeProduct === 'TP1';
 
+    // Validar stock en Upstash Redis para compras reales
+    if (!isTP1) {
+      const url = process.env.UPSTASH_REDIS_REST_URL;
+      const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+
+      if (url && token) {
+        try {
+          const stockResponse = await fetch(`${url}/get/stock`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (stockResponse.ok) {
+            const stockData = await stockResponse.json();
+            const currentStock = stockData.result !== null ? parseInt(stockData.result, 10) : 10;
+            if (currentStock <= 0) {
+              return {
+                statusCode: 400,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ error: 'Lo sentimos, el producto se encuentra temporalmente sin stock.' })
+              };
+            }
+          }
+        } catch (stockErr) {
+          console.error('Error al validar stock en checkout, continuando:', stockErr);
+        }
+      }
+    }
+
     // Definición de precios (dinámico según testMode y producto)
     const basePrice = isTP1 ? 100 : (testMode ? 100 : 89990);
     const reducersPrice = isTP1 ? 0 : (testMode ? 1 : 20000);

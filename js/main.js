@@ -738,3 +738,34 @@ if (isTestMode) {
  `;
  document.body.appendChild(banner);
 }
+
+async function fetchAndApplyStock(){
+ try {
+  const response = await fetch('/api/get-stock');
+  if (!response.ok) throw new Error('Error al consultar stock');
+  const data = await response.json();
+  const stock = data.stock;
+
+  const buyBtn = document.getElementById('matteboxBuyBtn');
+  if (buyBtn) {
+   if (stock <= 0) {
+    buyBtn.disabled = true;
+    buyBtn.innerText = 'Agotado';
+    buyBtn.className = 'px-8 py-5 rounded-2xl bg-white/30 text-white/40 font-semibold cursor-not-allowed';
+   } else if (stock <= 3) {
+    let stockNotice = document.getElementById('stockNotice');
+    if (!stockNotice) {
+     stockNotice = document.createElement('p');
+     stockNotice.id = 'stockNotice';
+     stockNotice.className = 'text-xs text-yellow-400 font-semibold mt-2 text-right uppercase tracking-wider animate-pulse';
+     buyBtn.parentNode.insertBefore(stockNotice, buyBtn.nextSibling);
+    }
+    stockNotice.innerText = `¡Solo quedan ${stock} unidades!`;
+   }
+  }
+ } catch (err) {
+  console.error('Error cargando stock:', err);
+ }
+}
+
+fetchAndApplyStock();
