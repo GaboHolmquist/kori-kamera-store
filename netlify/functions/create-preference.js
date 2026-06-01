@@ -1,5 +1,3 @@
-const fetch = globalThis.fetch || require('node-fetch');
-
 exports.handler = async (event, context) => {
   // Permitir solo peticiones POST
   if (event.httpMethod !== 'POST') {
@@ -165,14 +163,14 @@ exports.handler = async (event, context) => {
         invoice_address: invoiceDetails.address || ''
       },
       statement_descriptor: "KORI KAMERA STORE",
-      // Evitar que paguen con medios no deseados si es necesario (opcional)
       payment_methods: {
         excluded_payment_types: [
-          { id: "ticket" } // Excluir pago en efectivo (por ejemplo, sencillito, rapipago) si se prefiere solo online instantáneo
+          { id: "ticket" }
         ]
       }
     };
 
+    // Usar fetch global (disponible de forma nativa en Node.js 18+)
     const mpResponse = await fetch('https://api.mercadopago.com/checkout/preferences', {
       method: 'POST',
       headers: {
@@ -192,7 +190,11 @@ exports.handler = async (event, context) => {
       };
     }
 
-    const preference = await mpResponse.json();
+    const preference = await mpResponse.ok ? await mpResponse.json() : null;
+
+    if (!preference) {
+      throw new Error('No se pudo decodificar la preferencia de Mercado Pago.');
+    }
 
     return {
       statusCode: 200,
