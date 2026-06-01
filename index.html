@@ -511,19 +511,41 @@ Comprar
 </div>
 </div>
 
-<!-- COMPRAR TP1 -->
-<div class="mt-10 rounded-[35px] border border-white/10 bg-white/5 p-8 md:p-10 text-center">
-<div class="flex items-center justify-center gap-3 mb-4">
-<div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
-<span class="text-emerald-300 uppercase tracking-[0.3em] text-xs font-semibold">Compra Real de Prueba</span>
-</div>
-<h2 class="text-3xl font-black text-white mb-3">Adquirir FOOT RIG TP1</h2>
-<p class="text-zinc-400 max-w-sm mx-auto leading-relaxed mb-8">
-Prueba el sistema con una compra real por un valor de **$100 CLP** utilizando tu tarjeta de débito o crédito.
-</p>
-<button onclick="openPurchasePopupForTP1()" class="inline-flex items-center gap-3 rounded-full bg-white text-black px-8 py-4 hover:scale-[1.02] transition-all duration-300 font-extrabold shadow-lg">
-<span>Comprar por $100 CLP</span>
-</button>
+<!-- COMPRAR TP1 CON CONTRASEÑA -->
+<div id="tp1PurchaseContainer" class="mt-10 rounded-[35px] border border-white/10 bg-white/5 p-8 md:p-10 text-center">
+  <!-- Estado bloqueado (Login) -->
+  <div id="tp1LockState" class="space-y-5">
+    <div class="flex items-center justify-center gap-3 mb-2">
+      <div class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></div>
+      <span class="text-yellow-300 uppercase tracking-[0.3em] text-xs font-semibold">Área Restringida / Pruebas</span>
+    </div>
+    <h2 class="text-3xl font-black text-white">FOOT RIG TP1</h2>
+    <p class="text-zinc-400 max-w-sm mx-auto leading-relaxed text-sm">
+      Esta sección es de acceso privado para pruebas de pago reales. Ingresa la contraseña para acceder al botón de compra de $100 CLP.
+    </p>
+    <div class="max-w-xs mx-auto flex flex-col gap-3 mt-4">
+      <input type="password" id="tp1PasswordInput" placeholder="Contraseña de acceso" class="w-full rounded-2xl border border-white/10 bg-black/40 px-5 py-4 outline-none focus:border-white/30 text-center text-white placeholder:text-zinc-600" />
+      <button onclick="checkTp1Password()" class="w-full py-4 rounded-2xl bg-white text-black font-extrabold hover:scale-[1.01] transition-all duration-300 shadow-md">
+        Desbloquear
+      </button>
+    </div>
+    <p id="tp1ErrorMsg" class="text-red-400 text-xs font-medium mt-2 hidden">Contraseña incorrecta. Inténtalo nuevamente.</p>
+  </div>
+
+  <!-- Estado desbloqueado (Botón de compra) -->
+  <div id="tp1UnlockState" class="hidden space-y-5">
+    <div class="flex items-center justify-center gap-3 mb-2">
+      <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
+      <span class="text-emerald-300 uppercase tracking-[0.3em] text-xs font-semibold">Desbloqueado con éxito</span>
+    </div>
+    <h2 class="text-3xl font-black text-white">Adquirir FOOT RIG TP1</h2>
+    <p class="text-zinc-400 max-w-sm mx-auto leading-relaxed text-sm">
+      Compra real de prueba habilitada por **$100 CLP** mediante Mercado Pago.
+    </p>
+    <button onclick="openPurchasePopupForTP1()" class="inline-flex items-center gap-3 rounded-full bg-white text-black px-8 py-4 hover:scale-[1.02] transition-all duration-300 font-extrabold shadow-lg">
+      <span>Comprar por $100 CLP</span>
+    </button>
+  </div>
 </div>
 
 </section>

@@ -705,6 +705,30 @@ document.addEventListener('dragstart',(e)=>{
  if(e.target.tagName==='IMG'||e.target.tagName==='VIDEO') e.preventDefault()
 })
 
+function checkTp1Password(){
+ const input = document.getElementById('tp1PasswordInput');
+ const errorMsg = document.getElementById('tp1ErrorMsg');
+ const lockState = document.getElementById('tp1LockState');
+ const unlockState = document.getElementById('tp1UnlockState');
+ 
+ if (input && input.value === 'testtest100pesos') {
+  if (errorMsg) errorMsg.classList.add('hidden');
+  if (lockState) lockState.classList.add('hidden');
+  if (unlockState) unlockState.classList.remove('hidden');
+ } else {
+  if (errorMsg) errorMsg.classList.remove('hidden');
+  if (input) {
+   input.value = '';
+   input.focus();
+  }
+ }
+}
+
+// Bind Enter key
+document.getElementById('tp1PasswordInput')?.addEventListener('keydown', (e) => {
+ if (e.key === 'Enter') checkTp1Password();
+});
+
 if (isTestMode) {
  const banner = document.createElement('div');
  banner.className = 'fixed bottom-6 left-6 z-[100] bg-yellow-500 text-black font-black px-6 py-4 rounded-3xl shadow-[0_10px_30px_rgba(234,179,8,0.3)] flex items-center gap-3 text-xs uppercase tracking-wider border border-yellow-400 animate-pulse';
