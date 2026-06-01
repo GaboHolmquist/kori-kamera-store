@@ -45,8 +45,9 @@ exports.handler = async (event, context) => {
     const items = [];
 
     // Ítem base (Matte Box)
+    const testLabel = testMode ? ' [PRUEBA]' : '';
     items.push({
-      title: `Matte Box MKB-V4 (${color})` + (testMode ? ' [PRUEBA]' : ''),
+      title: `Matte Box MKB-V4 - ${color.toUpperCase()} - ${name}${testLabel}`,
       quantity: 1,
       unit_price: basePrice,
       currency_id: 'CLP'
