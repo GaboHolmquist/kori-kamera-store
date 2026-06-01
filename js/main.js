@@ -323,7 +323,8 @@ async function startCheckout(){
    business: document.getElementById('invoiceBusiness')?.value.trim()||'',
    address: document.getElementById('invoiceAddress')?.value.trim()||''
   },
-  testMode: isTestMode
+  testMode: isTestMode,
+  activeProduct: activeProduct
  }
 
  // Guardar en localStorage para recuperarlo en la página de éxito o error
