@@ -269,39 +269,82 @@ function selectShipping(name,price,button){
  validatePurchaseForm()
 }
 
-function sendToWhatsApp(){
+async function startCheckout(){
  const name=document.getElementById('customerName')?.value.trim()||''
  const phone=document.getElementById('customerPhone')?.value.trim()||''
 
- // Extras desde la fuente, no del DOM del resumen
- const extrasList=[]
- if(selectedExtras.reducers) extrasList.push('Kit reductores de filtros desde 77mm a 37mm')
- if(selectedExtras.adapter) extrasList.push('Adaptador 4x5 a filtros redondos de 77mm')
- if(selectedExtras.customAdapter){
-  const mm=document.getElementById('customAdapterInput')?.value.trim()||''
-  const lente=document.getElementById('customLensInput')?.value.trim()||''
-  const parts=[]
-  if(mm) parts.push(mm+'mm')
-  if(lente) parts.push(lente)
-  extrasList.push('Adaptador personalizado'+(parts.length?': '+parts.join(' — '):''))
+ const orderDetails={
+  name: name,
+  phone: phone,
+  color: currentColor,
+  reducers: selectedExtras.reducers,
+  adapter: selectedExtras.adapter,
+  customAdapter: selectedExtras.customAdapter,
+  customAdapterDetails: {
+   mm: document.getElementById('customAdapterInput')?.value.trim()||'',
+   lens: document.getElementById('customLensInput')?.value.trim()||''
+  },
+  engraving: selectedExtras.engraving,
+  engravingText: document.getElementById('engravingInput')?.value.trim()||'',
+  shippingMethod: shippingMethod,
+  invoice: needsInvoice,
+  invoiceDetails: {
+   company: document.getElementById('invoiceCompany')?.value.trim()||'',
+   rut: document.getElementById('invoiceRut')?.value.trim()||'',
+   business: document.getElementById('invoiceBusiness')?.value.trim()||'',
+   address: document.getElementById('invoiceAddress')?.value.trim()||''
+  }
  }
- const extrasMsg=extrasList.length?extrasList.join(', '):'Sin extras'
 
- // Nombre grabado
- const engravingMsg=selectedExtras.engraving
-  ?(document.getElementById('engravingInput')?.value.trim()||'Pendiente')
-  :'No agregado'
+ // Guardar en localStorage para recuperarlo en la página de éxito o error
+ try {
+  localStorage.setItem('last_order_details', JSON.stringify(orderDetails));
+ } catch (e) {
+  console.error('Error guardando en localStorage:', e);
+ }
 
- // Factura
- const invoiceText=needsInvoice
-  ? `%0A%0AFACTURA:%0AEmpresa: ${encodeURIComponent(document.getElementById('invoiceCompany')?.value||'')}%0ARUT: ${encodeURIComponent(document.getElementById('invoiceRut')?.value||'')}%0AGiro: ${encodeURIComponent(document.getElementById('invoiceBusiness')?.value||'')}%0ADirección: ${encodeURIComponent(document.getElementById('invoiceAddress')?.value||'')}`
-  : ''
+ const purchaseButton=document.getElementById('purchaseButton')
+ if(purchaseButton){
+  purchaseButton.disabled=true
+  purchaseButton.innerText='Procesando pago...'
+  purchaseButton.className='w-full py-5 rounded-2xl bg-white/30 text-white/40 font-semibold cursor-not-allowed transition-all duration-300'
+ }
 
- const total=document.getElementById('popupFinalPrice')?.innerText||''
+ try {
+  const response = await fetch('/api/create-preference', {
+   method: 'POST',
+   headers: {
+    'Content-Type': 'application/json'
+   },
+   body: JSON.stringify(orderDetails)
+  });
 
- const message=`Hola Kori Kamera Store, quiero comprar un MKB-V4.%0A%0ANombre: ${encodeURIComponent(name)}%0ATeléfono: ${encodeURIComponent(phone)}%0AColor: ${currentColor.charAt(0)+currentColor.slice(1).toLowerCase()}%0AExtras: ${encodeURIComponent(extrasMsg)}%0ANombre personalizado: ${encodeURIComponent(engravingMsg)}%0AEntrega: ${encodeURIComponent(shippingMethod)}%0ATotal: ${encodeURIComponent(total)}${invoiceText}`
+  if (!response.ok) {
+   const errData = await response.json();
+   throw new Error(errData.error || 'Error al generar la preferencia de pago.');
+  }
 
- window.open(`https://wa.me/56950870076?text=${message}`,'_blank')
+  const result = await response.json();
+  
+  // Redirigir a Mercado Pago
+  const redirectUrl = result.init_point;
+  if (redirectUrl) {
+   window.location.href = redirectUrl;
+  } else {
+   throw new Error('No se recibió la URL de redirección.');
+  }
+
+ } catch (error) {
+  console.error('Error en el proceso de pago:', error);
+  alert('Hubo un problema al procesar tu solicitud: ' + error.message + '\n\nPor favor, inténtalo de nuevo.');
+  
+  // Restaurar botón
+  if(purchaseButton){
+   purchaseButton.disabled=false
+   purchaseButton.innerText='Pagar con Mercado Pago'
+   purchaseButton.className='w-full py-5 rounded-2xl bg-white text-black font-semibold hover:scale-[1.01] transition-all duration-300'
+  }
+ }
 }
 
 function formatChilePhone(input){

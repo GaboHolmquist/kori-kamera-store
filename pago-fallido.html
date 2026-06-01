@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pago Fallido — Kori Kamera Store</title>
+  <meta name="description" content="Hubo un problema al procesar tu pago. Inténtalo de nuevo." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .failure-gradient {
+      background: radial-gradient(circle at top, rgba(239, 68, 68, 0.15) 0%, transparent 60%);
+    }
+  </style>
+</head>
+<body class="bg-black text-white min-h-screen flex flex-col justify-between failure-gradient">
+
+  <!-- TOP BAR -->
+  <div class="border-b border-white/5 bg-black/60 backdrop-blur-xl">
+    <div class="max-w-5xl mx-auto px-5 py-4 flex items-center justify-between">
+      <a href="/" class="text-lg md:text-xl font-black tracking-wide hover:opacity-80 transition-opacity">
+        KORI KAMERA STORE
+      </a>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-grow flex items-center justify-center px-5 py-12">
+    <div class="w-full max-w-xl rounded-[38px] border border-red-500/20 bg-zinc-950/90 backdrop-blur-2xl p-7 md:p-10 shadow-[0_0_50px_rgba(239,68,68,0.1)] text-center">
+      
+      <!-- Icono de error con micro-animación -->
+      <div class="w-20 h-20 bg-red-500/10 border border-red-500/30 rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(239,68,68,0.2)]">
+        <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </div>
+
+      <p class="text-red-400 uppercase tracking-[0.25em] text-xs font-semibold mb-2">Transacción no completada</p>
+      <h1 class="text-3xl md:text-4xl font-black tracking-tight mb-4">El pago no se pudo procesar</h1>
+      <p class="text-zinc-400 text-sm leading-relaxed mb-8 max-w-sm mx-auto">
+        El proceso de pago fue cancelado o rechazado por la entidad financiera. No se ha realizado ningún cobro en tu cuenta.
+      </p>
+
+      <!-- ACCIONES -->
+      <div class="grid sm:grid-cols-2 gap-4 mb-4">
+        <a href="/" class="w-full py-5 rounded-2xl bg-white text-black font-extrabold hover:bg-zinc-200 transition-all duration-300 flex items-center justify-center gap-2">
+          Reintentar compra
+        </a>
+
+        <button id="supportBtn" class="w-full py-5 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 font-bold transition-all duration-300 flex items-center justify-center gap-2">
+          Soporte vía WhatsApp
+        </button>
+      </div>
+
+      <a href="/" class="block mt-4 text-zinc-500 hover:text-zinc-300 text-xs font-semibold uppercase tracking-wider transition-colors">
+        Volver al inicio
+      </a>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-white/5 py-6 text-center text-xs text-zinc-600">
+    &copy; 2026 Kori Kamera Store. Todos los derechos reservados.
+  </footer>
+
+  <script>
+    // Obtener detalles guardados para personalizar la ayuda
+    let orderData = {};
+    try {
+      orderData = JSON.parse(localStorage.getItem('last_order_details') || '{}');
+    } catch(e) {}
+
+    const supportBtn = document.getElementById('supportBtn');
+    supportBtn.addEventListener('click', () => {
+      const name = orderData.name || 'Cliente';
+      const message = `Hola Kori Kamera Store, tuve un inconveniente al intentar realizar el pago de mi pedido a nombre de ${name}. ¿Me podrían ayudar a coordinarlo?`;
+      const encodedMsg = encodeURIComponent(message);
+      window.open(`https://wa.me/56950870076?text=${encodedMsg}`, '_blank');
+    });
+  </script>
+
+</body>
+</html>

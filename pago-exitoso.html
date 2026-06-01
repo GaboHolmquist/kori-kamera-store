@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡Pago Exitoso! — Kori Kamera Store</title>
+  <meta name="description" content="Tu pago ha sido procesado con éxito. Por favor, confirma tu pedido." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .success-gradient {
+      background: radial-gradient(circle at top, rgba(16, 185, 129, 0.15) 0%, transparent 60%);
+    }
+  </style>
+</head>
+<body class="bg-black text-white min-h-screen flex flex-col justify-between success-gradient">
+
+  <!-- TOP BAR -->
+  <div class="border-b border-white/5 bg-black/60 backdrop-blur-xl">
+    <div class="max-w-5xl mx-auto px-5 py-4 flex items-center justify-between">
+      <a href="/" class="text-lg md:text-xl font-black tracking-wide hover:opacity-80 transition-opacity">
+        KORI KAMERA STORE
+      </a>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-grow flex items-center justify-center px-5 py-12">
+    <div class="w-full max-w-xl rounded-[38px] border border-emerald-500/20 bg-zinc-950/90 backdrop-blur-2xl p-7 md:p-10 shadow-[0_0_50px_rgba(16,185,129,0.1)] text-center">
+      
+      <!-- Icono de éxito con micro-animación -->
+      <div class="w-20 h-20 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(16,185,129,0.2)] animate-pulse">
+        <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+
+      <p class="text-emerald-400 uppercase tracking-[0.25em] text-xs font-semibold mb-2">Transacción Aprobada</p>
+      <h1 class="text-3xl md:text-4xl font-black tracking-tight mb-4">¡Gracias por tu compra!</h1>
+      <p class="text-zinc-400 text-sm leading-relaxed mb-8 max-w-md mx-auto">
+        Tu pago ha sido procesado correctamente. Ahora debemos sincronizar tu pedido por WhatsApp para procesar su fabricación y envío.
+      </p>
+
+      <!-- RESUMEN DE PEDIDO -->
+      <div class="text-left rounded-2xl border border-white/5 bg-white/5 p-6 mb-8 text-sm space-y-3.5">
+        <h3 class="font-bold text-base border-b border-white/5 pb-2 text-zinc-300">Resumen del Pedido</h3>
+        
+        <div class="flex justify-between gap-4">
+          <span class="text-zinc-500">Producto:</span>
+          <span class="font-semibold text-zinc-200">Matte Box MKB-V4</span>
+        </div>
+
+        <div class="flex justify-between gap-4">
+          <span class="text-zinc-500">Color seleccionado:</span>
+          <span id="orderColor" class="font-semibold text-zinc-200">-</span>
+        </div>
+
+        <div class="flex justify-between gap-4">
+          <span class="text-zinc-500">Extras:</span>
+          <span id="orderExtras" class="font-semibold text-zinc-200 text-right max-w-[250px]">-</span>
+        </div>
+
+        <div class="flex justify-between gap-4">
+          <span class="text-zinc-500">Grabado personalizado:</span>
+          <span id="orderEngraving" class="font-semibold text-zinc-200">-</span>
+        </div>
+
+        <div class="flex justify-between gap-4">
+          <span class="text-zinc-500">Método de entrega:</span>
+          <span id="orderShipping" class="font-semibold text-zinc-200">-</span>
+        </div>
+
+        <div class="flex justify-between gap-4 border-t border-white/5 pt-3">
+          <span class="text-zinc-500 font-medium">ID de Pago:</span>
+          <span id="orderPaymentId" class="font-mono text-zinc-300">-</span>
+        </div>
+      </div>
+
+      <!-- BOTÓN PRINCIPAL WHATSAPP -->
+      <button id="whatsappBtn" class="w-full py-5 rounded-2xl bg-emerald-500 text-black font-extrabold hover:bg-emerald-400 hover:scale-[1.01] transition-all duration-300 flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
+        <!-- Icono de WhatsApp -->
+        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.528 2.025 14.069.993 11.458.993 6.024.993 1.6 5.362 1.596 10.793c-.001 1.739.46 3.436 1.332 4.939l-1.03 3.766 3.859-1.009c1.472.8 3.136 1.25 4.81 1.251-.012 0-.012 0 0 0zm11.23-7.93c-.3-.149-1.772-.862-2.046-.962-.273-.1-.472-.149-.672.15-.198.298-.77.962-.943 1.16-.173.199-.347.224-.647.075-.3-.15-1.266-.46-2.41-1.466-.889-.78-1.49-1.743-1.664-2.043-.173-.3-.018-.462.13-.61.135-.133.3-.347.45-.52.149-.174.199-.298.298-.497.1-.198.05-.371-.025-.52-.075-.149-.672-1.59-.92-2.18-.243-.584-.488-.507-.672-.516-.172-.008-.371-.01-.57-.01-.199 0-.523.074-.797.372-.273.297-1.042 1.016-1.042 2.479 0 1.462 1.067 2.877 1.216 3.076.149.198 2.099 3.161 5.083 4.437.71.304 1.264.485 1.696.62.714.223 1.365.191 1.877.115.571-.085 1.772-.714 2.022-1.405.25-.69.25-1.282.174-1.405-.075-.124-.273-.198-.573-.348z"/>
+        </svg>
+        Confirmar pedido por WhatsApp
+      </button>
+
+      <a href="/" class="block mt-4 text-zinc-500 hover:text-zinc-300 text-xs font-semibold uppercase tracking-wider transition-colors">
+        Volver al inicio
+      </a>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-white/5 py-6 text-center text-xs text-zinc-600">
+    &copy; 2026 Kori Kamera Store. Todos los derechos reservados.
+  </footer>
+
+  <script>
+    // Recuperar parámetros de Mercado Pago desde la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentId = urlParams.get('payment_id') || urlParams.get('preference_id') || 'Manual';
+    const status = urlParams.get('status') || 'approved';
+
+    // Recuperar datos guardados localmente del formulario antes de pagar
+    let orderData = {};
+    try {
+      orderData = JSON.parse(localStorage.getItem('last_order_details') || '{}');
+    } catch(e) {
+      console.error('Error cargando los detalles del pedido:', e);
+    }
+
+    // Completar los campos de la interfaz
+    document.getElementById('orderPaymentId').innerText = paymentId;
+    document.getElementById('orderColor').innerText = orderData.color || 'OBSIDIAN';
+    document.getElementById('orderShipping').innerText = orderData.shippingMethod || 'Bluexpress';
+    
+    // Extras list
+    const extras = [];
+    if (orderData.reducers) extras.push('Kit Reductores');
+    if (orderData.adapter) extras.push('Adaptador 77mm');
+    if (orderData.customAdapter) {
+      const details = [];
+      if (orderData.customAdapterDetails?.mm) details.push(orderData.customAdapterDetails.mm + 'mm');
+      if (orderData.customAdapterDetails?.lens) details.push(orderData.customAdapterDetails.lens);
+      extras.push('Adaptador Personalizado' + (details.length ? ` (${details.join(' — ')})` : ''));
+    }
+    document.getElementById('orderExtras').innerText = extras.length ? extras.join(', ') : 'Sin extras';
+
+    // Grabado
+    const engravingText = orderData.engraving ? (orderData.engravingText || 'Pendiente') : 'No agregado';
+    document.getElementById('orderEngraving').innerText = engravingText;
+
+    // Configurar botón de WhatsApp
+    const whatsappBtn = document.getElementById('whatsappBtn');
+    whatsappBtn.addEventListener('click', () => {
+      const name = orderData.name || 'Cliente';
+      const phone = orderData.phone || '';
+      
+      const extrasMsg = extras.length ? extras.join(', ') : 'Sin extras';
+      
+      let invoiceText = '';
+      if (orderData.invoice && orderData.invoiceDetails) {
+        invoiceText = `\n\nFACTURA:\nEmpresa: ${orderData.invoiceDetails.company || ''}\nRUT: ${orderData.invoiceDetails.rut || ''}\nGiro: ${orderData.invoiceDetails.business || ''}\nDirección: ${orderData.invoiceDetails.address || ''}`;
+      }
+
+      const message = `Hola Kori Kamera Store, acabo de pagar mi pedido!\n\nID de Pago: ${paymentId}\nNombre: ${name}\nTeléfono: ${phone}\nColor: ${orderData.color || 'OBSIDIAN'}\nExtras: ${extrasMsg}\nNombre personalizado: ${engravingText}\nEntrega: ${orderData.shippingMethod || 'Bluexpress'}${invoiceText}`;
+      
+      const encodedMsg = encodeURIComponent(message);
+      window.open(`https://wa.me/56950870076?text=${encodedMsg}`, '_blank');
+    });
+  </script>
+
+</body>
+</html>
