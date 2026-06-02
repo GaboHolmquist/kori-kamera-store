@@ -195,6 +195,84 @@
       </div>
     </div>
 
+    <!-- COMPARADOR VISUAL DE TAMAÑO -->
+    <div id="sizeComparisonBox" class="glass-card rounded-[34px] border border-blue-500/20 bg-gradient-to-r from-blue-950/15 to-purple-950/15 p-6 md:p-8 mb-10 relative z-0 hidden">
+      <h3 class="font-bold text-lg mb-2 flex items-center gap-2 text-zinc-200 text-left">
+        <span class="w-2.5 h-2.5 rounded-full bg-purple-400"></span>
+        Comparativa Visual de Tamaño
+      </h3>
+      <p class="text-xs text-zinc-400 mb-6 text-left">
+        Comparación visual de las dimensiones físicas a escala. Selecciona los modos para alternar vistas y superposiciones.
+      </p>
+
+      <!-- Controles -->
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-white/5 pb-4">
+        <!-- Vista: Frente / Superior -->
+        <div class="flex bg-black/40 rounded-xl p-1 border border-white/10 text-xs">
+          <button id="btnViewFront" onclick="setSizeView('front')" class="px-4 py-2 rounded-lg font-bold transition-all text-white bg-white/10">Vista Frontal</button>
+          <button id="btnViewTop" onclick="setSizeView('top')" class="px-4 py-2 rounded-lg font-bold transition-all text-zinc-400 hover:text-white">Vista Superior</button>
+        </div>
+
+        <!-- Modo: Lado a Lado / Superponer -->
+        <div class="flex bg-black/40 rounded-xl p-1 border border-white/10 text-xs">
+          <button id="btnModeSide" onclick="setSizeMode('side')" class="px-4 py-2 rounded-lg font-bold transition-all text-white bg-white/10">Lado a Lado</button>
+          <button id="btnModeOverlay" onclick="setSizeMode('overlay')" class="px-4 py-2 rounded-lg font-bold transition-all text-zinc-400 hover:text-white">Superponer</button>
+        </div>
+      </div>
+
+      <!-- Área de Dibujo SVG -->
+      <div class="relative w-full bg-zinc-950/60 rounded-2xl border border-white/5 p-6 min-h-[300px] flex items-center justify-center overflow-hidden">
+        
+        <!-- Contenedor Lado a Lado -->
+        <div id="sizeSideContainer" class="flex flex-col sm:flex-row items-center justify-center gap-12 w-full">
+          <!-- Cámara A -->
+          <div class="flex flex-col items-center gap-3">
+            <span class="text-xs font-bold text-red-400" id="sizeLabelCamA">Cámara A</span>
+            <div id="svgContainerCamA" class="flex items-center justify-center min-h-[160px]"></div>
+            <span class="text-[10px] text-zinc-500 font-semibold" id="sizeMetricsCamA">-</span>
+          </div>
+
+          <!-- Cámara B -->
+          <div class="flex flex-col items-center gap-3">
+            <span class="text-xs font-bold text-emerald-400" id="sizeLabelCamB">Cámara B</span>
+            <div id="svgContainerCamB" class="flex items-center justify-center min-h-[160px]"></div>
+            <span class="text-[10px] text-zinc-500 font-semibold" id="sizeMetricsCamB">-</span>
+          </div>
+        </div>
+
+        <!-- Contenedor Superpuesto -->
+        <div id="sizeOverlayContainer" class="hidden relative w-[280px] h-[240px]">
+          <div id="svgOverlayA" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 mix-blend-screen z-10"></div>
+          <div id="svgOverlayB" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 mix-blend-screen z-20"></div>
+        </div>
+
+      </div>
+
+      <!-- Métricas comparativas -->
+      <div id="sizeMetricsBox" class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
+        <!-- Ancho -->
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+          <span class="block text-[10px] uppercase tracking-wider text-zinc-500 font-bold">Diferencia Ancho</span>
+          <span id="metricDiffW" class="text-base font-extrabold text-white mt-1 block">-</span>
+        </div>
+        <!-- Alto -->
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+          <span class="block text-[10px] uppercase tracking-wider text-zinc-500 font-bold">Diferencia Alto</span>
+          <span id="metricDiffH" class="text-base font-extrabold text-white mt-1 block">-</span>
+        </div>
+        <!-- Profundidad -->
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+          <span class="block text-[10px] uppercase tracking-wider text-zinc-500 font-bold">Diferencia Profundidad</span>
+          <span id="metricDiffD" class="text-base font-extrabold text-white mt-1 block">-</span>
+        </div>
+        <!-- Volumen -->
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+          <span class="block text-[10px] uppercase tracking-wider text-zinc-500 font-bold">Diferencia Volumen</span>
+          <span id="metricDiffV" class="text-base font-extrabold text-white mt-1 block">-</span>
+        </div>
+      </div>
+    </div>
+
     <!-- COMPARISON TABLE -->
     <div id="comparisonTableBox" class="glass-card rounded-[34px] overflow-hidden relative z-0 hidden">
       <table class="w-full border-collapse text-left">
@@ -551,6 +629,7 @@
       if (!activeCamA || !activeCamB) {
         document.getElementById('comparisonTableBox').classList.add('hidden');
         document.getElementById('comparisonSummaryBox').classList.add('hidden');
+        document.getElementById('sizeComparisonBox').classList.add('hidden');
         return;
       }
 
@@ -604,6 +683,7 @@
       
       document.getElementById('comparisonTableBox').classList.remove('hidden');
       generateSummary(activeCamA, activeCamB);
+      updateSizeComparison();
     }
 
     // Motor de comparación dinámico dual (Filmmakers vs Fotógrafos)
@@ -831,6 +911,231 @@
         });
       }
     }
+
+    // =========================================
+    // COMPARADOR VISUAL DE TAMAÑO (SVG)
+    // =========================================
+    let sizeView = 'front';
+    let sizeMode = 'side';
+
+    const cameraDimensions = {
+      "sony-fx3": { w: 129.7, h: 77.8, d: 84.5, shape: "cinema" },
+      "sony-fx30": { w: 129.7, h: 77.8, d: 84.5, shape: "cinema" },
+      "sony-a7siii": { w: 128.9, h: 96.9, d: 80.8, shape: "dslr" },
+      "sony-a7iv": { w: 131.3, h: 96.4, d: 79.8, shape: "dslr" },
+      "sony-a7r-v": { w: 131.3, h: 96.9, d: 82.4, shape: "dslr" },
+      "sony-a7r-iv": { w: 128.9, h: 96.4, d: 77.5, shape: "dslr" },
+      "sony-alpha-a7r-iii": { w: 126.9, h: 95.6, d: 73.7, shape: "dslr" },
+      "bmpcc-4k": { w: 178.1, h: 96.0, d: 85.5, shape: "bmpcc" },
+      "bmpcc-6k-pro": { w: 180.0, h: 123.0, d: 112.0, shape: "bmpcc" },
+      "panasonic-gh5": { w: 138.5, h: 98.1, d: 87.4, shape: "dslr" },
+      "panasonic-gh5s": { w: 138.5, h: 98.1, d: 87.4, shape: "dslr" },
+      "panasonic-gh4": { w: 132.9, h: 93.0, d: 83.9, shape: "dslr" },
+      "panasonic-lumix-dc-s5-iix": { w: 134.3, h: 102.3, d: 90.1, shape: "dslr" },
+      "panasonic-lumix-dc-s5-ii": { w: 134.3, h: 102.3, d: 90.1, shape: "dslr" },
+      "panasonic-lumix-dc-s5": { w: 132.6, h: 97.1, d: 81.9, shape: "dslr" },
+      "canon-r5": { w: 138.5, h: 97.5, d: 88.0, shape: "dslr" },
+      "canon-eos-r5-c": { w: 142.0, h: 101.0, d: 111.0, shape: "cinema" },
+      "canon-eos-r6-mark-ii": { w: 138.4, h: 98.4, d: 88.4, shape: "dslr" },
+      "canon-eos-r6": { w: 138.4, h: 97.5, d: 88.4, shape: "dslr" },
+      "red-komodo": { w: 95.25, h: 95.25, d: 95.25, shape: "cube" },
+      "fujifilm-x-t5": { w: 129.5, h: 91.0, d: 63.8, shape: "dslr" },
+      "fujifilm-x-t4": { w: 134.6, h: 92.8, d: 63.8, shape: "dslr" },
+      "fujifilm-x-t3": { w: 136.1, h: 92.8, d: 58.8, shape: "dslr" }
+    };
+
+    function setSizeView(view) {
+      sizeView = view;
+      document.getElementById('btnViewFront').className = view === 'front' ? 'px-4 py-2 rounded-lg font-bold transition-all text-white bg-white/10' : 'px-4 py-2 rounded-lg font-bold transition-all text-zinc-400 hover:text-white';
+      document.getElementById('btnViewTop').className = view === 'top' ? 'px-4 py-2 rounded-lg font-bold transition-all text-white bg-white/10' : 'px-4 py-2 rounded-lg font-bold transition-all text-zinc-400 hover:text-white';
+      updateSizeComparison();
+    }
+
+    function setSizeMode(mode) {
+      sizeMode = mode;
+      document.getElementById('btnModeSide').className = mode === 'side' ? 'px-4 py-2 rounded-lg font-bold transition-all text-white bg-white/10' : 'px-4 py-2 rounded-lg font-bold transition-all text-zinc-400 hover:text-white';
+      document.getElementById('btnModeOverlay').className = mode === 'overlay' ? 'px-4 py-2 rounded-lg font-bold transition-all text-white bg-white/10' : 'px-4 py-2 rounded-lg font-bold transition-all text-zinc-400 hover:text-white';
+
+      if (mode === 'side') {
+        document.getElementById('sizeSideContainer').classList.remove('hidden');
+        document.getElementById('sizeSideContainer').classList.add('flex');
+        document.getElementById('sizeOverlayContainer').classList.add('hidden');
+      } else {
+        document.getElementById('sizeSideContainer').classList.remove('flex');
+        document.getElementById('sizeSideContainer').classList.add('hidden');
+        document.getElementById('sizeOverlayContainer').classList.remove('hidden');
+      }
+      updateSizeComparison();
+    }
+
+    function generateCameraSVG(cam, view, strokeColor, fillColor) {
+      const dim = cameraDimensions[cam.id];
+      if (!dim) return '';
+
+      const scale = 1.15; // Escala adaptada para visualización lado a lado
+      const w = dim.w * scale;
+      const h = (view === 'front' ? dim.h : dim.d) * scale;
+      
+      const pad = 20;
+      const svgW = w + pad * 2;
+      const svgH = h + pad * 2;
+      
+      let bodyPath = '';
+      
+      if (view === 'front') {
+        if (dim.shape === 'dslr') {
+          bodyPath = `
+            <!-- Joroba EVF -->
+            <path d="M ${pad + w/2 - 14} ${pad + 10} L ${pad + w/2 - 8} ${pad} L ${pad + w/2 + 8} ${pad} L ${pad + w/2 + 14} ${pad + 10} Z" fill="${fillColor}" stroke="${strokeColor}" stroke-width="2" />
+            <!-- Cuerpo Principal -->
+            <rect x="${pad}" y="${pad + 10}" width="${w}" height="${h - 10}" rx="10" fill="${fillColor}" stroke="${strokeColor}" stroke-width="2" />
+            <!-- Grip Derecho -->
+            <rect x="${pad + w - 20}" y="${pad + 16}" width="16" height="${h - 22}" rx="5" fill="rgba(255,255,255,0.06)" />
+          `;
+        } else if (dim.shape === 'bmpcc') {
+          bodyPath = `
+            <rect x="${pad}" y="${pad}" width="${w}" height="${h}" rx="16" fill="${fillColor}" stroke="${strokeColor}" stroke-width="2" />
+            <!-- Grip inclinado -->
+            <path d="M ${pad + w - 24} ${pad} L ${pad + w} ${pad + 15} L ${pad + w} ${pad + h - 15} L ${pad + w - 24} ${pad + h} Z" fill="rgba(255,255,255,0.04)" />
+          `;
+        } else if (dim.shape === 'cube') {
+          bodyPath = `
+            <rect x="${pad}" y="${pad}" width="${w}" height="${h}" rx="6" fill="${fillColor}" stroke="${strokeColor}" stroke-width="2" />
+          `;
+        } else {
+          // Flat/Cinema (FX3)
+          bodyPath = `
+            <rect x="${pad}" y="${pad}" width="${w}" height="${h}" rx="10" fill="${fillColor}" stroke="${strokeColor}" stroke-width="2" />
+            <!-- Grip -->
+            <rect x="${pad + w - 18}" y="${pad + 6}" width="14" height="${h - 12}" rx="5" fill="rgba(255,255,255,0.06)" />
+          `;
+        }
+        
+        // Añadir Montura de Lente central
+        bodyPath += `
+          <circle cx="${pad + w/2}" cy="${pad + h/2 + (dim.shape === 'dslr' ? 5 : 0)}" r="${24 * scale}" fill="none" stroke="${strokeColor}" stroke-width="1.5" stroke-dasharray="4 2" />
+          <circle cx="${pad + w/2}" cy="${pad + h/2 + (dim.shape === 'dslr' ? 5 : 0)}" r="${18 * scale}" fill="rgba(255,255,255,0.04)" stroke="${strokeColor}" stroke-width="2" />
+        `;
+      } else {
+        // VISTA SUPERIOR (Ancho x Profundidad)
+        bodyPath = `
+          <!-- Cuerpo Principal -->
+          <rect x="${pad}" y="${pad}" width="${w}" height="${h - 20}" rx="8" fill="${fillColor}" stroke="${strokeColor}" stroke-width="2" />
+          <!-- Lente frontal sobresaliendo hacia abajo -->
+          <rect x="${pad + w/2 - 20}" y="${pad + h - 20}" width="40" height="20" rx="4" fill="${fillColor}" stroke="${strokeColor}" stroke-width="2" />
+          <!-- Grip superior -->
+          <path d="M ${pad + w - 20} ${pad + h - 20} L ${pad + w - 4} ${pad + h - 12} L ${pad + w - 4} ${pad} Z" fill="${fillColor}" stroke="${strokeColor}" stroke-width="1" />
+        `;
+      }
+      
+      // Añadir líneas de cota de medidas
+      const valW = dim.w;
+      const valH = view === 'front' ? dim.h : dim.d;
+      
+      bodyPath += `
+        <!-- Línea cota Ancho -->
+        <line x1="${pad}" y1="${pad + h + 8}" x2="${pad + w}" y2="${pad + h + 8}" stroke="${strokeColor}" stroke-width="1" opacity="0.4" />
+        <text x="${pad + w/2}" y="${pad + h + 18}" fill="#a1a1aa" font-size="9" text-anchor="middle" font-weight="bold">${valW} mm</text>
+        
+        <!-- Línea cota Alto / Profundidad -->
+        <line x1="${pad - 8}" y1="${pad}" x2="${pad - 8}" y2="${pad + h}" stroke="${strokeColor}" stroke-width="1" opacity="0.4" />
+        <text x="${pad - 12}" y="${pad + h/2}" fill="#a1a1aa" font-size="9" text-anchor="middle" transform="rotate(-90 ${pad - 12} ${pad + h/2})" font-weight="bold">${valH} mm</text>
+      `;
+      
+      return `
+        <svg width="${svgW}" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}" class="overflow-visible">
+          ${bodyPath}
+        </svg>
+      `;
+    }
+
+    function drawOverlayComparison() {
+      const container = document.getElementById('sizeOverlayContainer');
+      const svgOverlayA = document.getElementById('svgOverlayA');
+      const svgOverlayB = document.getElementById('svgOverlayB');
+      if (!container || !svgOverlayA || !svgOverlayB) return;
+
+      const dimA = cameraDimensions[activeCamA.id];
+      const dimB = cameraDimensions[activeCamB.id];
+      if (!dimA || !dimB) return;
+
+      const scale = 1.15;
+      const pad = 20;
+
+      const maxW = Math.max(dimA.w, dimB.w) * scale + pad*2;
+      const maxH = Math.max(sizeView === 'front' ? dimA.h : dimA.d, sizeView === 'front' ? dimB.h : dimB.d) * scale + pad*2;
+
+      container.style.width = maxW + 'px';
+      container.style.height = maxH + 'px';
+
+      svgOverlayA.innerHTML = generateCameraSVG(activeCamA, sizeView, 'rgb(239, 68, 68)', 'rgba(239, 68, 68, 0.12)');
+      svgOverlayB.innerHTML = generateCameraSVG(activeCamB, sizeView, 'rgb(16, 185, 129)', 'rgba(16, 185, 129, 0.12)');
+    }
+
+    function updateSizeComparison() {
+      if (!activeCamA || !activeCamB) {
+        document.getElementById('sizeComparisonBox').classList.add('hidden');
+        return;
+      }
+
+      const dimA = cameraDimensions[activeCamA.id];
+      const dimB = cameraDimensions[activeCamB.id];
+
+      if (!dimA || !dimB) {
+        // Ocultar si alguna cámara no está en la base de datos de dimensiones
+        document.getElementById('sizeComparisonBox').classList.add('hidden');
+        return;
+      }
+
+      document.getElementById('sizeComparisonBox').classList.remove('hidden');
+
+      // Etiquetas y métricas básicas
+      document.getElementById('sizeLabelCamA').innerText = activeCamA.name;
+      document.getElementById('sizeLabelCamB').innerText = activeCamB.name;
+      document.getElementById('sizeMetricsCamA').innerText = `${dimA.w} x ${dimA.h} x ${dimA.d} mm`;
+      document.getElementById('sizeMetricsCamB').innerText = `${dimB.w} x ${dimB.h} x ${dimB.d} mm`;
+
+      // Renderizar lado a lado
+      document.getElementById('svgContainerCamA').innerHTML = generateCameraSVG(activeCamA, sizeView, 'rgb(239, 68, 68)', 'rgba(239, 68, 68, 0.15)');
+      document.getElementById('svgContainerCamB').innerHTML = generateCameraSVG(activeCamB, sizeView, 'rgb(16, 185, 129)', 'rgba(16, 185, 129, 0.15)');
+
+      // Renderizar superposición
+      drawOverlayComparison();
+
+      // Diferencias de tamaño
+      const diffW = (dimA.w - dimB.w).toFixed(1);
+      const diffH = (dimA.h - dimB.h).toFixed(1);
+      const diffD = (dimA.d - dimB.d).toFixed(1);
+
+      const volA = dimA.w * dimA.h * dimA.d;
+      const volB = dimB.w * dimB.h * dimB.d;
+      const diffV = (((volA - volB) / volB) * 100).toFixed(0);
+
+      document.getElementById('metricDiffW').innerHTML = formatDiff(diffW);
+      document.getElementById('metricDiffH').innerHTML = formatDiff(diffH);
+      document.getElementById('metricDiffD').innerHTML = formatDiff(diffD);
+
+      let volText = '';
+      if (diffV > 0) {
+        volText = `<span class="text-red-400">+${diffV}% vol.</span>`;
+      } else if (diffV < 0) {
+        volText = `<span class="text-emerald-400">${diffV}% vol.</span>`;
+      } else {
+        volText = `<span class="text-zinc-400">Iguales</span>`;
+      }
+      document.getElementById('metricDiffV').innerHTML = volText;
+    }
+
+    function formatDiff(val) {
+      if (val > 0) {
+        return `<span class="text-red-400">+${val} mm</span>`;
+      } else if (val < 0) {
+        return `<span class="text-emerald-400">${val} mm</span>`;
+      } else {
+        return `<span class="text-zinc-400">Igual</span>`;
+      }
+    }
+
   </script>
 
 </body>
