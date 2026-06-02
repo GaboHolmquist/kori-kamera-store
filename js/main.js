@@ -552,6 +552,7 @@ function openMatteboxPage(fromHash = false){
  const home=document.getElementById('homePage')
  const catalog=document.getElementById('catalogPage')
  const product=document.getElementById('productPage')
+ const gabo3d=document.getElementById('gabo3dprintPage')
  
  stopBannerInterval()
  
@@ -559,13 +560,14 @@ function openMatteboxPage(fromHash = false){
   overlay.classList.add('active')
  }
 
- ;[home,catalog].forEach(el=>{
+ ;[home,catalog,gabo3d].forEach(el=>{
   if(el){el.classList.remove('page-visible');el.classList.add('page-hidden')}
  })
 
  setTimeout(()=>{
   if(home) home.classList.add('hidden')
   if(catalog) catalog.classList.add('hidden')
+  if(gabo3d) gabo3d.classList.add('hidden')
 
   product.classList.remove('hidden')
 
@@ -599,13 +601,14 @@ function goHome(fromHash = false){
  const catalog=document.getElementById('catalogPage')
  const product=document.getElementById('productPage')
  const tp1=document.getElementById('tp1Page')
+ const gabo3d=document.getElementById('gabo3dprintPage')
 
  stopRigInterval()
  stopBannerInterval()
 
  if(overlay) overlay.classList.add('active')
 
- ;[catalog,product,tp1].forEach(el=>{
+ ;[catalog,product,tp1,gabo3d].forEach(el=>{
   if(el){el.classList.remove('page-visible');el.classList.add('page-hidden')}
  })
 
@@ -613,6 +616,7 @@ function goHome(fromHash = false){
   if(catalog) catalog.classList.add('hidden')
   if(product) product.classList.add('hidden')
   if(tp1) tp1.classList.add('hidden')
+  if(gabo3d) gabo3d.classList.add('hidden')
   
   home.classList.remove('hidden')
   requestAnimationFrame(()=>{
@@ -640,12 +644,13 @@ function openCatalogPage(fromHash = false){
  const catalog=document.getElementById('catalogPage')
  const product=document.getElementById('productPage')
  const tp1=document.getElementById('tp1Page')
+ const gabo3d=document.getElementById('gabo3dprintPage')
 
  stopBannerInterval()
 
  if(overlay) overlay.classList.add('active')
 
- ;[home,product,tp1].forEach(el=>{
+ ;[home,product,tp1,gabo3d].forEach(el=>{
   if(el){el.classList.remove('page-visible');el.classList.add('page-hidden')}
  })
 
@@ -653,12 +658,52 @@ function openCatalogPage(fromHash = false){
   if(home) home.classList.add('hidden')
   if(product) product.classList.add('hidden')
   if(tp1) tp1.classList.add('hidden')
+  if(gabo3d) gabo3d.classList.add('hidden')
   
   catalog.classList.remove('hidden')
   requestAnimationFrame(()=>{
    catalog.classList.remove('page-hidden')
    catalog.classList.add('page-visible')
   })
+  window.scrollTo({top:0,behavior:'smooth'})
+ },170)
+
+ setTimeout(()=>{if(overlay) overlay.classList.remove('active')},560)
+}
+
+function openGabo3DprintPage(fromHash = false){
+ if(!fromHash){
+  window.location.hash = 'gabo3dprint';
+  return;
+ }
+ const overlay=document.getElementById('transitionOverlay')
+ const home=document.getElementById('homePage')
+ const catalog=document.getElementById('catalogPage')
+ const product=document.getElementById('productPage')
+ const tp1=document.getElementById('tp1Page')
+ const gabo3d=document.getElementById('gabo3dprintPage')
+
+ stopBannerInterval()
+
+ if(overlay) overlay.classList.add('active')
+
+ ;[home,catalog,product,tp1].forEach(el=>{
+  if(el){el.classList.remove('page-visible');el.classList.add('page-hidden')}
+ })
+
+ setTimeout(()=>{
+  if(home) home.classList.add('hidden')
+  if(catalog) catalog.classList.add('hidden')
+  if(product) product.classList.add('hidden')
+  if(tp1) tp1.classList.add('hidden')
+  
+  if(gabo3d) {
+   gabo3d.classList.remove('hidden')
+   requestAnimationFrame(()=>{
+    gabo3d.classList.remove('page-hidden')
+    gabo3d.classList.add('page-visible')
+   })
+  }
   window.scrollTo({top:0,behavior:'smooth'})
  },170)
 
@@ -794,11 +839,12 @@ function openTp1Page(fromHash = false){
  const catalog=document.getElementById('catalogPage')
  const mattebox=document.getElementById('productPage')
  const tp1=document.getElementById('tp1Page')
+ const gabo3d=document.getElementById('gabo3dprintPage')
  
  stopBannerInterval()
  
  if(overlay) overlay.classList.add('active')
- ;[home,catalog,mattebox].forEach(el=>{
+ ;[home,catalog,mattebox,gabo3d].forEach(el=>{
   if(el){
    el.classList.remove('page-visible')
    el.classList.add('page-hidden','hidden')
@@ -911,18 +957,423 @@ async function fetchAndApplyStock(){
 fetchAndApplyStock();
 
 // =========================================
+// GABO3DPRINT PORTFOLIO & MODAL LOGIC
+// =========================================
+
+const gabo3dPortfolio = [
+  {
+    id: "item3d1",
+    title: "Vaso de Coctel Geométrico",
+    description: "Vaso facetado impreso en filamento PETG translúcido de grado alimenticio. Diseño óptimo para refracción de luz en coctelería conceptual y de competencias.",
+    images: [
+      "productos/item3d1_1.jpg",
+      "productos/item3d1_2.jpg",
+      "productos/item3d1_3.jpg",
+      "productos/item3d1_4.jpg",
+      "productos/item3d1_5.jpg",
+      "productos/item3d1_6.jpg",
+      "productos/item3d1_7.jpg"
+    ],
+    fallbacks: [
+      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    id: "item3d2",
+    title: "Organizador de Barra Mod",
+    description: "Organizador modular de barra con espacio optimizado para pinzas, cucharas de bar, jiggers y atomizadores de bitters.",
+    images: [
+      "productos/item3d2_1.jpg",
+      "productos/item3d2_2.jpg"
+    ],
+    fallbacks: [
+      "https://images.unsplash.com/photo-1615840287214-7fe58a8f3685?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1582179729302-ac487d55986f?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    id: "item3d3",
+    title: "Soporte Cucharas de Bar",
+    description: "Exhibidor y secador elegante para cucharas imperiales y pinzas de precisión, ideal para barras de alta velocidad.",
+    images: [
+      "productos/item3d3_1.jpg",
+      "productos/item3d3_2.jpg",
+      "productos/item3d3_3.jpg"
+    ],
+    fallbacks: [
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1517256064527-09c53b2d0bc6?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    id: "item3d4",
+    title: "Molde de Hielo Concept",
+    description: "Molde y estampador de hielo personalizado con relieve de marca para esferas y cubos cristalinos de 60mm.",
+    images: [
+      "productos/item3d4_1.jpg",
+      "productos/item3d4_2.jpg",
+      "productos/item3d4_3.jpg"
+    ],
+    fallbacks: [
+      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    id: "item3d5",
+    title: "Decorador de Copas 3D",
+    description: "Estarcido o stencil personalizado para espolvorear bitters aromáticos, canela o cacao sobre espuma de cócteles.",
+    images: [
+      "productos/item3d5_1.jpg",
+      "productos/item3d5_2.jpg",
+      "productos/item3d5_3.jpg"
+    ],
+    fallbacks: [
+      "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    id: "item3d6",
+    title: "Pico Vertedor Customizado",
+    description: "Adaptadores para botellas de diseño especial, permitiendo un flujo constante y preciso para licores espesos.",
+    images: [
+      "productos/item3d6_1.jpg",
+      "productos/item3d6_2.jpg",
+      "productos/item3d6_3.jpg"
+    ],
+    fallbacks: [
+      "https://images.unsplash.com/photo-1560512823-829485b8bf24?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80"
+    ]
+  }
+];
+
+let currentGabo3dItemId = null;
+let currentGabo3dImgIndex = 0;
+let gabo3dActiveLayer = 'A';
+
+// Resuelve la URL de la imagen (usa la local si existe, sino el fallback)
+function getGabo3dImageSrc(item, index, callback) {
+  const localSrc = item.images[index];
+  const fallbackSrc = item.fallbacks[index] || item.fallbacks[0];
+  
+  const img = new Image();
+  img.onload = () => callback(localSrc);
+  img.onerror = () => callback(fallbackSrc);
+  img.src = localSrc;
+}
+
+// Renderiza la grilla de portafolio en index.html
+function renderGabo3dPortfolio() {
+  const grid = document.getElementById('gabo3dGrid');
+  if (!grid) return;
+  
+  grid.innerHTML = '';
+  gabo3dPortfolio.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'group cursor-pointer rounded-[30px] border border-white/10 bg-zinc-900/40 backdrop-blur-md overflow-hidden hover:scale-[1.02] hover:border-white/20 transition-all duration-300 flex flex-col shadow-lg';
+    card.onclick = () => {
+      window.location.hash = 'gabo3dprint-' + item.id;
+    };
+    
+    // Contenedor de imagen
+    const imgWrapper = document.createElement('div');
+    imgWrapper.className = 'aspect-square w-full bg-zinc-950 overflow-hidden relative border-b border-white/10';
+    
+    // Imagen Principal
+    const img1 = document.createElement('img');
+    img1.className = 'absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-all duration-700 ease-in-out';
+    img1.src = item.images[0];
+    img1.alt = item.title;
+    img1.onerror = () => {
+      img1.onerror = null;
+      img1.src = item.fallbacks[0];
+    };
+    
+    // Imagen Secundaria (Hover/Touch)
+    const img2 = document.createElement('img');
+    img2.className = 'absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-in-out';
+    img2.src = item.images[1];
+    img2.alt = item.title + ' hover';
+    img2.onerror = () => {
+      img2.onerror = null;
+      img2.src = item.fallbacks[1] || item.fallbacks[0];
+    };
+    
+    imgWrapper.appendChild(img1);
+    imgWrapper.appendChild(img2);
+    
+    // Contenedor del título (abajo)
+    const titleWrapper = document.createElement('div');
+    titleWrapper.className = 'p-4 flex items-center justify-center flex-grow bg-black/20';
+    
+    const title = document.createElement('h3');
+    title.className = 'text-center text-xs md:text-sm font-bold text-zinc-300 group-hover:text-white transition-colors duration-300';
+    title.innerText = item.title;
+    
+    titleWrapper.appendChild(title);
+    
+    card.appendChild(imgWrapper);
+    card.appendChild(titleWrapper);
+    grid.appendChild(card);
+  });
+
+  // Inicializar animación de revelado con scroll
+  initGabo3dScrollReveal();
+}
+
+// Inicializador de animación de revelado con desfase
+function initGabo3dScrollReveal() {
+  const cards = document.querySelectorAll('#gabo3dGrid > div');
+  if (!cards.length) return;
+  
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px 0px -80px 0px', // se activa un poco antes de aparecer completamente en el viewport
+    threshold: 0.05
+  };
+  
+  const observer = new IntersectionObserver((entries, obs) => {
+    // Filtramos solo las que están entrando en pantalla
+    const visibleEntries = entries.filter(e => e.isIntersecting);
+    
+    visibleEntries.forEach((entry, index) => {
+      const card = entry.target;
+      // Desfase de delay de 120ms entre cada tarjeta que entra al mismo tiempo
+      const delay = index * 120;
+      
+      setTimeout(() => {
+        card.classList.add('revealed');
+      }, delay);
+      
+      // Dejar de observar la tarjeta ya revelada
+      obs.unobserve(card);
+    });
+  }, observerOptions);
+  
+  cards.forEach(card => {
+    card.classList.add('reveal-card');
+    observer.observe(card);
+  });
+}
+
+
+// Abre un ítem de portafolio y muestra el modal
+function openGabo3dItem(itemId, fromHash = false) {
+  const item = gabo3dPortfolio.find(p => p.id === itemId);
+  if (!item) return;
+  
+  currentGabo3dItemId = itemId;
+  currentGabo3dImgIndex = 0;
+  
+  // Setear títulos y descripción
+  document.getElementById('gabo3dPopupTitle').innerText = item.title;
+  document.getElementById('gabo3dPopupDesc').innerText = item.description;
+  
+  // WhatsApp link de consulta específico
+  const waBtn = document.getElementById('gabo3dPopupWaBtn');
+  if (waBtn) {
+    const textMsg = encodeURIComponent(`Hola Gabo3Dprint, me interesa el diseño "${item.title}" de tu portafolio y me gustaría consultar por él.`);
+    waBtn.href = `https://wa.me/56950870076?text=${textMsg}`;
+  }
+  
+  // Renderizar dots
+  const dotsContainer = document.getElementById('gabo3dPopupDots');
+  if (dotsContainer) {
+    dotsContainer.innerHTML = '';
+    item.images.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'w-2 h-2 rounded-full ' + (i === 0 ? 'bg-white/90' : 'bg-white/30');
+      dotsContainer.appendChild(dot);
+    });
+  }
+  
+  // Inicializar imágenes de capas A y B
+  getGabo3dImageSrc(item, 0, (resolvedSrc) => {
+    const layerAImg = document.getElementById('gabo3dPopupLayerA').querySelector('img');
+    const layerBImg = document.getElementById('gabo3dPopupLayerB').querySelector('img');
+    if (layerAImg) layerAImg.src = resolvedSrc;
+    if (layerBImg) layerBImg.src = resolvedSrc;
+    
+    // Ajustar relación de aspecto del contenedor según dimensiones originales
+    const img = new Image();
+    img.onload = () => {
+      const sliderContainer = document.getElementById('gabo3dPopupGallery').parentNode;
+      if (sliderContainer) {
+        sliderContainer.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
+      }
+    };
+    img.src = resolvedSrc;
+    
+    gabo3dActiveLayer = 'A';
+    document.getElementById('gabo3dPopupLayerA').style.opacity = '1';
+    document.getElementById('gabo3dPopupLayerA').style.zIndex = '2';
+    document.getElementById('gabo3dPopupLayerB').style.opacity = '0';
+    document.getElementById('gabo3dPopupLayerB').style.zIndex = '1';
+  });
+  
+  // Mostrar modal y bloquear scroll de body
+  const modal = document.getElementById('gabo3dPopup');
+  if (modal) {
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+  
+  if (!fromHash) {
+    window.location.hash = 'gabo3dprint-' + itemId;
+  }
+}
+
+// Cierra el modal de portafolio
+function closeGabo3dPopup(fromHashChange = false) {
+  const modal = document.getElementById('gabo3dPopup');
+  if (modal) {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+  
+  currentGabo3dItemId = null;
+  
+  if (!fromHashChange) {
+    window.location.hash = 'gabo3dprint';
+  }
+}
+
+// Actualiza la imagen mostrada en la galería del popup con fundido
+function updateGabo3dPopupGallery() {
+  const item = gabo3dPortfolio.find(p => p.id === currentGabo3dItemId);
+  if (!item) return;
+  
+  getGabo3dImageSrc(item, currentGabo3dImgIndex, (resolvedSrc) => {
+    // Ajustar relación de aspecto del contenedor para la nueva imagen antes del crossfade
+    const img = new Image();
+    img.onload = () => {
+      const sliderContainer = document.getElementById('gabo3dPopupGallery').parentNode;
+      if (sliderContainer) {
+        sliderContainer.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
+      }
+      crossfade('gabo3dPopupLayerA', 'gabo3dPopupLayerB', gabo3dActiveLayer, resolvedSrc, (v) => { gabo3dActiveLayer = v; });
+    };
+    img.src = resolvedSrc;
+    
+    // Actualizar dots
+    const dots = document.querySelectorAll('#gabo3dPopupDots div');
+    dots.forEach((dot, i) => {
+      dot.className = 'w-2 h-2 rounded-full ' + (i === currentGabo3dImgIndex ? 'bg-white/90' : 'bg-white/30');
+    });
+  });
+}
+
+function nextGabo3dImg(event) {
+  if (event) event.stopPropagation();
+  const item = gabo3dPortfolio.find(p => p.id === currentGabo3dItemId);
+  if (!item) return;
+  
+  currentGabo3dImgIndex = (currentGabo3dImgIndex + 1) % item.images.length;
+  updateGabo3dPopupGallery();
+}
+
+function prevGabo3dImg(event) {
+  if (event) event.stopPropagation();
+  const item = gabo3dPortfolio.find(p => p.id === currentGabo3dItemId);
+  if (!item) return;
+  
+  currentGabo3dImgIndex = (currentGabo3dImgIndex - 1 + item.images.length) % item.images.length;
+  updateGabo3dPopupGallery();
+}
+
+function handleGabo3dPopupGalleryClick(event) {
+  const rect = event.currentTarget.getBoundingClientRect();
+  const clickX = event.clientX - rect.left;
+  if (clickX < rect.width / 2) {
+    prevGabo3dImg();
+  } else {
+    nextGabo3dImg();
+  }
+}
+
+// Touch gesture listeners para el popup de Gabo3Dprint con prevención de scroll vertical durante swipe
+let gabo3dTouchStartX = 0;
+let gabo3dTouchStartY = 0;
+let gabo3dIsSwiping = false;
+
+const gabo3dEl = document.getElementById('gabo3dPopupGallery');
+if (gabo3dEl) {
+  gabo3dEl.addEventListener('touchstart', (e) => {
+    gabo3dTouchStartX = e.touches[0].clientX;
+    gabo3dTouchStartY = e.touches[0].clientY;
+    gabo3dIsSwiping = true;
+  }, {passive: true});
+
+  gabo3dEl.addEventListener('touchmove', (e) => {
+    if (!gabo3dIsSwiping) return;
+    
+    const diffX = e.touches[0].clientX - gabo3dTouchStartX;
+    const diffY = e.touches[0].clientY - gabo3dTouchStartY;
+    
+    // Si el movimiento es predominantemente horizontal, prevenimos el scroll de fondo
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      if (e.cancelable) e.preventDefault();
+    }
+  }, {passive: false});
+
+  gabo3dEl.addEventListener('touchend', (e) => {
+    if (!gabo3dIsSwiping) return;
+    gabo3dIsSwiping = false;
+    
+    const diffX = e.changedTouches[0].clientX - gabo3dTouchStartX;
+    if (Math.abs(diffX) > 40) {
+      diffX > 0 ? prevGabo3dImg() : nextGabo3dImg();
+    }
+  }, {passive: true});
+}
+
+// Click fuera de la tarjeta para cerrar el modal
+const gabo3dPopup = document.getElementById('gabo3dPopup');
+if (gabo3dPopup) {
+  gabo3dPopup.addEventListener('click', (event) => {
+    const popupCard = event.target.closest('.max-w-2xl');
+    if (!popupCard) {
+      closeGabo3dPopup();
+    }
+  });
+}
+
+// Renderizar la grilla inicialmente al cargar
+renderGabo3dPortfolio();
+
+// =========================================
 // HASH-BASED ROUTING
 // =========================================
 
 window.addEventListener('hashchange', () => {
  const hash = window.location.hash;
  if (hash === '#productos') {
+  closeGabo3dPopup(true);
   openCatalogPage(true);
  } else if (hash === '#mkb-v4') {
+  closeGabo3dPopup(true);
   openMatteboxPage(true);
  } else if (hash === '#tp1') {
+  closeGabo3dPopup(true);
   openTp1Page(true);
+ } else if (hash === '#gabo3dprint') {
+  closeGabo3dPopup(true);
+  openGabo3DprintPage(true);
+ } else if (hash.startsWith('#gabo3dprint-')) {
+  const itemId = hash.replace('#gabo3dprint-', '');
+  openGabo3DprintPage(true);
+  openGabo3dItem(itemId, true);
  } else {
+  closeGabo3dPopup(true);
   goHome(true);
  }
 });
@@ -950,7 +1401,22 @@ function handleInitialRouting() {
   document.getElementById('tp1Page').classList.remove('hidden', 'page-hidden');
   document.getElementById('tp1Page').classList.add('page-visible');
   stopBannerInterval();
+ } else if (hash === '#gabo3dprint') {
+  document.getElementById('homePage').classList.add('hidden', 'page-hidden');
+  document.getElementById('homePage').classList.remove('page-visible');
+  document.getElementById('gabo3dprintPage').classList.remove('hidden', 'page-hidden');
+  document.getElementById('gabo3dprintPage').classList.add('page-visible');
+  stopBannerInterval();
+ } else if (hash.startsWith('#gabo3dprint-')) {
+  const itemId = hash.replace('#gabo3dprint-', '');
+  document.getElementById('homePage').classList.add('hidden', 'page-hidden');
+  document.getElementById('homePage').classList.remove('page-visible');
+  document.getElementById('gabo3dprintPage').classList.remove('hidden', 'page-hidden');
+  document.getElementById('gabo3dprintPage').classList.add('page-visible');
+  stopBannerInterval();
+  openGabo3dItem(itemId, true);
  }
 }
 
 handleInitialRouting();
+

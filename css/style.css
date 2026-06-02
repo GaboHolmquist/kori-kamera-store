@@ -11,7 +11,7 @@ img, video{
 }
 
 /* Las galerías necesitan pointer-events para el click de navegación */
-#rigGallery, #productGallery, #bannerGallery{
+#rigGallery, #productGallery, #bannerGallery, #gabo3dPopupGallery{
  pointer-events:auto;
 }
 
@@ -150,7 +150,8 @@ pointer-events:none;
 #homePage,
 #catalogPage,
 #productPage,
-#tp1Page{
+#tp1Page,
+#gabo3dprintPage{
 transition:opacity .32s ease, transform .45s cubic-bezier(.22,.61,.36,1);
 will-change:opacity,transform;
 }
@@ -200,4 +201,24 @@ rgba(255,255,255,0.10)
 html{
 scrollbar-color:rgba(255,255,255,0.18) transparent;
 scrollbar-width:thin;
+}
+
+/* Animación de revelado con desfase elegante para tarjetas */
+.reveal-card {
+  opacity: 0;
+  transform: translateY(40px) scale(0.97);
+  transition: opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-card.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Transición suave para el cambio de altura dinámica en el modal */
+#gabo3dPopupSlider {
+  transition: aspect-ratio 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+              height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }

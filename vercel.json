@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/comparador",
+      "destination": "/comparador.html",
+      "permanent": true
+    }
+  ]
+}

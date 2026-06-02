@@ -49,22 +49,26 @@
       animation: epicGlow 1.6s infinite ease-in-out;
     }
     
-    @keyframes shakeLeft {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(6px) rotate(0.5deg); }
-      40%, 80% { transform: translateX(-4px) rotate(-0.5deg); }
+    @keyframes clashLeft {
+      0% { transform: translateX(0) scale(1); }
+      15% { transform: translateX(-15px) scale(0.98); }
+      40% { transform: translateX(35px) scale(1.04) rotate(1deg); }
+      70% { transform: translateX(-8px) scale(0.98) rotate(-0.5deg); }
+      100% { transform: translateX(0) scale(1); }
     }
     .animate-shake-left {
-      animation: shakeLeft 0.15s ease-in-out infinite;
+      animation: clashLeft 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 1;
     }
     
-    @keyframes shakeRight {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-6px) rotate(-0.5deg); }
-      40%, 80% { transform: translateX(4px) rotate(0.5deg); }
+    @keyframes clashRight {
+      0% { transform: translateX(0) scale(1); }
+      15% { transform: translateX(15px) scale(0.98); }
+      40% { transform: translateX(-35px) scale(1.04) rotate(-1deg); }
+      70% { transform: translateX(8px) scale(0.98) rotate(0.5deg); }
+      100% { transform: translateX(0) scale(1); }
     }
     .animate-shake-right {
-      animation: shakeRight 0.15s ease-in-out infinite;
+      animation: clashRight 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 1;
     }
   </style>
 </head>
@@ -497,7 +501,7 @@
     // Cargar nombres por defecto e iniciar tasa de cambio
     async function init() {
       try {
-        const response = await fetch('js/cameras_db.json');
+        const response = await fetch('js/cameras_db.json?v=' + new Date().getTime());
         if (response.ok) {
           cameraDb = await response.json();
           console.log(`Base de datos cargada: ${cameraDb.length} cámaras.`);
@@ -705,17 +709,22 @@
       document.getElementById('skillsComparisonBox').classList.add('hidden');
 
       // Guardar en la lista de recientes
-      let recents = [];
       try {
-        recents = JSON.parse(localStorage.getItem('recent_cameras')) || [];
-      } catch (e) {}
-      recents = recents.filter(id => id !== cam.id);
-      recents.unshift(cam.id);
-      recents = recents.slice(0, 5); // Guardar las últimas 5 únicas
-      localStorage.setItem('recent_cameras', JSON.stringify(recents));
+        let recents = JSON.parse(localStorage.getItem('recent_cameras')) || [];
+        recents = recents.filter(id => id !== cam.id);
+        recents.unshift(cam.id);
+        recents = recents.slice(0, 5); // Guardar las últimas 5 únicas
+        localStorage.setItem('recent_cameras', JSON.stringify(recents));
+      } catch (e) {
+        console.warn("No se pudo escribir en localStorage:", e);
+      }
 
       // Guardar la última cámara seleccionada por tipo
-      localStorage.setItem('last_compared_c' + (type === 'A' ? '1' : '2'), cam.id);
+      try {
+        localStorage.setItem('last_compared_c' + (type === 'A' ? '1' : '2'), cam.id);
+      } catch (e) {
+        console.warn("No se pudo guardar la última selección en localStorage:", e);
+      }
 
       // Actualizar el estado del botón Pelea!
       checkFightButton();
@@ -782,29 +791,29 @@
       document.getElementById('tableHeaderCamA').innerText = activeCamA.name;
       document.getElementById('tableHeaderCamB').innerText = activeCamB.name;
       
-      const priceClpA = Math.round(activeCamA.priceUsd * usdToClpRate);
-      const priceClpB = Math.round(activeCamB.priceUsd * usdToClpRate);
+      const priceClpA = activeCamA.priceUsd ? Math.round(activeCamA.priceUsd * usdToClpRate) : 0;
+      const priceClpB = activeCamB.priceUsd ? Math.round(activeCamB.priceUsd * usdToClpRate) : 0;
 
       const specs = [
-        { label: "Fabricante", valA: activeCamA.brand, valB: activeCamB.brand },
-        { label: "Año de Lanzamiento", valA: activeCamA.year, valB: activeCamB.year },
-        { label: "Sensor", valA: activeCamA.sensor, valB: activeCamB.sensor },
-        { label: "Resolución Foto", valA: activeCamA.resolution, valB: activeCamB.resolution },
-        { label: "Montura", valA: activeCamA.mount, valB: activeCamB.mount },
-        { label: "Resolución Máxima de Video", valA: activeCamA.maxVideo, valB: activeCamB.maxVideo },
-        { label: "Sensibilidad ISO Máxima", valA: activeCamA.maxIso.toLocaleString('es-CL'), valB: activeCamB.maxIso.toLocaleString('es-CL') },
-        { label: "Tasa de Bits (Bitrate) Máx.", valA: activeCamA.bitrate, valB: activeCamB.bitrate },
-        { label: "Estabilización", valA: activeCamA.stabilization, valB: activeCamB.stabilization },
-        { label: "Peso (Cuerpo)", valA: activeCamA.weight, valB: activeCamB.weight },
+        { label: "Fabricante", valA: activeCamA.brand || 'N/D', valB: activeCamB.brand || 'N/D' },
+        { label: "Año de Lanzamiento", valA: activeCamA.year || 'N/D', valB: activeCamB.year || 'N/D' },
+        { label: "Sensor", valA: activeCamA.sensor || 'N/D', valB: activeCamB.sensor || 'N/D' },
+        { label: "Resolución Foto", valA: activeCamA.resolution || 'N/D', valB: activeCamB.resolution || 'N/D' },
+        { label: "Montura", valA: activeCamA.mount || 'N/D', valB: activeCamB.mount || 'N/D' },
+        { label: "Resolución Máxima de Video", valA: activeCamA.maxVideo || 'N/D', valB: activeCamB.maxVideo || 'N/D' },
+        { label: "Sensibilidad ISO Máxima", valA: activeCamA.maxIso ? activeCamA.maxIso.toLocaleString('es-CL') : 'N/D', valB: activeCamB.maxIso ? activeCamB.maxIso.toLocaleString('es-CL') : 'N/D' },
+        { label: "Tasa de Bits (Bitrate) Máx.", valA: activeCamA.bitrate || 'N/D', valB: activeCamB.bitrate || 'N/D' },
+        { label: "Estabilización", valA: activeCamA.stabilization || 'N/D', valB: activeCamB.stabilization || 'N/D' },
+        { label: "Peso (Cuerpo)", valA: activeCamA.weight || 'N/D', valB: activeCamB.weight || 'N/D' },
         { 
           label: "Precio Estimado (USD)", 
-          valA: `<strong class="text-white">$${activeCamA.priceUsd.toLocaleString('en-US')} USD</strong>`, 
-          valB: `<strong class="text-white">$${activeCamB.priceUsd.toLocaleString('en-US')} USD</strong>` 
+          valA: activeCamA.priceUsd ? `<strong class="text-white">$${activeCamA.priceUsd.toLocaleString('en-US')} USD</strong>` : 'N/D', 
+          valB: activeCamB.priceUsd ? `<strong class="text-white">$${activeCamB.priceUsd.toLocaleString('en-US')} USD</strong>` : 'N/D' 
         },
         { 
           label: "Precio Estimado (CLP)", 
-          valA: `<span class="text-emerald-400 font-semibold">~$${priceClpA.toLocaleString('es-CL')} CLP</span>`, 
-          valB: `<span class="text-emerald-400 font-semibold">~$${priceClpB.toLocaleString('es-CL')} CLP</span>` 
+          valA: priceClpA ? `<span class="text-emerald-400 font-semibold">~$${priceClpA.toLocaleString('es-CL')} CLP</span>` : 'N/D', 
+          valB: priceClpB ? `<span class="text-emerald-400 font-semibold">~$${priceClpB.toLocaleString('es-CL')} CLP</span>` : 'N/D' 
         },
         { 
           label: "Enlaces de Búsqueda", 
@@ -850,45 +859,58 @@
       function getAdvantageList(target, compare, mode) {
         const advantages = [];
         
+        const targetPrice = target.priceUsd || 0;
+        const comparePrice = compare.priceUsd || 0;
+        const targetMaxVideo = target.maxVideo || "";
+        const compareMaxVideo = compare.maxVideo || "";
+        const targetBitrate = target.bitrate || "";
+        const compareBitrate = compare.bitrate || "";
+        const targetMount = target.mount || "";
+        const compareMount = compare.mount || "";
+        const targetMaxIso = target.maxIso || 0;
+        const compareMaxIso = compare.maxIso || 0;
+        const targetWeight = target.weight || "";
+        const compareWeight = compare.weight || "";
+
         if (mode === 'video') {
           // 0. Ventaja de presupuesto
-          if (target.priceUsd < compare.priceUsd) {
-            const priceDiffUsd = compare.priceUsd - target.priceUsd;
+          if (targetPrice && comparePrice && targetPrice < comparePrice) {
+            const priceDiffUsd = comparePrice - targetPrice;
             const priceDiffClp = Math.round(priceDiffUsd * usdToClpRate);
             advantages.push(`<strong>Costo / Presupuesto:</strong> Ahorras aprox. <strong>$${priceDiffUsd.toLocaleString('en-US')} USD</strong> (~<strong>$${priceDiffClp.toLocaleString('es-CL')} CLP</strong>), ideal para invertir el saldo en objetivos, sonido o accesorios.`);
           }
           // 1. Framerate
-          if (target.maxVideoFps > compare.maxVideoFps) {
+          if (target.maxVideoFps && compare.maxVideoFps && target.maxVideoFps > compare.maxVideoFps) {
             advantages.push(`<strong>Cámara lenta superior:</strong> Graba hasta <strong>${target.maxVideoFps} fps</strong> en su máxima resolución frente a los ${compare.maxVideoFps} fps de la otra cámara.`);
           }
           // 2. Max Video Resolution
-          if ((target.maxVideo.includes('6K') || target.maxVideo.includes('8K')) && !(compare.maxVideo.includes('6K') || compare.maxVideo.includes('8K'))) {
-            advantages.push(`<strong>Mayor resolución nativa:</strong> Graba en <strong>${target.maxVideo.split(' ')[0]}</strong> para mayor detalle cinematográfico y flexibilidad de reencuadre.`);
-          } else if (target.maxVideo.includes('8K') && compare.maxVideo.includes('6K')) {
+          if ((targetMaxVideo.includes('6K') || targetMaxVideo.includes('8K')) && !(compareMaxVideo.includes('6K') || compareMaxVideo.includes('8K'))) {
+            advantages.push(`<strong>Mayor resolución nativa:</strong> Graba en <strong>${targetMaxVideo.split(' ')[0]}</strong> para mayor detalle cinematográfico y flexibilidad de reencuadre.`);
+          } else if (targetMaxVideo.includes('8K') && compareMaxVideo.includes('6K')) {
             advantages.push(`<strong>Grabación 8K extrema:</strong> Máximo nivel de detalle de captura en resolución nativa de 8K.`);
           }
           // 3. RAW Support & Bitrate
           if (target.rawSupport && !compare.rawSupport) {
-            advantages.push(`<strong>Grabación en RAW profesional:</strong> Ofrece archivos de video con máxima información de color y rango dinámico (como ${target.bitrate.split('(')[1]?.replace(')', '') || 'formato profesional'}).`);
+            advantages.push(`<strong>Grabación en RAW profesional:</strong> Ofrece archivos de video con máxima información de color y rango dinámico (como ${targetBitrate.split('(')[1]?.replace(')', '') || 'formato profesional'}).`);
           } else if (target.rawSupport && compare.rawSupport) {
-            const bitA = parseInt(target.bitrate);
-            const bitB = parseInt(compare.bitrate);
+            const bitA = parseInt(targetBitrate);
+            const bitB = parseInt(compareBitrate);
             if (!isNaN(bitA) && !isNaN(bitB) && bitA > bitB) {
-              advantages.push(`<strong>Menor compresión de archivos:</strong> Su tasa de bits (${target.bitrate}) es mayor que la de la otra opción (${compare.bitrate}), reteniendo más información.`);
+              advantages.push(`<strong>Menor compresión de archivos:</strong> Su tasa de bits (${targetBitrate}) es mayor que la de la otra opción (${compareBitrate}), reteniendo más información.`);
             }
           }
           // 4. Sensibilidad ISO (Low Light)
-          if (target.maxIso > compare.maxIso) {
-            const ISOtimes = Math.round(target.maxIso / compare.maxIso);
-            advantages.push(`<strong>Rendimiento nocturno superior:</strong> Su sensibilidad ISO máxima es <strong>${ISOtimes} veces mayor</strong> (${target.maxIso.toLocaleString('es-CL')} ISO), ideal para tomas de noche.`);
+          if (targetMaxIso && compareMaxIso && targetMaxIso > compareMaxIso) {
+            const ISOtimes = Math.round(targetMaxIso / compareMaxIso);
+            advantages.push(`<strong>Rendimiento nocturno superior:</strong> Su sensibilidad ISO máxima es <strong>${ISOtimes} veces mayor</strong> (${targetMaxIso.toLocaleString('es-CL')} ISO), ideal para tomas de noche.`);
           }
           // 5. Estabilización IBIS
           if (target.hasIbis && !compare.hasIbis) {
             advantages.push(`<strong>Estabilización integrada (IBIS):</strong> Permite tomas estables a mano alzada y paneos fluidos sin depender de gimbals.`);
           }
           // 6. Peso (para gimbals / run-and-gun)
-          if (target.weightNum < compare.weightNum) {
-            advantages.push(`<strong>Operación más ligera:</strong> Pesa solo ${target.weight}, facilitando el balance en gimbals portátiles y disminuyendo la fatiga en rodajes largos.`);
+          if (target.weightNum && compare.weightNum && target.weightNum < compare.weightNum) {
+            advantages.push(`<strong>Operación más ligera:</strong> Pesa solo ${targetWeight}, facilitando el balance en gimbals portátiles y disminuyendo la fatiga en rodajes largos.`);
           }
           // 7. Características específicas de cine
           if (target.id === 'bmpcc-6k-pro') {
@@ -906,13 +928,13 @@
         } else {
           // MODE === PHOTO
           // 0. Ventaja de presupuesto
-          if (target.priceUsd < compare.priceUsd) {
-            const priceDiffUsd = compare.priceUsd - target.priceUsd;
+          if (targetPrice && comparePrice && targetPrice < comparePrice) {
+            const priceDiffUsd = comparePrice - targetPrice;
             const priceDiffClp = Math.round(priceDiffUsd * usdToClpRate);
             advantages.push(`<strong>Costo / Presupuesto:</strong> Ahorras aprox. <strong>$${priceDiffUsd.toLocaleString('en-US')} USD</strong> (~<strong>$${priceDiffClp.toLocaleString('es-CL')} CLP</strong>), ideal para invertir el saldo en lentes prime de retrato o iluminación.`);
           }
           // 1. Resolution Megapixels
-          if (target.resolutionNum > compare.resolutionNum) {
+          if (target.resolutionNum && compare.resolutionNum && target.resolutionNum > compare.resolutionNum) {
             const resTimes = Math.round((target.resolutionNum / compare.resolutionNum) * 10) / 10;
             advantages.push(`<strong>Mayor detalle fotográfico:</strong> Posee <strong>${target.resolution}</strong> (${resTimes}x más megapíxeles), permitiendo recortes agresivos e impresiones de gran tamaño.`);
           }
@@ -927,18 +949,18 @@
             advantages.push(`<strong>Estabilización para disparo lento:</strong> El IBIS permite hacer tomas nítidas a pulso con velocidades de obturación muy bajas en la tarde.`);
           }
           // 4. Peso para fotografía de viaje/calle
-          if (target.weightNum < compare.weightNum) {
-            advantages.push(`<strong>Portabilidad ideal:</strong> Su cuerpo liviano (${target.weight}) es perfecto para viajes largos, fotografía de calle y eventos.`);
+          if (target.weightNum && compare.weightNum && target.weightNum < compare.weightNum) {
+            advantages.push(`<strong>Portabilidad ideal:</strong> Su cuerpo liviano (${targetWeight}) es perfecto para viajes largos, fotografía de calle y eventos.`);
           }
           // 5. Año de lanzamiento / autofocus moderno
-          if (target.year > compare.year) {
+          if (target.year && compare.year && target.year > compare.year) {
             advantages.push(`<strong>Autofoco y procesamiento moderno:</strong> Lanzada en el año <strong>${target.year}</strong> (frente a ${compare.year}), con mejor reconocimiento de rostros/ojos.`);
           }
           // 6. Ecosistema de lentes específicos
-          if (target.mount.includes('E-mount')) {
+          if (targetMount.includes('E-mount')) {
             advantages.push(`<strong>Ecosistema óptico masivo:</strong> Acceso a cientos de objetivos nativos y económicos de marcas como Sigma, Tamron y Samyang.`);
           }
-          if (target.mount.includes('RF mount')) {
+          if (targetMount.includes('RF mount')) {
             advantages.push(`<strong>Montura RF de alta gama:</strong> Compatibilidad con los lentes más nítidos y modernos de la serie L de Canon.`);
           }
         }
@@ -946,9 +968,9 @@
         // Si no tiene ventajas específicas calculadas
         if (advantages.length === 0) {
           if (mode === 'video') {
-            advantages.push(`Cámara confiable para flujos de video estándar en resolución ${target.maxVideo.split(' ')[0]}.`);
+            advantages.push(`Cámara confiable para flujos de video estándar en resolución ${targetMaxVideo.split(' ')[0] || '1080p'}.`);
           } else {
-            advantages.push(`Cuerpo balanceado con resolución óptima de ${target.resolution} para retratos y fotografía general.`);
+            advantages.push(`Cuerpo balanceado con resolución óptima de ${target.resolution || '20 MP'} para retratos y fotografía general.`);
           }
         }
         
@@ -1115,8 +1137,73 @@
       updateSizeComparison();
     }
 
+    function getCameraDimensions(cam) {
+      if (!cam) return null;
+      const camId = cam.id;
+      
+      // 1. Coincidencia directa
+      if (cameraDimensions[camId]) {
+        return { ...cameraDimensions[camId], official: true };
+      }
+
+      // 2. Coincidencia con IDs normalizados (sin guiones y prefijos comunes de marcas/modelos)
+      const cleanId = camId.toLowerCase()
+        .replace(/^(sony-alpha-|sony-|panasonic-lumix-dc-|panasonic-lumix-dmc-|panasonic-lumix-|panasonic-|canon-eos-|canon-|fujifilm-finepix-|fujifilm-)/, '')
+        .replace(/[-]/g, '');
+      
+      for (const key of Object.keys(cameraDimensions)) {
+        const cleanKey = key.toLowerCase()
+          .replace(/^(sony-alpha-|sony-|panasonic-lumix-dc-|panasonic-lumix-dmc-|panasonic-lumix-|panasonic-|canon-eos-|canon-|fujifilm-finepix-|fujifilm-)/, '')
+          .replace(/[-]/g, '');
+        if (cleanId === cleanKey) {
+          return { ...cameraDimensions[key], official: true };
+        }
+      }
+
+      // 3. Fallback: Estimación inteligente por peso y sensor si no está registrada
+      const weight = cam.weightNum || parseFloat(cam.weight) || 600;
+      const sensor = (cam.sensorSize || cam.sensor || "").toUpperCase();
+      
+      let shape = "dslr";
+      if (cam.brand && (cam.brand.toUpperCase().includes("BLACKMAGIC") || cam.brand.toUpperCase().includes("RED"))) {
+        shape = "cinema";
+      } else if (weight < 300) {
+        shape = "compact";
+      }
+
+      // Estimar dimensiones en mm según tipo y peso
+      let w = 130;
+      let h = 95;
+      let d = 80;
+
+      if (shape === "compact") {
+        w = 110 + (weight - 150) * 0.1;
+        h = 65 + (weight - 150) * 0.05;
+        d = 40 + (weight - 150) * 0.1;
+      } else if (shape === "cinema") {
+        w = 140 + (weight - 800) * 0.05;
+        h = 100 + (weight - 800) * 0.05;
+        d = 100 + (weight - 800) * 0.08;
+      } else { // dslr
+        w = 132 + (weight - 600) * 0.04;
+        h = 96 + (weight - 600) * 0.03;
+        d = 80 + (weight - 600) * 0.03;
+      }
+
+      // Clamping
+      w = Math.max(90, Math.min(190, w));
+      h = Math.max(55, Math.min(140, h));
+      d = Math.max(30, Math.min(130, d));
+
+      w = Math.round(w * 10) / 10;
+      h = Math.round(h * 10) / 10;
+      d = Math.round(d * 10) / 10;
+
+      return { w, h, d, shape, official: false };
+    }
+
     function generateCameraSVG(cam, view, strokeColor, fillColor) {
-      const dim = cameraDimensions[cam.id];
+      const dim = getCameraDimensions(cam);
       if (!dim) return '';
 
       const scale = 1.15; // Escala adaptada para visualización lado a lado
@@ -1197,7 +1284,7 @@
     }
 
     function renderVisualContainer(cam, view, strokeColor, fillColor) {
-      const dim = cameraDimensions[cam.id];
+      const dim = getCameraDimensions(cam);
       if (!dim) return '';
 
       const scale = 1.15;
@@ -1222,8 +1309,8 @@
       const svgOverlayB = document.getElementById('svgOverlayB');
       if (!container || !svgOverlayA || !svgOverlayB) return;
 
-      const dimA = cameraDimensions[activeCamA.id];
-      const dimB = cameraDimensions[activeCamB.id];
+      const dimA = getCameraDimensions(activeCamA);
+      const dimB = getCameraDimensions(activeCamB);
       if (!dimA || !dimB) return;
 
       const scale = 1.15;
@@ -1245,8 +1332,8 @@
         return;
       }
 
-      const dimA = cameraDimensions[activeCamA.id];
-      const dimB = cameraDimensions[activeCamB.id];
+      const dimA = getCameraDimensions(activeCamA);
+      const dimB = getCameraDimensions(activeCamB);
 
       if (!dimA || !dimB) {
         // Ocultar si alguna cámara no está en la base de datos de dimensiones
@@ -1257,8 +1344,8 @@
       document.getElementById('sizeComparisonBox').classList.remove('hidden');
 
       // Etiquetas y métricas básicas
-      document.getElementById('sizeLabelCamA').innerText = activeCamA.name;
-      document.getElementById('sizeLabelCamB').innerText = activeCamB.name;
+      document.getElementById('sizeLabelCamA').innerHTML = `${activeCamA.name} ${dimA.official ? '' : '<span class="text-[10px] font-normal text-zinc-500 opacity-80">(est.)</span>'}`;
+      document.getElementById('sizeLabelCamB').innerHTML = `${activeCamB.name} ${dimB.official ? '' : '<span class="text-[10px] font-normal text-zinc-500 opacity-80">(est.)</span>'}`;
       document.getElementById('sizeMetricsCamA').innerText = `${dimA.w} x ${dimA.h} x ${dimA.d} mm`;
       document.getElementById('sizeMetricsCamB').innerText = `${dimB.w} x ${dimB.h} x ${dimB.d} mm`;
 
@@ -1597,7 +1684,7 @@
         if (target) {
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-      }, 1000);
+      }, 400);
     }
 
     // =========================================
