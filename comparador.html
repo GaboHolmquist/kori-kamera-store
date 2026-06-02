@@ -41,20 +41,12 @@
     }
     
     /* ANIMACIONES ESTILO VIDEOJUEGO (PELEA!) */
-    @keyframes fightPulse {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 15px rgba(239,68,68,0.4), 0 0 15px rgba(56,189,248,0.4); }
-      50% { transform: translate(-50%, -50%) scale(1.08); box-shadow: 0 0 30px rgba(239,68,68,0.8), 0 0 30px rgba(56,189,248,0.8); }
+    @keyframes epicGlow {
+      0%, 100% { transform: scale(1); filter: blur(6px); opacity: 0.45; }
+      50% { transform: scale(1.12); filter: blur(12px); opacity: 0.9; }
     }
-    .active-fight-btn {
-      animation: fightPulse 1.4s infinite ease-in-out;
-    }
-    
-    @keyframes fightPulseMobile {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 12px rgba(239,68,68,0.4), 0 0 12px rgba(56,189,248,0.4); }
-      50% { transform: scale(1.08); box-shadow: 0 0 25px rgba(239,68,68,0.7), 0 0 25px rgba(56,189,248,0.7); }
-    }
-    .active-fight-btn-mobile {
-      animation: fightPulseMobile 1.4s infinite ease-in-out;
+    .active-epic-glow {
+      animation: epicGlow 1.6s infinite ease-in-out;
     }
     
     @keyframes shakeLeft {
@@ -164,27 +156,41 @@
       </div>
 
       <!-- BOTÓN PELEA! (CENTRAL EN DESKTOP) -->
-      <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 hidden md:block">
-        <button 
-          id="btnFight" 
-          onclick="triggerFight()" 
-          class="w-20 h-20 rounded-full bg-gradient-to-r from-red-600 to-sky-500 text-white font-black text-xs uppercase tracking-widest border-4 border-zinc-950 opacity-40 cursor-not-allowed transition-all flex items-center justify-center select-none group"
-          disabled
-        >
-          <span class="group-hover:animate-pulse">Pelea!</span>
-        </button>
+      <div class="absolute left-1/2 top-[62%] -translate-x-1/2 -translate-y-1/2 z-30 hidden md:block">
+        <div class="relative">
+          <!-- Brillo de fondo (epic glow) -->
+          <div id="fightGlow" class="absolute -inset-1 rounded-full bg-gradient-to-r from-red-500 to-sky-400 blur-md opacity-0 transition-opacity duration-500"></div>
+          
+          <button 
+            id="btnFight" 
+            onclick="triggerFight()" 
+            class="relative w-20 h-20 rounded-full bg-zinc-950 text-white font-black text-xs uppercase tracking-widest border border-white/10 hover:border-white/20 transition-all duration-300 flex items-center justify-center select-none cursor-not-allowed opacity-40 group"
+            disabled
+          >
+            <!-- Capa de color de fondo -->
+            <div class="absolute inset-0.5 rounded-full bg-gradient-to-br from-red-600/30 via-zinc-950 to-sky-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="relative z-10 font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400 drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)]">Pelea!</span>
+          </button>
+        </div>
       </div>
 
       <!-- BOTÓN PELEA! (MÓVIL) -->
       <div class="flex justify-center mt-4 md:hidden">
-        <button 
-          id="btnFightMobile" 
-          onclick="triggerFight()" 
-          class="w-16 h-16 rounded-full bg-gradient-to-r from-red-600 to-sky-500 text-white font-black text-[10px] uppercase tracking-widest border-3 border-zinc-950 opacity-40 cursor-not-allowed transition-all flex items-center justify-center select-none"
-          disabled
-        >
-          <span>Pelea!</span>
-        </button>
+        <div class="relative">
+          <!-- Brillo de fondo (epic glow móvil) -->
+          <div id="fightGlowMobile" class="absolute -inset-1 rounded-full bg-gradient-to-r from-red-500 to-sky-400 blur-md opacity-0 transition-opacity duration-500"></div>
+          
+          <button 
+            id="btnFightMobile" 
+            onclick="triggerFight()" 
+            class="relative w-16 h-16 rounded-full bg-zinc-950 text-white font-black text-[10px] uppercase tracking-widest border border-white/10 hover:border-white/20 transition-all duration-300 flex items-center justify-center select-none cursor-not-allowed opacity-40"
+            disabled
+          >
+            <!-- Capa de color de fondo -->
+            <div class="absolute inset-0.5 rounded-full bg-gradient-to-br from-red-600/20 via-zinc-950 to-sky-500/20 opacity-0 active:opacity-100 transition-opacity duration-300"></div>
+            <span class="relative z-10 font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400 drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)]">Pelea!</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1510,17 +1516,32 @@
     function checkFightButton() {
       const btn = document.getElementById('btnFight');
       const btnMobile = document.getElementById('btnFightMobile');
+      const glow = document.getElementById('fightGlow');
+      const glowMobile = document.getElementById('fightGlowMobile');
       const ready = activeCamA && activeCamB;
       
-      [btn, btnMobile].forEach(b => {
+      [btn, btnMobile].forEach((b, idx) => {
+        const g = idx === 0 ? glow : glowMobile;
         if (b) {
           b.disabled = !ready;
           if (ready) {
-            b.classList.remove('opacity-40', 'cursor-not-allowed');
-            b.classList.add('opacity-100', 'cursor-pointer', 'active-fight-btn');
+            b.classList.remove('opacity-40', 'cursor-not-allowed', 'border-white/10');
+            b.classList.add('opacity-100', 'cursor-pointer', 'border-white/20');
+            b.style.boxShadow = '0 0 15px rgba(239, 68, 68, 0.3), 0 0 15px rgba(56, 189, 248, 0.3)';
+            
+            if (g) {
+              g.classList.remove('opacity-0');
+              g.classList.add('opacity-100', 'active-epic-glow');
+            }
           } else {
-            b.classList.add('opacity-40', 'cursor-not-allowed');
-            b.classList.remove('opacity-100', 'cursor-pointer', 'active-fight-btn');
+            b.classList.add('opacity-40', 'cursor-not-allowed', 'border-white/10');
+            b.classList.remove('opacity-100', 'cursor-pointer', 'border-white/20');
+            b.style.boxShadow = 'none';
+            
+            if (g) {
+              g.classList.add('opacity-0');
+              g.classList.remove('opacity-100', 'active-epic-glow');
+            }
           }
         }
       });
@@ -1535,7 +1556,6 @@
       [btn, btnMobile].forEach(b => {
         if (b) {
           b.disabled = true;
-          b.classList.remove('active-fight-btn');
           b.innerHTML = `
             <svg class="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -1557,15 +1577,21 @@
         if (cardB) cardB.classList.remove('animate-shake-right');
         
         if (btn) {
-          btn.innerHTML = '<span class="group-hover:animate-pulse">Pelea!</span>';
+          btn.innerHTML = `
+            <div class="absolute inset-0.5 rounded-full bg-gradient-to-br from-red-600/30 via-zinc-950 to-sky-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="relative z-10 font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400 drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)]">Pelea!</span>
+          `;
           btn.disabled = false;
-          btn.classList.add('active-fight-btn');
         }
         if (btnMobile) {
-          btnMobile.innerHTML = '<span>Pelea!</span>';
+          btnMobile.innerHTML = `
+            <div class="absolute inset-0.5 rounded-full bg-gradient-to-br from-red-600/20 via-zinc-950 to-sky-500/20 opacity-0 active:opacity-100 transition-opacity duration-300"></div>
+            <span class="relative z-10 font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400 drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)]">Pelea!</span>
+          `;
           btnMobile.disabled = false;
-          btnMobile.classList.add('active-fight-btn');
         }
+        
+        checkFightButton();
         
         const target = document.getElementById('comparisonSummaryBox');
         if (target) {
