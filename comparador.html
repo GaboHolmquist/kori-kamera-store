@@ -39,6 +39,41 @@
     .suggestions-list::-webkit-scrollbar-thumb:hover {
       background: rgba(255, 255, 255, 0.3);
     }
+    
+    /* ANIMACIONES ESTILO VIDEOJUEGO (PELEA!) */
+    @keyframes fightPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 15px rgba(239,68,68,0.4), 0 0 15px rgba(56,189,248,0.4); }
+      50% { transform: translate(-50%, -50%) scale(1.08); box-shadow: 0 0 30px rgba(239,68,68,0.8), 0 0 30px rgba(56,189,248,0.8); }
+    }
+    .active-fight-btn {
+      animation: fightPulse 1.4s infinite ease-in-out;
+    }
+    
+    @keyframes fightPulseMobile {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 12px rgba(239,68,68,0.4), 0 0 12px rgba(56,189,248,0.4); }
+      50% { transform: scale(1.08); box-shadow: 0 0 25px rgba(239,68,68,0.7), 0 0 25px rgba(56,189,248,0.7); }
+    }
+    .active-fight-btn-mobile {
+      animation: fightPulseMobile 1.4s infinite ease-in-out;
+    }
+    
+    @keyframes shakeLeft {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(6px) rotate(0.5deg); }
+      40%, 80% { transform: translateX(-4px) rotate(-0.5deg); }
+    }
+    .animate-shake-left {
+      animation: shakeLeft 0.15s ease-in-out infinite;
+    }
+    
+    @keyframes shakeRight {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px) rotate(-0.5deg); }
+      40%, 80% { transform: translateX(4px) rotate(0.5deg); }
+    }
+    .animate-shake-right {
+      animation: shakeRight 0.15s ease-in-out infinite;
+    }
   </style>
 </head>
 <body class="bg-black text-white min-h-screen flex flex-col justify-between">
@@ -74,59 +109,82 @@
   <!-- MAIN CONTENT -->
   <main class="flex-grow max-w-5xl w-full mx-auto px-5 py-12 relative z-10">
 
-    <!-- SELECTORS (SEARCH INPUTS) -->
-    <!-- Agregamos relative z-30 al contenedor del grid para apilarlo por encima del análisis -->
-    <!-- SELECTORS (SEARCH INPUTS) -->
-    <!-- Grid container con z-40 e isolate para prevenir superposición de backdrop-filter -->
-    <div class="grid md:grid-cols-2 gap-6 mb-10 relative z-40 isolate">
-      <!-- Camera A Search -->
-      <div id="cardCamA" class="glass-card rounded-[28px] p-6 relative z-20 transition-all duration-300">
-        <label class="block text-zinc-500 uppercase tracking-wider text-xs mb-3 font-semibold">Cámara A (Referencia)</label>
-        
-        <div class="relative">
-          <input 
-            type="text" 
-            id="camASearch" 
-            placeholder="Escribe para buscar... (ej. Sony, Panasonic)" 
-            class="w-full rounded-2xl border border-white/10 bg-black/50 px-5 py-4 outline-none focus:border-white/30 text-white font-medium placeholder:text-zinc-600 transition-colors"
-            oninput="handleSearchInput('A')"
-            onfocus="handleSearchFocus('A')"
-            autocomplete="off"
-          />
+    <!-- SELECTORS (SEARCH INPUTS) WITH FIGHT ACTUATOR -->
+    <div class="relative mb-10 z-40 isolate">
+      <div class="grid md:grid-cols-2 gap-6 relative">
+        <!-- Camera A Search -->
+        <div id="cardCamA" class="glass-card rounded-[28px] p-6 relative z-20 transition-all duration-300">
+          <label class="block text-zinc-500 uppercase tracking-wider text-xs mb-3 font-semibold">Cámara A (Referencia)</label>
           
-          <!-- Dropdown Sugerencias con z-50 para que flote sobre todo -->
-          <div 
-            id="camASuggestions" 
-            class="suggestions-list hidden absolute left-0 right-0 mt-2 rounded-2xl border border-white/18 bg-zinc-950/98 backdrop-blur-2xl max-h-60 overflow-y-auto z-50 shadow-[0_20px_50px_rgba(0,0,0,0.8)] divide-y divide-white/5"
-          >
-            <!-- Carga dinámica -->
+          <div class="relative">
+            <input 
+              type="text" 
+              id="camASearch" 
+              placeholder="Escribe para buscar... (ej. Sony, Panasonic)" 
+              class="w-full rounded-2xl border border-white/10 bg-black/50 px-5 py-4 outline-none focus:border-white/30 text-white font-medium placeholder:text-zinc-600 transition-colors"
+              oninput="handleSearchInput('A')"
+              onfocus="handleSearchFocus('A')"
+              autocomplete="off"
+            />
+            
+            <!-- Dropdown Sugerencias con z-50 para que flote sobre todo -->
+            <div 
+              id="camASuggestions" 
+              class="suggestions-list hidden absolute left-0 right-0 mt-2 rounded-2xl border border-white/18 bg-zinc-950/98 backdrop-blur-2xl max-h-60 overflow-y-auto z-50 shadow-[0_20px_50px_rgba(0,0,0,0.8)] divide-y divide-white/5"
+            >
+              <!-- Carga dinámica -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Camera B Search -->
+        <div id="cardCamB" class="glass-card rounded-[28px] p-6 relative z-20 transition-all duration-300">
+          <label class="block text-zinc-500 uppercase tracking-wider text-xs mb-3 font-semibold">Cámara B (Comparar)</label>
+          
+          <div class="relative">
+            <input 
+              type="text" 
+              id="camBSearch" 
+              placeholder="Escribe para buscar... (ej. Sony, Blackmagic)" 
+              class="w-full rounded-2xl border border-white/10 bg-black/50 px-5 py-4 outline-none focus:border-white/30 text-white font-medium placeholder:text-zinc-600 transition-colors"
+              oninput="handleSearchInput('B')"
+              onfocus="handleSearchFocus('B')"
+              autocomplete="off"
+            />
+            
+            <!-- Dropdown Sugerencias con z-50 -->
+            <div 
+              id="camBSuggestions" 
+              class="suggestions-list hidden absolute left-0 right-0 mt-2 rounded-2xl border border-white/18 bg-zinc-950/98 backdrop-blur-2xl max-h-60 overflow-y-auto z-50 shadow-[0_20px_50px_rgba(0,0,0,0.8)] divide-y divide-white/5"
+            >
+              <!-- Carga dinámica -->
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Camera B Search -->
-      <div id="cardCamB" class="glass-card rounded-[28px] p-6 relative z-20 transition-all duration-300">
-        <label class="block text-zinc-500 uppercase tracking-wider text-xs mb-3 font-semibold">Cámara B (Comparar)</label>
-        
-        <div class="relative">
-          <input 
-            type="text" 
-            id="camBSearch" 
-            placeholder="Escribe para buscar... (ej. Sony, Blackmagic)" 
-            class="w-full rounded-2xl border border-white/10 bg-black/50 px-5 py-4 outline-none focus:border-white/30 text-white font-medium placeholder:text-zinc-600 transition-colors"
-            oninput="handleSearchInput('B')"
-            onfocus="handleSearchFocus('B')"
-            autocomplete="off"
-          />
-          
-          <!-- Dropdown Sugerencias con z-50 -->
-          <div 
-            id="camBSuggestions" 
-            class="suggestions-list hidden absolute left-0 right-0 mt-2 rounded-2xl border border-white/18 bg-zinc-950/98 backdrop-blur-2xl max-h-60 overflow-y-auto z-50 shadow-[0_20px_50px_rgba(0,0,0,0.8)] divide-y divide-white/5"
-          >
-            <!-- Carga dinámica -->
-          </div>
-        </div>
+      <!-- BOTÓN PELEA! (CENTRAL EN DESKTOP) -->
+      <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 hidden md:block">
+        <button 
+          id="btnFight" 
+          onclick="triggerFight()" 
+          class="w-20 h-20 rounded-full bg-gradient-to-r from-red-600 to-sky-500 text-white font-black text-xs uppercase tracking-widest border-4 border-zinc-950 opacity-40 cursor-not-allowed transition-all flex items-center justify-center select-none group"
+          disabled
+        >
+          <span class="group-hover:animate-pulse">Pelea!</span>
+        </button>
+      </div>
+
+      <!-- BOTÓN PELEA! (MÓVIL) -->
+      <div class="flex justify-center mt-4 md:hidden">
+        <button 
+          id="btnFightMobile" 
+          onclick="triggerFight()" 
+          class="w-16 h-16 rounded-full bg-gradient-to-r from-red-600 to-sky-500 text-white font-black text-[10px] uppercase tracking-widest border-3 border-zinc-950 opacity-40 cursor-not-allowed transition-all flex items-center justify-center select-none"
+          disabled
+        >
+          <span>Pelea!</span>
+        </button>
       </div>
     </div>
 
@@ -498,9 +556,24 @@
       activeCamA = cameraDb.find(c => c.id === c1) || null;
       activeCamB = cameraDb.find(c => c.id === c2) || null;
 
+      // Si no hay parámetros URL, intentar cargar del localStorage
+      if (!activeCamA && !activeCamB) {
+        const lastC1 = localStorage.getItem('last_compared_c1');
+        const lastC2 = localStorage.getItem('last_compared_c2');
+        if (lastC1) activeCamA = cameraDb.find(c => c.id === lastC1) || null;
+        if (lastC2) activeCamB = cameraDb.find(c => c.id === lastC2) || null;
+      }
+
       document.getElementById('camASearch').value = activeCamA ? activeCamA.name : "";
       document.getElementById('camBSearch').value = activeCamB ? activeCamB.name : "";
-      compare();
+      
+      // Habilitar/deshabilitar botón Pelea según selección
+      checkFightButton();
+
+      // Si ya están ambas cargadas desde URL o persistencia, comparamos directamente
+      if (activeCamA && activeCamB) {
+        compare();
+      }
       
       // Renderizar el bloque de comparación dinámico y aleatorio
       renderPopularMatches();
@@ -537,6 +610,44 @@
       const query = document.getElementById(`cam${type}Search`).value.trim().toLowerCase();
       const container = document.getElementById(`cam${type}Suggestions`);
       
+      if (query === "") {
+        let recents = [];
+        try {
+          recents = JSON.parse(localStorage.getItem('recent_cameras')) || [];
+        } catch (e) {}
+        
+        const recentCams = recents.map(id => cameraDb.find(c => c.id === id)).filter(Boolean);
+        
+        if (recentCams.length > 0) {
+          container.innerHTML = `
+            <div class="px-5 py-2 text-[10px] uppercase tracking-wider text-zinc-500 font-bold bg-white/5 border-b border-white/5 text-left">Búsquedas Recientes</div>
+            ` + recentCams.map(cam => `
+              <button 
+                onclick="selectCamera('${type}', '${cam.id}')" 
+                class="w-full text-left px-5 py-3.5 text-sm hover:bg-white/5 transition-all flex justify-between items-center group cursor-pointer"
+              >
+                <span class="flex items-center gap-2">
+                  <span class="text-zinc-500 text-[10px]">🕒</span>
+                  <span>${cam.name}</span>
+                </span>
+                <span class="text-xs text-zinc-500 group-hover:text-zinc-300 font-medium">${cam.brand}</span>
+              </button>
+            `).join('') + `
+            <div class="px-5 py-2 text-[10px] uppercase tracking-wider text-zinc-500 font-bold bg-white/5 border-t border-b border-white/5 text-left">Cámaras Populares</div>
+          ` + cameraDb.slice(0, 6).map(cam => `
+              <button 
+                onclick="selectCamera('${type}', '${cam.id}')" 
+                class="w-full text-left px-5 py-3.5 text-sm hover:bg-white/5 transition-all flex justify-between items-center group cursor-pointer"
+              >
+                <span>${cam.name}</span>
+                <span class="text-xs text-zinc-500 group-hover:text-zinc-300 font-medium">${cam.brand}</span>
+              </button>
+            `).join('');
+          container.classList.remove('hidden');
+          return;
+        }
+      }
+
       const filtered = cameraDb.filter(cam => cam.name.toLowerCase().includes(query) || cam.brand.toLowerCase().includes(query));
       
       if (filtered.length === 0) {
@@ -581,7 +692,27 @@
       document.getElementById('cardCamA').style.zIndex = '20';
       document.getElementById('cardCamB').style.zIndex = '20';
       
-      compare();
+      // Ocultar comparación anterior para reflejar que la selección cambió y forzar presionar "Pelea!"
+      document.getElementById('comparisonTableBox').classList.add('hidden');
+      document.getElementById('comparisonSummaryBox').classList.add('hidden');
+      document.getElementById('sizeComparisonBox').classList.add('hidden');
+      document.getElementById('skillsComparisonBox').classList.add('hidden');
+
+      // Guardar en la lista de recientes
+      let recents = [];
+      try {
+        recents = JSON.parse(localStorage.getItem('recent_cameras')) || [];
+      } catch (e) {}
+      recents = recents.filter(id => id !== cam.id);
+      recents.unshift(cam.id);
+      recents = recents.slice(0, 5); // Guardar las últimas 5 únicas
+      localStorage.setItem('recent_cameras', JSON.stringify(recents));
+
+      // Guardar la última cámara seleccionada por tipo
+      localStorage.setItem('last_compared_c' + (type === 'A' ? '1' : '2'), cam.id);
+
+      // Actualizar el estado del botón Pelea!
+      checkFightButton();
     }
 
     // Cerrar sugerencias si se hace clic fuera del buscador
@@ -1374,6 +1505,73 @@
       }
       html += '</div>';
       return html;
+    }
+
+    function checkFightButton() {
+      const btn = document.getElementById('btnFight');
+      const btnMobile = document.getElementById('btnFightMobile');
+      const ready = activeCamA && activeCamB;
+      
+      [btn, btnMobile].forEach(b => {
+        if (b) {
+          b.disabled = !ready;
+          if (ready) {
+            b.classList.remove('opacity-40', 'cursor-not-allowed');
+            b.classList.add('opacity-100', 'cursor-pointer', 'active-fight-btn');
+          } else {
+            b.classList.add('opacity-40', 'cursor-not-allowed');
+            b.classList.remove('opacity-100', 'cursor-pointer', 'active-fight-btn');
+          }
+        }
+      });
+    }
+
+    function triggerFight() {
+      if (!activeCamA || !activeCamB) return;
+      
+      const btn = document.getElementById('btnFight');
+      const btnMobile = document.getElementById('btnFightMobile');
+      
+      [btn, btnMobile].forEach(b => {
+        if (b) {
+          b.disabled = true;
+          b.classList.remove('active-fight-btn');
+          b.innerHTML = `
+            <svg class="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          `;
+        }
+      });
+      
+      const cardA = document.getElementById('cardCamA');
+      const cardB = document.getElementById('cardCamB');
+      if (cardA) cardA.classList.add('animate-shake-left');
+      if (cardB) cardB.classList.add('animate-shake-right');
+      
+      setTimeout(() => {
+        compare();
+        
+        if (cardA) cardA.classList.remove('animate-shake-left');
+        if (cardB) cardB.classList.remove('animate-shake-right');
+        
+        if (btn) {
+          btn.innerHTML = '<span class="group-hover:animate-pulse">Pelea!</span>';
+          btn.disabled = false;
+          btn.classList.add('active-fight-btn');
+        }
+        if (btnMobile) {
+          btnMobile.innerHTML = '<span>Pelea!</span>';
+          btnMobile.disabled = false;
+          btnMobile.classList.add('active-fight-btn');
+        }
+        
+        const target = document.getElementById('comparisonSummaryBox');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 1000);
     }
 
     // =========================================
