@@ -543,7 +543,11 @@ if(popup){
  })
 }
 
-function openMatteboxPage(){
+function openMatteboxPage(fromHash = false){
+ if(!fromHash){
+  window.location.hash = 'mkb-v4';
+  return;
+ }
  const overlay=document.getElementById('transitionOverlay')
  const home=document.getElementById('homePage')
  const catalog=document.getElementById('catalogPage')
@@ -585,7 +589,11 @@ function openMatteboxPage(){
  },560)
 }
 
-function goHome(){
+function goHome(fromHash = false){
+ if(!fromHash){
+  window.location.hash = 'inicio';
+  return;
+ }
  const overlay=document.getElementById('transitionOverlay')
  const home=document.getElementById('homePage')
  const catalog=document.getElementById('catalogPage')
@@ -622,7 +630,11 @@ function goHome(){
  setTimeout(()=>{if(overlay) overlay.classList.remove('active')},560)
 }
 
-function openCatalogPage(){
+function openCatalogPage(fromHash = false){
+ if(!fromHash){
+  window.location.hash = 'productos';
+  return;
+ }
  const overlay=document.getElementById('transitionOverlay')
  const home=document.getElementById('homePage')
  const catalog=document.getElementById('catalogPage')
@@ -694,7 +706,8 @@ function preloadImages(){
   window.preloadedImages[src]=img
  }
 
- // Primeras imágenes de ambas galerías — prioritarias
+ // Primeras imágenes de ambas galerías y banner — prioritarias
+ bannerImages.forEach(f=>cache('productos/banner/'+f))
  cache('productos/mattebox/rig M/'+rigImages[0])
  cache('productos/mattebox/rig M/'+rigImages[1])
  cache('productos/mattebox/Colores M/obsidian/'+productImages['OBSIDIAN'][0])
@@ -771,7 +784,11 @@ if(tp1ProdEl){
  },{passive:true})
 }
 
-function openTp1Page(){
+function openTp1Page(fromHash = false){
+ if(!fromHash){
+  window.location.hash = 'tp1';
+  return;
+ }
  const overlay=document.getElementById('transitionOverlay')
  const home=document.getElementById('homePage')
  const catalog=document.getElementById('catalogPage')
@@ -892,3 +909,48 @@ async function fetchAndApplyStock(){
 }
 
 fetchAndApplyStock();
+
+// =========================================
+// HASH-BASED ROUTING
+// =========================================
+
+window.addEventListener('hashchange', () => {
+ const hash = window.location.hash;
+ if (hash === '#productos') {
+  openCatalogPage(true);
+ } else if (hash === '#mkb-v4') {
+  openMatteboxPage(true);
+ } else if (hash === '#tp1') {
+  openTp1Page(true);
+ } else {
+  goHome(true);
+ }
+});
+
+function handleInitialRouting() {
+ const hash = window.location.hash;
+ if (hash === '#productos') {
+  document.getElementById('homePage').classList.add('hidden', 'page-hidden');
+  document.getElementById('homePage').classList.remove('page-visible');
+  document.getElementById('catalogPage').classList.remove('hidden', 'page-hidden');
+  document.getElementById('catalogPage').classList.add('page-visible');
+  stopBannerInterval();
+ } else if (hash === '#mkb-v4') {
+  document.getElementById('homePage').classList.add('hidden', 'page-hidden');
+  document.getElementById('homePage').classList.remove('page-visible');
+  document.getElementById('productPage').classList.remove('hidden', 'page-hidden');
+  document.getElementById('productPage').classList.add('page-visible');
+  stopBannerInterval();
+  currentRigIndex = 0;
+  updateRigGallery();
+  startRigInterval();
+ } else if (hash === '#tp1') {
+  document.getElementById('homePage').classList.add('hidden', 'page-hidden');
+  document.getElementById('homePage').classList.remove('page-visible');
+  document.getElementById('tp1Page').classList.remove('hidden', 'page-hidden');
+  document.getElementById('tp1Page').classList.add('page-visible');
+  stopBannerInterval();
+ }
+}
+
+handleInitialRouting();
