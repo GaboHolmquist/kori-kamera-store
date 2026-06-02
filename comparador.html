@@ -1041,6 +1041,33 @@
       `;
     }
 
+    function renderVisualContainer(cam, view, strokeColor, fillColor) {
+      const dim = cameraDimensions[cam.id];
+      if (!dim) return '';
+
+      const scale = 1.15;
+      const w = dim.w * scale;
+      const h = (view === 'front' ? dim.h : dim.d) * scale;
+      
+      const pad = 20;
+      const imgUrl = `productos/comparador/${cam.id}_${view}.png`;
+      const fallbackSvg = generateCameraSVG(cam, view, strokeColor, fillColor);
+
+      return `
+        <div class="relative flex items-center justify-center overflow-visible" style="width: ${w + pad*2}px; height: ${h + pad*2}px;">
+          <img 
+            src="${imgUrl}" 
+            style="width: ${w}px; height: ${h}px;" 
+            class="object-contain max-w-none max-h-none transition-all duration-300"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+          />
+          <div style="display: none;" class="w-full h-full absolute inset-0">
+            ${fallbackSvg}
+          </div>
+        </div>
+      `;
+    }
+
     function drawOverlayComparison() {
       const container = document.getElementById('sizeOverlayContainer');
       const svgOverlayA = document.getElementById('svgOverlayA');
@@ -1060,8 +1087,8 @@
       container.style.width = maxW + 'px';
       container.style.height = maxH + 'px';
 
-      svgOverlayA.innerHTML = generateCameraSVG(activeCamA, sizeView, 'rgb(239, 68, 68)', 'rgba(239, 68, 68, 0.12)');
-      svgOverlayB.innerHTML = generateCameraSVG(activeCamB, sizeView, 'rgb(56, 189, 248)', 'rgba(56, 189, 248, 0.12)');
+      svgOverlayA.innerHTML = renderVisualContainer(activeCamA, sizeView, 'rgb(239, 68, 68)', 'rgba(239, 68, 68, 0.12)');
+      svgOverlayB.innerHTML = renderVisualContainer(activeCamB, sizeView, 'rgb(56, 189, 248)', 'rgba(56, 189, 248, 0.12)');
     }
 
     function updateSizeComparison() {
@@ -1088,8 +1115,8 @@
       document.getElementById('sizeMetricsCamB').innerText = `${dimB.w} x ${dimB.h} x ${dimB.d} mm`;
 
       // Renderizar lado a lado
-      document.getElementById('svgContainerCamA').innerHTML = generateCameraSVG(activeCamA, sizeView, 'rgb(239, 68, 68)', 'rgba(239, 68, 68, 0.15)');
-      document.getElementById('svgContainerCamB').innerHTML = generateCameraSVG(activeCamB, sizeView, 'rgb(56, 189, 248)', 'rgba(56, 189, 248, 0.15)');
+      document.getElementById('svgContainerCamA').innerHTML = renderVisualContainer(activeCamA, sizeView, 'rgb(239, 68, 68)', 'rgba(239, 68, 68, 0.15)');
+      document.getElementById('svgContainerCamB').innerHTML = renderVisualContainer(activeCamB, sizeView, 'rgb(56, 189, 248)', 'rgba(56, 189, 248, 0.15)');
 
       // Renderizar superposición
       drawOverlayComparison();
