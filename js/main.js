@@ -409,6 +409,15 @@ async function startCheckout(){
  }
 
  try {
+  // Si estamos en entorno local, simular el proceso de pago para probar el flujo completo offline sin consumir créditos ni dar error
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname.startsWith('192.168.')) {
+    console.log('Entorno local detectado. Simulando flujo de pago offline...');
+    setTimeout(() => {
+      window.location.href = '/pago-exitoso.html';
+    }, 1500);
+    return;
+  }
+
   const response = await fetch('/api/create-preference', {
    method: 'POST',
    headers: {
@@ -926,11 +935,16 @@ if (isTestMode) {
 }
 
 async function fetchAndApplyStock(){
- try {
-  const response = await fetch('/api/get-stock');
-  if (!response.ok) throw new Error('Error al consultar stock');
-  const data = await response.json();
-  const stock = data.stock;
+  // Si estamos en entorno local, omitir consulta a la API para no gastar créditos de base de datos
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname.startsWith('192.168.')) {
+    console.log('Entorno local detectado. Omitiendo consulta de stock para ahorrar créditos de base de datos.');
+    return;
+  }
+  try {
+    const response = await fetch('/api/get-stock');
+    if (!response.ok) throw new Error('Error al consultar stock');
+    const data = await response.json();
+    const stock = data.stock;
 
   const buyBtn = document.getElementById('matteboxBuyBtn');
   if (buyBtn) {
