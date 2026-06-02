@@ -11,7 +11,7 @@ img, video{
 }
 
 /* Las galerías necesitan pointer-events para el click de navegación */
-#rigGallery, #productGallery{
+#rigGallery, #productGallery, #bannerGallery{
  pointer-events:auto;
 }
 
@@ -148,7 +148,9 @@ pointer-events:none;
 }
 
 #homePage,
-#productPage{
+#catalogPage,
+#productPage,
+#tp1Page{
 transition:opacity .32s ease, transform .45s cubic-bezier(.22,.61,.36,1);
 will-change:opacity,transform;
 }

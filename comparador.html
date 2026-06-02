@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparador de Cámaras (Buscador & Análisis Dual) — Kori Kamera Store</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .glass-card {
+      background: rgba(15, 15, 20, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+    }
+    /* Fondo gris translúcido de alta legibilidad para sugerencias */
+    .suggestions-list {
+      background: rgba(30, 30, 35, 0.96) !important;
+      backdrop-filter: blur(24px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    .suggestions-list button {
+      color: #f4f4f5 !important; /* text-zinc-100 */
+    }
+    .suggestions-list button:hover {
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+    /* Estilos para el scroll de las sugerencias */
+    .suggestions-list::-webkit-scrollbar {
+      width: 6px;
+    }
+    .suggestions-list::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .suggestions-list::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 99px;
+    }
+    .suggestions-list::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body class="bg-black text-white min-h-screen flex flex-col justify-between">
+
+  <!-- HEADER CON FONDO DE ANCHO COMPLETO -->
+  <header class="relative bg-cover bg-center bg-zinc-950" style="background-image: url('productos/preview_comparador.jpg');">
+    <!-- Gradient overlay that fades to solid black at the bottom -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black z-0"></div>
+
+    <div class="relative z-10">
+      <!-- TOP BAR -->
+      <div class="border-b border-white/5 bg-black/40 backdrop-blur-md">
+        <div class="max-w-5xl mx-auto px-5 py-4 flex items-center justify-between">
+          <a href="index.html" class="text-lg md:text-xl font-black tracking-wide hover:opacity-80 transition-opacity">
+            KORI KAMERA STORE
+          </a>
+          <span class="text-xs uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full font-bold">
+            Análisis Dual Habilitado
+          </span>
+        </div>
+      </div>
+
+      <!-- HERO TITLE AREA -->
+      <div class="max-w-5xl mx-auto px-5 py-16 md:py-24 text-center">
+        <h1 class="text-4xl md:text-6xl font-black tracking-tight mb-4 bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent uppercase">Comparador de Cámaras</h1>
+        <p class="text-zinc-300 text-sm md:text-base leading-relaxed max-w-lg mx-auto font-medium">
+          busca y Compara las especificaciones tecnicas de las camaras y ve un analisis dual para Fotografos y Cinematografo
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-grow max-w-5xl w-full mx-auto px-5 py-12 relative z-10">
+
+    <!-- SELECTORS (SEARCH INPUTS) -->
+    <!-- Agregamos relative z-30 al contenedor del grid para apilarlo por encima del análisis -->
+    <!-- SELECTORS (SEARCH INPUTS) -->
+    <!-- Grid container con z-40 e isolate para prevenir superposición de backdrop-filter -->
+    <div class="grid md:grid-cols-2 gap-6 mb-10 relative z-40 isolate">
+      <!-- Camera A Search -->
+      <div id="cardCamA" class="glass-card rounded-[28px] p-6 relative z-20 transition-all duration-300">
+        <label class="block text-zinc-500 uppercase tracking-wider text-xs mb-3 font-semibold">Cámara A (Referencia)</label>
+        
+        <div class="relative">
+          <input 
+            type="text" 
+            id="camASearch" 
+            placeholder="Escribe para buscar... (ej. Sony, Panasonic)" 
+            class="w-full rounded-2xl border border-white/10 bg-black/50 px-5 py-4 outline-none focus:border-white/30 text-white font-medium placeholder:text-zinc-600 transition-colors"
+            oninput="handleSearchInput('A')"
+            onfocus="handleSearchFocus('A')"
+            autocomplete="off"
+          />
+          
+          <!-- Dropdown Sugerencias con z-50 para que flote sobre todo -->
+          <div 
+            id="camASuggestions" 
+            class="suggestions-list hidden absolute left-0 right-0 mt-2 rounded-2xl border border-white/18 bg-zinc-950/98 backdrop-blur-2xl max-h-60 overflow-y-auto z-50 shadow-[0_20px_50px_rgba(0,0,0,0.8)] divide-y divide-white/5"
+          >
+            <!-- Carga dinámica -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Camera B Search -->
+      <div id="cardCamB" class="glass-card rounded-[28px] p-6 relative z-20 transition-all duration-300">
+        <label class="block text-zinc-500 uppercase tracking-wider text-xs mb-3 font-semibold">Cámara B (Comparar)</label>
+        
+        <div class="relative">
+          <input 
+            type="text" 
+            id="camBSearch" 
+            placeholder="Escribe para buscar... (ej. Sony, Blackmagic)" 
+            class="w-full rounded-2xl border border-white/10 bg-black/50 px-5 py-4 outline-none focus:border-white/30 text-white font-medium placeholder:text-zinc-600 transition-colors"
+            oninput="handleSearchInput('B')"
+            onfocus="handleSearchFocus('B')"
+            autocomplete="off"
+          />
+          
+          <!-- Dropdown Sugerencias con z-50 -->
+          <div 
+            id="camBSuggestions" 
+            class="suggestions-list hidden absolute left-0 right-0 mt-2 rounded-2xl border border-white/18 bg-zinc-950/98 backdrop-blur-2xl max-h-60 overflow-y-auto z-50 shadow-[0_20px_50px_rgba(0,0,0,0.8)] divide-y divide-white/5"
+          >
+            <!-- Carga dinámica -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DYNAMIC COMPARISON SUMMARY (DUAL DIVISION) -->
+    <!-- Le damos z-0 para asegurar que quede por debajo de los buscadores desplegados -->
+    <div id="comparisonSummaryBox" class="glass-card rounded-[34px] border border-blue-500/20 bg-gradient-to-r from-blue-950/15 to-purple-950/15 p-6 md:p-8 mb-10 relative z-0 hidden">
+      <h3 class="font-bold text-lg mb-6 flex items-center gap-2 text-zinc-200">
+        <span class="w-2.5 h-2.5 rounded-full bg-blue-400"></span>
+        Análisis Comparativo Profesional
+      </h3>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Columna Filmmakers (Video) -->
+        <div class="space-y-4">
+          <h4 class="text-emerald-400 font-extrabold text-sm uppercase tracking-wider flex items-center gap-2">
+            <span>🎥</span> Para Cineastas y Filmmakers
+          </h4>
+          
+          <!-- Cámara A Video -->
+          <div class="bg-white/5 rounded-2xl p-4 border border-emerald-500/10">
+            <h5 class="text-xs font-bold text-emerald-300 uppercase mb-2 flex items-center gap-1.5" id="videoTitleCamA">
+              <!-- Nombre Cámara A -->
+            </h5>
+            <ul id="videoListCamA" class="text-xs text-zinc-300 space-y-2 list-none">
+              <!-- dynamic content -->
+            </ul>
+          </div>
+          
+          <!-- Cámara B Video -->
+          <div class="bg-white/5 rounded-2xl p-4 border border-emerald-500/10">
+            <h5 class="text-xs font-bold text-emerald-300 uppercase mb-2 flex items-center gap-1.5" id="videoTitleCamB">
+              <!-- Nombre Cámara B -->
+            </h5>
+            <ul id="videoListCamB" class="text-xs text-zinc-300 space-y-2 list-none">
+              <!-- dynamic content -->
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Columna Fotógrafos (Foto) -->
+        <div class="space-y-4 border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0 md:pl-8">
+          <h4 class="text-sky-400 font-extrabold text-sm uppercase tracking-wider flex items-center gap-2">
+            <span>📸</span> Para Fotógrafos y Creadores Visuales
+          </h4>
+          
+          <!-- Cámara A Foto -->
+          <div class="bg-white/5 rounded-2xl p-4 border border-sky-500/10">
+            <h5 class="text-xs font-bold text-sky-300 uppercase mb-2 flex items-center gap-1.5" id="photoTitleCamA">
+              <!-- Nombre Cámara A -->
+            </h5>
+            <ul id="photoListCamA" class="text-xs text-zinc-300 space-y-2 list-none">
+              <!-- dynamic content -->
+            </ul>
+          </div>
+          
+          <!-- Cámara B Foto -->
+          <div class="bg-white/5 rounded-2xl p-4 border border-sky-500/10">
+            <h5 class="text-xs font-bold text-sky-300 uppercase mb-2 flex items-center gap-1.5" id="photoTitleCamB">
+              <!-- Nombre Cámara B -->
+            </h5>
+            <ul id="photoListCamB" class="text-xs text-zinc-300 space-y-2 list-none">
+              <!-- dynamic content -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPARISON TABLE -->
+    <div id="comparisonTableBox" class="glass-card rounded-[34px] overflow-hidden relative z-0 hidden">
+      <table class="w-full border-collapse text-left">
+        <thead>
+          <tr class="border-b border-white/5 bg-white/5">
+            <th class="p-5 text-sm uppercase tracking-wider text-zinc-400 font-bold w-1/3">Especificación</th>
+            <th id="tableHeaderCamA" class="p-5 text-base text-white font-black w-1/3 text-center">-</th>
+            <th id="tableHeaderCamB" class="p-5 text-base text-white font-black w-1/3 text-center">-</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-white/5 text-sm text-zinc-300" id="tableBody">
+          <!-- Carga dinámica de filas -->
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <!-- BANNER DE SUGERENCIA DE CÁMARAS -->
+  <div class="glass-card rounded-[28px] border border-white/5 p-6 text-center max-w-2xl mx-auto mb-12 relative z-10">
+    <h3 class="font-extrabold text-sm text-zinc-300 uppercase tracking-wider mb-2">¿No encuentras el equipo que buscas?</h3>
+    <p class="text-zinc-500 text-xs mb-4 max-w-md mx-auto">
+      Si falta algún modelo de los últimos 15 años o encuentras un dato incorrecto, puedes reportarlo para que lo agreguemos al catálogo.
+    </p>
+    <button 
+      onclick="openSuggestionModal('')" 
+      class="bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl px-5 py-3 text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
+    >
+      Sugerir Cámara o Corrección ↗
+    </button>
+  </div>
+
+  <!-- MODAL DE SUGERENCIAS -->
+  <div id="suggestionModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4 transition-all duration-300 opacity-0">
+    <div class="glass-card rounded-[34px] border border-white/10 max-w-md w-full p-6 md:p-8 relative shadow-[0_20px_50px_rgba(0,0,0,0.9)] transform scale-95 transition-all duration-300">
+      
+      <!-- Botón de cerrar -->
+      <button onclick="closeSuggestionModal()" class="absolute top-5 right-5 text-zinc-500 hover:text-white transition-colors text-xl font-bold p-1 cursor-pointer">
+        &times;
+      </button>
+
+      <div class="mb-6">
+        <h3 class="font-extrabold text-xl text-white mb-2">Sugerir Cámara o Corrección</h3>
+        <p class="text-zinc-500 text-xs">
+          ¿Falta alguna cámara de los últimos 15 años o hay algún dato incorrecto? Envíanos los detalles para agregarlo manualmente.
+        </p>
+      </div>
+
+      <!-- Formulario de sugerencias -->
+      <form id="suggestionForm" name="camera-suggestions" method="POST" data-netlify="true" onsubmit="handleFormSubmit(event)" class="space-y-4">
+        <!-- Input oculto para Netlify Forms -->
+        <input type="hidden" name="form-name" value="camera-suggestions" />
+        
+        <div>
+          <label class="block text-zinc-400 text-xs uppercase tracking-wider mb-2 font-bold">Modelo de Cámara</label>
+          <input 
+            type="text" 
+            name="camera-model" 
+            id="modalCamModel"
+            placeholder="Ej. Sony Alpha 7R V, Fujifilm X-T5" 
+            required
+            class="w-full rounded-xl border border-white/10 bg-black/50 px-4 py-3 outline-none focus:border-white/30 text-white text-sm text-zinc-200"
+          />
+        </div>
+
+        <div>
+          <label class="block text-zinc-400 text-xs uppercase tracking-wider mb-2 font-bold">Especificaciones Faltantes o Mensaje</label>
+          <textarea 
+            name="message" 
+            id="modalMessage"
+            rows="3" 
+            placeholder="Comentarios (ej. falta año, sensor Full Frame...)" 
+            class="w-full rounded-xl border border-white/10 bg-black/50 px-4 py-3 outline-none focus:border-white/30 text-white text-sm resize-none text-zinc-200"
+          ></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 pt-2">
+          <!-- Botón de WhatsApp -->
+          <button 
+            type="button" 
+            onclick="sendViaWhatsApp()"
+            class="w-full bg-emerald-600/10 text-emerald-400 hover:bg-emerald-600/20 border border-emerald-500/20 rounded-xl py-3 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+          >
+            <span>💬</span> WhatsApp
+          </button>
+          
+          <!-- Botón Enviar -->
+          <button 
+            type="submit" 
+            class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-500 hover:to-purple-500 rounded-xl py-3 text-xs font-bold uppercase tracking-wider transition-all shadow-lg cursor-pointer"
+          >
+            Enviar Datos
+          </button>
+        </div>
+      </form>
+
+      <!-- Pantalla de Éxito -->
+      <div id="modalSuccessState" class="hidden text-center py-6 space-y-4">
+        <div class="w-16 h-16 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full flex items-center justify-center mx-auto text-3xl">
+          ✓
+        </div>
+        <div>
+          <h4 class="font-bold text-white text-lg">¡Sugerencia Recibida!</h4>
+          <p class="text-zinc-500 text-xs max-w-xs mx-auto mt-2" id="successStateMsg">
+            Tu sugerencia se ha registrado con éxito. Revisaremos los datos para agregarlos al catálogo técnico.
+          </p>
+        </div>
+        <button 
+          type="button"
+          onclick="closeSuggestionModal()" 
+          class="bg-white/5 border border-white/10 hover:bg-white/10 text-white text-xs font-bold uppercase tracking-wider px-6 py-2.5 rounded-xl transition-colors cursor-pointer"
+        >
+          Entendido
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-white/5 py-8 text-center text-xs text-zinc-600 relative z-10">
+    &copy; 2026 Kori Kamera Store. Prototipo Local con Autocompletado y Análisis Dual.
+  </footer>
+
+  <script>
+    // Base de datos que se cargará desde el archivo JSON
+    let cameraDb = [];
+    
+    // Variables de estado
+    let activeCamA = null;
+    let activeCamB = null;
+    let usdToClpRate = 930; // Fallback por defecto si falla la API
+
+    // Cargar nombres por defecto e iniciar tasa de cambio
+    async function init() {
+      try {
+        const response = await fetch('js/cameras_db.json');
+        if (response.ok) {
+          cameraDb = await response.json();
+          console.log(`Base de datos cargada: ${cameraDb.length} cámaras.`);
+        }
+      } catch (err) {
+        console.error("No se pudo cargar la base de datos de cámaras, usando fallback interno.", err);
+      }
+      
+      // Si la carga falló, inicializamos con una lista mínima de respaldo
+      if (!cameraDb || cameraDb.length === 0) {
+        cameraDb = [
+          {
+            id: "sony-a7siii",
+            name: "Sony Alpha 7S III",
+            brand: "Sony",
+            year: 2020,
+            sensor: "Full Frame (CMOS)",
+            sensorSize: "Full Frame",
+            resolution: "12.1 MP",
+            resolutionNum: 12.1,
+            mount: "Sony E-mount",
+            maxVideo: "4K @ 120fps",
+            maxVideoFps: 120,
+            maxIso: 409600,
+            weight: "614 g",
+            weightNum: 614,
+            stabilization: "Sí",
+            hasIbis: true,
+            bitrate: "600 Mbps",
+            rawSupport: true,
+            priceUsd: 3499
+          },
+          {
+            id: "sony-fx3",
+            name: "Sony FX3 (Cinema Line)",
+            brand: "Sony",
+            year: 2021,
+            sensor: "Full Frame (CMOS)",
+            sensorSize: "Full Frame",
+            resolution: "12.1 MP",
+            resolutionNum: 12.1,
+            mount: "Sony E-mount",
+            maxVideo: "4K @ 120fps",
+            maxVideoFps: 120,
+            maxIso: 409600,
+            weight: "715 g",
+            weightNum: 715,
+            stabilization: "Sí",
+            hasIbis: true,
+            bitrate: "600 Mbps",
+            rawSupport: true,
+            priceUsd: 3899
+          }
+        ];
+      }
+
+      // No definir cámaras por defecto al iniciar (empezar vacío)
+      activeCamA = null;
+      activeCamB = null;
+
+      document.getElementById('camASearch').value = "";
+      document.getElementById('camBSearch').value = "";
+      compare();
+      
+      // Intentar cargar la tasa en tiempo real en segundo plano
+      await fetchExchangeRate();
+    }
+
+    // Consultar API de tasa de cambio
+    async function fetchExchangeRate() {
+      try {
+        const res = await fetch('https://open.er-api.com/v6/latest/USD');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.rates && data.rates.CLP) {
+            usdToClpRate = Math.round(data.rates.CLP);
+            console.log("Tasa de cambio USD to CLP actualizada: $" + usdToClpRate);
+          }
+        }
+      } catch (e) {
+        console.warn("No se pudo conectar a la API de exchange rate. Usando fallback de $" + usdToClpRate);
+      }
+    }
+
+    // Al enfocar, elevamos el z-index de la tarjeta para que el menú flote sobre las demás
+    function handleSearchFocus(type) {
+      document.getElementById('cardCamA').style.zIndex = type === 'A' ? '40' : '20';
+      document.getElementById('cardCamB').style.zIndex = type === 'B' ? '40' : '20';
+      handleSearchInput(type);
+    }
+
+    // Maneja la entrada de texto y muestra sugerencias filtradas
+    function handleSearchInput(type) {
+      const query = document.getElementById(`cam${type}Search`).value.trim().toLowerCase();
+      const container = document.getElementById(`cam${type}Suggestions`);
+      
+      const filtered = cameraDb.filter(cam => cam.name.toLowerCase().includes(query) || cam.brand.toLowerCase().includes(query));
+      
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="p-4 text-xs text-zinc-500 text-center">
+            <span>No se encontraron cámaras</span>
+            <button onclick="openSuggestionModal('${type}')" class="block w-full mt-2 text-blue-400 hover:underline font-bold text-center cursor-pointer">
+              ¿Falta este modelo? Sugiérelo aquí ↗
+            </button>
+          </div>
+        `;
+      } else {
+        container.innerHTML = filtered.slice(0, 12).map(cam => `
+          <button 
+            onclick="selectCamera('${type}', '${cam.id}')" 
+            class="w-full text-left px-5 py-3.5 text-sm hover:bg-white/5 transition-all flex justify-between items-center group cursor-pointer"
+          >
+            <span>${cam.name}</span>
+            <span class="text-xs text-zinc-500 group-hover:text-zinc-300 font-medium">${cam.brand}</span>
+          </button>
+        `).join('');
+      }
+      
+      container.classList.remove('hidden');
+    }
+
+    // Selecciona una sugerencia
+    function selectCamera(type, camId) {
+      const cam = cameraDb.find(c => c.id === camId);
+      if (!cam) return;
+
+      if (type === 'A') {
+        activeCamA = cam;
+        document.getElementById('camASearch').value = cam.name;
+      } else {
+        activeCamB = cam;
+        document.getElementById('camBSearch').value = cam.name;
+      }
+
+      // Cerrar sugerencias y restaurar z-indexes por defecto
+      document.getElementById(`cam${type}Suggestions`).classList.add('hidden');
+      document.getElementById('cardCamA').style.zIndex = '20';
+      document.getElementById('cardCamB').style.zIndex = '20';
+      
+      compare();
+    }
+
+    // Cerrar sugerencias si se hace clic fuera del buscador
+    document.addEventListener('click', (event) => {
+      ['A', 'B'].forEach(type => {
+        const input = document.getElementById(`cam${type}Search`);
+        const container = document.getElementById(`cam${type}Suggestions`);
+        if (input && container && !input.contains(event.target) && !container.contains(event.target)) {
+          container.classList.add('hidden');
+          // Restaurar z-index
+          document.getElementById(`cardCam${type}`).style.zIndex = '20';
+          // Restaurar nombre actual
+          const currentCam = type === 'A' ? activeCamA : activeCamB;
+          if (currentCam) input.value = currentCam.name;
+        }
+      });
+    });
+
+    // Comparación técnica y renderizado
+    function compare() {
+      if (!activeCamA || !activeCamB) {
+        document.getElementById('comparisonTableBox').classList.add('hidden');
+        document.getElementById('comparisonSummaryBox').classList.add('hidden');
+        return;
+      }
+
+      document.getElementById('tableHeaderCamA').innerText = activeCamA.name;
+      document.getElementById('tableHeaderCamB').innerText = activeCamB.name;
+      
+      const priceClpA = Math.round(activeCamA.priceUsd * usdToClpRate);
+      const priceClpB = Math.round(activeCamB.priceUsd * usdToClpRate);
+
+      const specs = [
+        { label: "Fabricante", valA: activeCamA.brand, valB: activeCamB.brand },
+        { label: "Año de Lanzamiento", valA: activeCamA.year, valB: activeCamB.year },
+        { label: "Sensor", valA: activeCamA.sensor, valB: activeCamB.sensor },
+        { label: "Resolución Foto", valA: activeCamA.resolution, valB: activeCamB.resolution },
+        { label: "Montura", valA: activeCamA.mount, valB: activeCamB.mount },
+        { label: "Resolución Máxima de Video", valA: activeCamA.maxVideo, valB: activeCamB.maxVideo },
+        { label: "Sensibilidad ISO Máxima", valA: activeCamA.maxIso.toLocaleString('es-CL'), valB: activeCamB.maxIso.toLocaleString('es-CL') },
+        { label: "Tasa de Bits (Bitrate) Máx.", valA: activeCamA.bitrate, valB: activeCamB.bitrate },
+        { label: "Estabilización", valA: activeCamA.stabilization, valB: activeCamB.stabilization },
+        { label: "Peso (Cuerpo)", valA: activeCamA.weight, valB: activeCamB.weight },
+        { 
+          label: "Precio Estimado (USD)", 
+          valA: `<strong class="text-white">$${activeCamA.priceUsd.toLocaleString('en-US')} USD</strong>`, 
+          valB: `<strong class="text-white">$${activeCamB.priceUsd.toLocaleString('en-US')} USD</strong>` 
+        },
+        { 
+          label: "Precio Estimado (CLP)", 
+          valA: `<span class="text-emerald-400 font-semibold">~$${priceClpA.toLocaleString('es-CL')} CLP</span>`, 
+          valB: `<span class="text-emerald-400 font-semibold">~$${priceClpB.toLocaleString('es-CL')} CLP</span>` 
+        },
+        { 
+          label: "Enlaces de Búsqueda", 
+          valA: `<a href="https://www.google.com/search?tbm=shop&q=${encodeURIComponent(activeCamA.name)}" target="_blank" class="text-blue-400 hover:text-blue-300 font-bold underline transition-colors">Buscar Precio en Vivo ↗</a>`, 
+          valB: `<a href="https://www.google.com/search?tbm=shop&q=${encodeURIComponent(activeCamB.name)}" target="_blank" class="text-blue-400 hover:text-blue-300 font-bold underline transition-colors">Buscar Precio en Vivo ↗</a>` 
+        }
+      ];
+      
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+      
+      specs.forEach(spec => {
+        const row = document.createElement('tr');
+        row.className = "hover:bg-white/5 transition-colors duration-200";
+        row.innerHTML = `
+          <td class="p-5 font-semibold text-zinc-400">${spec.label}</td>
+          <td class="p-5 text-center">${spec.valA}</td>
+          <td class="p-5 text-center font-medium">${spec.valB}</td>
+        `;
+        tbody.appendChild(row);
+      });
+      
+      document.getElementById('comparisonTableBox').classList.remove('hidden');
+      generateSummary(activeCamA, activeCamB);
+    }
+
+    // Motor de comparación dinámico dual (Filmmakers vs Fotógrafos)
+    function generateSummary(camA, camB) {
+      if (camA.id === camB.id) {
+        document.getElementById('comparisonSummaryBox').classList.add('hidden');
+        return;
+      }
+      
+      // Títulos
+      document.getElementById('videoTitleCamA').innerHTML = `<span>⚡</span> Ventajas de ${camA.name}`;
+      document.getElementById('videoTitleCamB').innerHTML = `<span>⚡</span> Ventajas de ${camB.name}`;
+      document.getElementById('photoTitleCamA').innerHTML = `<span>⚡</span> Ventajas de ${camA.name}`;
+      document.getElementById('photoTitleCamB').innerHTML = `<span>⚡</span> Ventajas de ${camB.name}`;
+
+      // Función para extraer las ventajas de una cámara frente a otra
+      function getAdvantageList(target, compare, mode) {
+        const advantages = [];
+        
+        if (mode === 'video') {
+          // 0. Ventaja de presupuesto
+          if (target.priceUsd < compare.priceUsd) {
+            const priceDiffUsd = compare.priceUsd - target.priceUsd;
+            const priceDiffClp = Math.round(priceDiffUsd * usdToClpRate);
+            advantages.push(`<strong>Costo / Presupuesto:</strong> Ahorras aprox. <strong>$${priceDiffUsd.toLocaleString('en-US')} USD</strong> (~<strong>$${priceDiffClp.toLocaleString('es-CL')} CLP</strong>), ideal para invertir el saldo en objetivos, sonido o accesorios.`);
+          }
+          // 1. Framerate
+          if (target.maxVideoFps > compare.maxVideoFps) {
+            advantages.push(`<strong>Cámara lenta superior:</strong> Graba hasta <strong>${target.maxVideoFps} fps</strong> en su máxima resolución frente a los ${compare.maxVideoFps} fps de la otra cámara.`);
+          }
+          // 2. Max Video Resolution
+          if ((target.maxVideo.includes('6K') || target.maxVideo.includes('8K')) && !(compare.maxVideo.includes('6K') || compare.maxVideo.includes('8K'))) {
+            advantages.push(`<strong>Mayor resolución nativa:</strong> Graba en <strong>${target.maxVideo.split(' ')[0]}</strong> para mayor detalle cinematográfico y flexibilidad de reencuadre.`);
+          } else if (target.maxVideo.includes('8K') && compare.maxVideo.includes('6K')) {
+            advantages.push(`<strong>Grabación 8K extrema:</strong> Máximo nivel de detalle de captura en resolución nativa de 8K.`);
+          }
+          // 3. RAW Support & Bitrate
+          if (target.rawSupport && !compare.rawSupport) {
+            advantages.push(`<strong>Grabación en RAW profesional:</strong> Ofrece archivos de video con máxima información de color y rango dinámico (como ${target.bitrate.split('(')[1]?.replace(')', '') || 'formato profesional'}).`);
+          } else if (target.rawSupport && compare.rawSupport) {
+            const bitA = parseInt(target.bitrate);
+            const bitB = parseInt(compare.bitrate);
+            if (!isNaN(bitA) && !isNaN(bitB) && bitA > bitB) {
+              advantages.push(`<strong>Menor compresión de archivos:</strong> Su tasa de bits (${target.bitrate}) es mayor que la de la otra opción (${compare.bitrate}), reteniendo más información.`);
+            }
+          }
+          // 4. Sensibilidad ISO (Low Light)
+          if (target.maxIso > compare.maxIso) {
+            const ISOtimes = Math.round(target.maxIso / compare.maxIso);
+            advantages.push(`<strong>Rendimiento nocturno superior:</strong> Su sensibilidad ISO máxima es <strong>${ISOtimes} veces mayor</strong> (${target.maxIso.toLocaleString('es-CL')} ISO), ideal para tomas de noche.`);
+          }
+          // 5. Estabilización IBIS
+          if (target.hasIbis && !compare.hasIbis) {
+            advantages.push(`<strong>Estabilización integrada (IBIS):</strong> Permite tomas estables a mano alzada y paneos fluidos sin depender de gimbals.`);
+          }
+          // 6. Peso (para gimbals / run-and-gun)
+          if (target.weightNum < compare.weightNum) {
+            advantages.push(`<strong>Operación más ligera:</strong> Pesa solo ${target.weight}, facilitando el balance en gimbals portátiles y disminuyendo la fatiga en rodajes largos.`);
+          }
+          // 7. Características específicas de cine
+          if (target.id === 'bmpcc-6k-pro') {
+            advantages.push(`<strong>Herramienta de cine dedicada:</strong> Incluye filtros de densidad neutra (ND) físicos internos (2, 4 y 6 pasos) y entradas Mini XLR de audio.`);
+          }
+          if (target.id === 'red-komodo') {
+            advantages.push(`<strong>Obturador Global (Global Shutter):</strong> Evita distorsiones de paneo (efecto gelatina) y es ideal para VFX o escenas de acción.`);
+          }
+          if (target.id === 'sony-fx3') {
+            advantages.push(`<strong>Diseño Cinema Line:</strong> Cuerpo con refrigeración activa para grabación ilimitada, orificios roscados y asa de audio XLR integrada.`);
+          }
+          if (target.id === 'panasonic-gh5s') {
+            advantages.push(`<strong>Dual Native ISO optimizado:</strong> Sensor optimizado para cine nocturno y sin filtro de paso bajo.`);
+          }
+        } else {
+          // MODE === PHOTO
+          // 0. Ventaja de presupuesto
+          if (target.priceUsd < compare.priceUsd) {
+            const priceDiffUsd = compare.priceUsd - target.priceUsd;
+            const priceDiffClp = Math.round(priceDiffUsd * usdToClpRate);
+            advantages.push(`<strong>Costo / Presupuesto:</strong> Ahorras aprox. <strong>$${priceDiffUsd.toLocaleString('en-US')} USD</strong> (~<strong>$${priceDiffClp.toLocaleString('es-CL')} CLP</strong>), ideal para invertir el saldo en lentes prime de retrato o iluminación.`);
+          }
+          // 1. Resolution Megapixels
+          if (target.resolutionNum > compare.resolutionNum) {
+            const resTimes = Math.round((target.resolutionNum / compare.resolutionNum) * 10) / 10;
+            advantages.push(`<strong>Mayor detalle fotográfico:</strong> Posee <strong>${target.resolution}</strong> (${resTimes}x más megapíxeles), permitiendo recortes agresivos e impresiones de gran tamaño.`);
+          }
+          // 2. Sensor size / Bokeh
+          if (target.sensorSize === 'Full Frame' && compare.sensorSize !== 'Full Frame') {
+            advantages.push(`<strong>Sensor Full Frame completo:</strong> Mayor bokeh y desenfoque de fondo natural, mejor rango dinámico para paisajes y retratos.`);
+          } else if (target.sensorSize === 'Super 35' && compare.sensorSize === 'MFT') {
+            advantages.push(`<strong>Sensor APS-C/Super 35 más grande:</strong> Ofrece mayor rango dinámico en las sombras y menos factor de recorte en fotografía amplia.`);
+          }
+          // 3. IBIS para disparos lentos
+          if (target.hasIbis && !compare.hasIbis) {
+            advantages.push(`<strong>Estabilización para disparo lento:</strong> El IBIS permite hacer tomas nítidas a pulso con velocidades de obturación muy bajas en la tarde.`);
+          }
+          // 4. Peso para fotografía de viaje/calle
+          if (target.weightNum < compare.weightNum) {
+            advantages.push(`<strong>Portabilidad ideal:</strong> Su cuerpo liviano (${target.weight}) es perfecto para viajes largos, fotografía de calle y eventos.`);
+          }
+          // 5. Año de lanzamiento / autofocus moderno
+          if (target.year > compare.year) {
+            advantages.push(`<strong>Autofoco y procesamiento moderno:</strong> Lanzada en el año <strong>${target.year}</strong> (frente a ${compare.year}), con mejor reconocimiento de rostros/ojos.`);
+          }
+          // 6. Ecosistema de lentes específicos
+          if (target.mount.includes('E-mount')) {
+            advantages.push(`<strong>Ecosistema óptico masivo:</strong> Acceso a cientos de objetivos nativos y económicos de marcas como Sigma, Tamron y Samyang.`);
+          }
+          if (target.mount.includes('RF mount')) {
+            advantages.push(`<strong>Montura RF de alta gama:</strong> Compatibilidad con los lentes más nítidos y modernos de la serie L de Canon.`);
+          }
+        }
+        
+        // Si no tiene ventajas específicas calculadas
+        if (advantages.length === 0) {
+          if (mode === 'video') {
+            advantages.push(`Cámara confiable para flujos de video estándar en resolución ${target.maxVideo.split(' ')[0]}.`);
+          } else {
+            advantages.push(`Cuerpo balanceado con resolución óptima de ${target.resolution} para retratos y fotografía general.`);
+          }
+        }
+        
+        return advantages.map(adv => `<li class="flex items-start gap-2 mb-1.5 last:mb-0"><span class="text-zinc-500 mt-1">•</span><span>${adv}</span></li>`).join('');
+      }
+
+      // Renderizar listas en el DOM
+      document.getElementById('videoListCamA').innerHTML = getAdvantageList(camA, camB, 'video');
+      document.getElementById('videoListCamB').innerHTML = getAdvantageList(camB, camA, 'video');
+      document.getElementById('photoListCamA').innerHTML = getAdvantageList(camA, camB, 'photo');
+      document.getElementById('photoListCamB').innerHTML = getAdvantageList(camB, camA, 'photo');
+      
+      // Mostrar bloque de análisis
+      document.getElementById('comparisonSummaryBox').classList.remove('hidden');
+    }
+
+    // Iniciar
+    init();
+
+    // =========================================
+    // LÓGICA DEL MODAL DE SUGERENCIAS
+    // =========================================
+    function openSuggestionModal(type) {
+      let typedText = "";
+      if (type === 'A' || type === 'B') {
+        typedText = document.getElementById(`cam${type}Search`).value.trim();
+      }
+      
+      document.getElementById('modalCamModel').value = typedText;
+      document.getElementById('modalMessage').value = "";
+      
+      const modal = document.getElementById('suggestionModal');
+      const form = document.getElementById('suggestionForm');
+      const success = document.getElementById('modalSuccessState');
+      
+      form.classList.remove('hidden');
+      success.classList.add('hidden');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        modal.querySelector('.glass-card').classList.remove('scale-95');
+      }, 50);
+    }
+
+    function closeSuggestionModal() {
+      const modal = document.getElementById('suggestionModal');
+      modal.classList.add('opacity-0');
+      modal.querySelector('.glass-card').classList.add('scale-95');
+      
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }, 300);
+    }
+
+    function sendViaWhatsApp() {
+      const camModel = document.getElementById('modalCamModel').value.trim();
+      const message = document.getElementById('modalMessage').value.trim();
+      
+      if (!camModel) {
+        alert("Por favor ingresa el modelo de la cámara.");
+        return;
+      }
+      
+      let text = `Hola! Me gustaría sugerir que agreguen la siguiente cámara al comparador de Kori Kamera Store:\n\n- Modelo: ${camModel}`;
+      if (message) {
+        text += `\n- Detalles: ${message}`;
+      }
+      
+      const whatsappUrl = `https://wa.me/56983050186?text=${encodeURIComponent(text)}`;
+      window.open(whatsappUrl, '_blank');
+      
+      closeSuggestionModal();
+    }
+
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      
+      const form = document.getElementById('suggestionForm');
+      const success = document.getElementById('modalSuccessState');
+      const camModel = document.getElementById('modalCamModel').value.trim();
+      const message = document.getElementById('modalMessage').value.trim();
+      
+      if (!camModel) return;
+
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        console.log("Simulando envío de formulario Netlify en Localhost:", { camModel, message });
+        document.getElementById('successStateMsg').innerText = `Tu sugerencia para "${camModel}" se ha simulado con éxito. En producción, Netlify registrará los datos en el panel de formularios y te notificará.`;
+        form.classList.add('hidden');
+        success.classList.remove('hidden');
+      } else {
+        fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(form)).toString()
+        })
+        .then(() => {
+          document.getElementById('successStateMsg').innerText = `Tu sugerencia para "${camModel}" ha sido enviada al panel de Netlify. ¡Muchas gracias por ayudarnos a mejorar el catálogo!`;
+          form.classList.add('hidden');
+          success.classList.remove('hidden');
+        })
+        .catch(err => {
+          console.error("Error al enviar formulario a Netlify:", err);
+          alert("Hubo un error al enviar tus datos. Inténtalo por WhatsApp.");
+        });
+      }
+    }
+  </script>
+
+</body>
+</html>

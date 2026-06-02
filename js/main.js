@@ -26,6 +26,73 @@ function crossfade(layerAId,layerBId,activeRef,newSrc,setActive){
  img.src=newSrc
 }
 
+// =========================================
+// HOMEPAGE BANNER SLIDESHOW
+// =========================================
+
+const bannerImages = [
+ 'foto1.jpeg',
+ 'foto2.jpeg',
+ 'foto3.jpeg',
+ 'foto4.jpeg',
+ 'foto5.jpeg',
+ 'foto6.jpeg'
+];
+let currentBannerIndex = 0;
+let bannerActiveLayer = 'A';
+let bannerInterval = null;
+
+function updateBannerGallery() {
+ const src = 'productos/banner/' + bannerImages[currentBannerIndex];
+ crossfade('bannerLayerA', 'bannerLayerB', bannerActiveLayer, src, (v) => { bannerActiveLayer = v; });
+ const dots = document.querySelectorAll('#bannerDots div');
+ dots.forEach((dot, i) => {
+  dot.className = 'w-2 h-2 rounded-full ' + (i === currentBannerIndex ? 'bg-white/90' : 'bg-white/30');
+ });
+}
+
+function nextBannerImage() {
+ currentBannerIndex = (currentBannerIndex + 1) % bannerImages.length;
+ updateBannerGallery();
+}
+
+function prevBannerImage() {
+ currentBannerIndex = (currentBannerIndex - 1 + bannerImages.length) % bannerImages.length;
+ updateBannerGallery();
+}
+
+function handleBannerGalleryClick(event) {
+ const rect = event.currentTarget.getBoundingClientRect();
+ const x = event.clientX - rect.left;
+ x < rect.width / 2 ? prevBannerImage() : nextBannerImage();
+ startBannerInterval();
+}
+
+let bannerTouchStartX = 0;
+const bannerGallery = document.getElementById('bannerGallery');
+if (bannerGallery) {
+ bannerGallery.addEventListener('touchstart', (e) => { bannerTouchStartX = e.changedTouches[0].screenX; }, { passive: true });
+ bannerGallery.addEventListener('touchend', (e) => {
+  const diff = e.changedTouches[0].screenX - bannerTouchStartX;
+  if (Math.abs(diff) > 40) {
+   diff > 0 ? prevBannerImage() : nextBannerImage();
+   startBannerInterval();
+  }
+ }, { passive: true });
+}
+
+function startBannerInterval() {
+ if (bannerInterval) clearInterval(bannerInterval);
+ bannerInterval = setInterval(nextBannerImage, 5000);
+}
+
+function stopBannerInterval() {
+ if (bannerInterval) {
+  clearInterval(bannerInterval);
+  bannerInterval = null;
+ }
+}
+
 const rigImages=[
  '00001.jpeg',
  '00002.jpeg',
@@ -479,17 +546,22 @@ if(popup){
 function openMatteboxPage(){
  const overlay=document.getElementById('transitionOverlay')
  const home=document.getElementById('homePage')
+ const catalog=document.getElementById('catalogPage')
  const product=document.getElementById('productPage')
+ 
+ stopBannerInterval()
  
  if(overlay){
   overlay.classList.add('active')
  }
 
- home.classList.remove('page-visible')
- home.classList.add('page-hidden')
+ ;[home,catalog].forEach(el=>{
+  if(el){el.classList.remove('page-visible');el.classList.add('page-hidden')}
+ })
 
  setTimeout(()=>{
-  home.classList.add('hidden')
+  if(home) home.classList.add('hidden')
+  if(catalog) catalog.classList.add('hidden')
 
   product.classList.remove('hidden')
 
@@ -516,24 +588,64 @@ function openMatteboxPage(){
 function goHome(){
  const overlay=document.getElementById('transitionOverlay')
  const home=document.getElementById('homePage')
+ const catalog=document.getElementById('catalogPage')
  const product=document.getElementById('productPage')
  const tp1=document.getElementById('tp1Page')
 
  stopRigInterval()
+ stopBannerInterval()
 
  if(overlay) overlay.classList.add('active')
 
- ;[product,tp1].forEach(el=>{
+ ;[catalog,product,tp1].forEach(el=>{
   if(el){el.classList.remove('page-visible');el.classList.add('page-hidden')}
  })
 
  setTimeout(()=>{
+  if(catalog) catalog.classList.add('hidden')
   if(product) product.classList.add('hidden')
   if(tp1) tp1.classList.add('hidden')
+  
   home.classList.remove('hidden')
   requestAnimationFrame(()=>{
    home.classList.remove('page-hidden')
    home.classList.add('page-visible')
+  })
+  
+  currentBannerIndex = 0
+  updateBannerGallery()
+  startBannerInterval()
+  
+  window.scrollTo({top:0,behavior:'smooth'})
+ },170)
+
+ setTimeout(()=>{if(overlay) overlay.classList.remove('active')},560)
+}
+
+function openCatalogPage(){
+ const overlay=document.getElementById('transitionOverlay')
+ const home=document.getElementById('homePage')
+ const catalog=document.getElementById('catalogPage')
+ const product=document.getElementById('productPage')
+ const tp1=document.getElementById('tp1Page')
+
+ stopBannerInterval()
+
+ if(overlay) overlay.classList.add('active')
+
+ ;[home,product,tp1].forEach(el=>{
+  if(el){el.classList.remove('page-visible');el.classList.add('page-hidden')}
+ })
+
+ setTimeout(()=>{
+  if(home) home.classList.add('hidden')
+  if(product) product.classList.add('hidden')
+  if(tp1) tp1.classList.add('hidden')
+  
+  catalog.classList.remove('hidden')
+  requestAnimationFrame(()=>{
+   catalog.classList.remove('page-hidden')
+   catalog.classList.add('page-visible')
   })
   window.scrollTo({top:0,behavior:'smooth'})
  },170)
@@ -662,10 +774,19 @@ if(tp1ProdEl){
 function openTp1Page(){
  const overlay=document.getElementById('transitionOverlay')
  const home=document.getElementById('homePage')
+ const catalog=document.getElementById('catalogPage')
  const mattebox=document.getElementById('productPage')
  const tp1=document.getElementById('tp1Page')
+ 
+ stopBannerInterval()
+ 
  if(overlay) overlay.classList.add('active')
- ;[home,mattebox].forEach(el=>{el.classList.remove('page-visible');el.classList.add('page-hidden','hidden')})
+ ;[home,catalog,mattebox].forEach(el=>{
+  if(el){
+   el.classList.remove('page-visible')
+   el.classList.add('page-hidden','hidden')
+  }
+ })
  setTimeout(()=>{
   tp1.classList.remove('hidden')
   requestAnimationFrame(()=>{tp1.classList.remove('page-hidden');tp1.classList.add('page-visible')})
@@ -678,6 +799,8 @@ function openTp1Page(){
 updateRigGallery()
 updateProductGallery()
 updateFinalPrice()
+updateBannerGallery()
+startBannerInterval()
 
 window.addEventListener('click',(event)=>{
  const menu=document.getElementById('dropdownMenu')
