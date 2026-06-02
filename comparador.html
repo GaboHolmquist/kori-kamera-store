@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Comparador de Cámaras (Buscador & Análisis Dual) — Kori Kamera Store</title>
+  <meta name="description" content="Compara especificaciones técnicas de cámaras de cine y fotografía. Análisis dual interactivo para filmmakers y fotógrafos en Kori Kamera Store.">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/style.css" />
   <style>
@@ -210,6 +211,37 @@
       </table>
     </div>
 
+    <!-- COMPARACIONES POPULARES (SEO) -->
+    <div class="mt-16">
+      <h3 class="text-zinc-500 uppercase tracking-wider text-xs font-bold mb-5 text-left">Comparaciones Populares</h3>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm text-left">
+        <a href="?c1=sony-fx3&c2=bmpcc-6k-pro" class="glass-card rounded-2xl p-4 hover:border-white/20 hover:scale-[1.01] transition-all flex flex-col justify-between">
+          <span class="text-zinc-400 font-semibold text-[10px] uppercase tracking-wider mb-1">Cine de Entrada</span>
+          <span class="font-bold text-white text-xs md:text-sm">Sony FX3 vs BMPCC 6K Pro</span>
+        </a>
+        <a href="?c1=sony-a7iv&c2=panasonic-lumix-dc-s5-ii" class="glass-card rounded-2xl p-4 hover:border-white/20 hover:scale-[1.01] transition-all flex flex-col justify-between">
+          <span class="text-zinc-400 font-semibold text-[10px] uppercase tracking-wider mb-1">Híbridas Full Frame</span>
+          <span class="font-bold text-white text-xs md:text-sm">Sony a7 IV vs Lumix S5 II</span>
+        </a>
+        <a href="?c1=sony-a7siii&c2=sony-fx3" class="glass-card rounded-2xl p-4 hover:border-white/20 hover:scale-[1.01] transition-all flex flex-col justify-between">
+          <span class="text-zinc-400 font-semibold text-[10px] uppercase tracking-wider mb-1">Mismo Sensor</span>
+          <span class="font-bold text-white text-xs md:text-sm">Sony a7S III vs Sony FX3</span>
+        </a>
+        <a href="?c1=bmpcc-4k&c2=panasonic-gh5" class="glass-card rounded-2xl p-4 hover:border-white/20 hover:scale-[1.01] transition-all flex flex-col justify-between">
+          <span class="text-zinc-400 font-semibold text-[10px] uppercase tracking-wider mb-1">Micro Cuatro Tercios</span>
+          <span class="font-bold text-white text-xs md:text-sm">BMPCC 4K vs Lumix GH5</span>
+        </a>
+        <a href="?c1=sony-fx30&c2=bmpcc-6k-pro" class="glass-card rounded-2xl p-4 hover:border-white/20 hover:scale-[1.01] transition-all flex flex-col justify-between">
+          <span class="text-zinc-400 font-semibold text-[10px] uppercase tracking-wider mb-1">Super 35</span>
+          <span class="font-bold text-white text-xs md:text-sm">Sony FX30 vs BMPCC 6K Pro</span>
+        </a>
+        <a href="?c1=canon-r5&c2=sony-a7r-v" class="glass-card rounded-2xl p-4 hover:border-white/20 hover:scale-[1.01] transition-all flex flex-col justify-between">
+          <span class="text-zinc-400 font-semibold text-[10px] uppercase tracking-wider mb-1">Alta Resolución</span>
+          <span class="font-bold text-white text-xs md:text-sm">Canon EOS R5 vs Sony a7R V</span>
+        </a>
+      </div>
+    </div>
+
   </main>
 
   <!-- BANNER DE SUGERENCIA DE CÁMARAS -->
@@ -387,12 +419,16 @@
         ];
       }
 
-      // No definir cámaras por defecto al iniciar (empezar vacío)
-      activeCamA = null;
-      activeCamB = null;
+      // Cargar cámaras desde parámetros URL para SEO / Deep Linking
+      const urlParams = new URLSearchParams(window.location.search);
+      const c1 = urlParams.get('c1');
+      const c2 = urlParams.get('c2');
 
-      document.getElementById('camASearch').value = "";
-      document.getElementById('camBSearch').value = "";
+      activeCamA = cameraDb.find(c => c.id === c1) || null;
+      activeCamB = cameraDb.find(c => c.id === c2) || null;
+
+      document.getElementById('camASearch').value = activeCamA ? activeCamA.name : "";
+      document.getElementById('camBSearch').value = activeCamB ? activeCamB.name : "";
       compare();
       
       // Intentar cargar la tasa en tiempo real en segundo plano
@@ -492,6 +528,26 @@
 
     // Comparación técnica y renderizado
     function compare() {
+      // Actualizar URL y meta tags en base al estado de selección (SEO)
+      if (activeCamA && activeCamB) {
+        const newUrl = `${window.location.pathname}?c1=${activeCamA.id}&c2=${activeCamB.id}`;
+        window.history.replaceState({ path: newUrl }, '', newUrl);
+        document.title = `${activeCamA.name} vs ${activeCamB.name} | Comparador de Cámaras — Kori Kamera Store`;
+        
+        const description = `Compara las especificaciones técnicas de la ${activeCamA.name} y la ${activeCamB.name}. Análisis dual para fotógrafos y filmmakers con precios estimados en pesos chilenos.`;
+        let metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) metaDesc.setAttribute('content', description);
+      } else if (activeCamA || activeCamB) {
+        const singleId = activeCamA ? activeCamA.id : activeCamB.id;
+        const newUrl = `${window.location.pathname}?c1=${singleId}`;
+        window.history.replaceState({ path: newUrl }, '', newUrl);
+        document.title = `Comparador de Cámaras — Kori Kamera Store`;
+      } else {
+        const newUrl = window.location.pathname;
+        window.history.replaceState({ path: newUrl }, '', newUrl);
+        document.title = `Comparador de Cámaras (Buscador & Análisis Dual) — Kori Kamera Store`;
+      }
+
       if (!activeCamA || !activeCamB) {
         document.getElementById('comparisonTableBox').classList.add('hidden');
         document.getElementById('comparisonSummaryBox').classList.add('hidden');
