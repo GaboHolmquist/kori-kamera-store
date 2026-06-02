@@ -273,6 +273,22 @@
       </div>
     </div>
 
+    <!-- ATRIBUTOS DE RENDIMIENTO (SKILLS) -->
+    <div id="skillsComparisonBox" class="glass-card rounded-[34px] border border-blue-500/20 bg-gradient-to-r from-blue-950/15 to-purple-950/15 p-6 md:p-8 mb-10 relative z-0 hidden">
+      <h3 class="font-bold text-lg mb-2 flex items-center gap-2 text-zinc-200 text-left">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+        Atributos de Rendimiento
+      </h3>
+      <p class="text-xs text-zinc-400 mb-6 text-left">
+        Comparativa de habilidades técnica y operativa inspirada en interfaces de videojuegos (Escala 0 a 6).
+      </p>
+
+      <!-- Grid de Atributos -->
+      <div id="skillsContainer" class="grid sm:grid-cols-2 gap-4 text-left">
+        <!-- Renderizado dinámico -->
+      </div>
+    </div>
+
     <!-- COMPARISON TABLE -->
     <div id="comparisonTableBox" class="glass-card rounded-[34px] overflow-hidden relative z-0 hidden">
       <table class="w-full border-collapse text-left">
@@ -622,6 +638,7 @@
         document.getElementById('comparisonTableBox').classList.add('hidden');
         document.getElementById('comparisonSummaryBox').classList.add('hidden');
         document.getElementById('sizeComparisonBox').classList.add('hidden');
+        document.getElementById('skillsComparisonBox').classList.add('hidden');
         return;
       }
 
@@ -676,6 +693,7 @@
       document.getElementById('comparisonTableBox').classList.remove('hidden');
       generateSummary(activeCamA, activeCamB);
       updateSizeComparison();
+      updateCameraSkills();
     }
 
     // Motor de comparación dinámico dual (Filmmakers vs Fotógrafos)
@@ -1050,18 +1068,11 @@
       const h = (view === 'front' ? dim.h : dim.d) * scale;
       
       const pad = 20;
-      const imgUrl = `productos/comparador/${cam.id}_${view}.png`;
       const fallbackSvg = generateCameraSVG(cam, view, strokeColor, fillColor);
 
       return `
         <div class="relative flex items-center justify-center overflow-visible" style="width: ${w + pad*2}px; height: ${h + pad*2}px;">
-          <img 
-            src="${imgUrl}" 
-            style="width: ${w}px; height: ${h}px;" 
-            class="object-contain max-w-none max-h-none transition-all duration-300"
-            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
-          />
-          <div style="display: none;" class="w-full h-full absolute inset-0">
+          <div class="w-full h-full absolute inset-0">
             ${fallbackSvg}
           </div>
         </div>
@@ -1153,6 +1164,216 @@
       } else {
         return `<span class="text-zinc-400">Igual</span>`;
       }
+    }
+
+    // =========================================
+    // ATRIBUTOS DE RENDIMIENTO (GAME-LIKE STATS)
+    // =========================================
+    function calculateCameraSkills(cam) {
+      const skills = {
+        videoPower: 1,
+        photoCharacter: 1,
+        autofocus: 1,
+        cinematicLook: 1,
+        customization: 3,
+        portability: 3,
+        flexibility: 3,
+        luxuryAura: 1
+      };
+
+      const brand = (cam.brand || "").toUpperCase();
+      const name = (cam.name || "").toUpperCase();
+      const id = (cam.id || "").toLowerCase();
+      const year = cam.year || 2012;
+      const res = cam.resolutionNum || parseFloat(cam.resolution) || 12;
+      const weight = cam.weightNum || parseFloat(cam.weight) || 600;
+      const price = cam.priceUsd || 1000;
+      const sensor = (cam.sensorSize || cam.sensor || "").toUpperCase();
+      const maxVid = (cam.maxVideo || "").toUpperCase();
+      const maxFps = cam.maxVideoFps || (maxVid.includes("120") ? 120 : (maxVid.includes("60") ? 60 : 30));
+
+      // 1. Video Power
+      if (maxVid.includes("8K")) {
+        skills.videoPower = 6;
+      } else if (maxVid.includes("6K")) {
+        skills.videoPower = 5;
+      } else if (maxVid.includes("4K")) {
+        if (maxFps >= 120) skills.videoPower = 6;
+        else if (maxFps >= 60) skills.videoPower = 5;
+        else skills.videoPower = 4;
+      } else {
+        if (maxFps >= 120) skills.videoPower = 3;
+        else if (maxFps >= 60) skills.videoPower = 2;
+        else skills.videoPower = 1;
+      }
+      if (cam.rawSupport) {
+        skills.videoPower = Math.min(6, skills.videoPower + 1);
+      }
+
+      // 2. Photo Character
+      if (sensor.includes("FULL") || sensor.includes("FF")) {
+        if (res >= 45) skills.photoCharacter = 6;
+        else if (res >= 30) skills.photoCharacter = 5;
+        else skills.photoCharacter = 4;
+      } else if (sensor.includes("SUPER 35") || sensor.includes("APS-C") || sensor.includes("APSC") || sensor.includes("DX")) {
+        if (res >= 24) skills.photoCharacter = 4;
+        else skills.photoCharacter = 3;
+      } else if (sensor.includes("MFT") || sensor.includes("MICRO") || sensor.includes("4/3")) {
+        if (res >= 20) skills.photoCharacter = 3;
+        else skills.photoCharacter = 2;
+      } else {
+        skills.photoCharacter = res >= 20 ? 3 : 1;
+      }
+
+      // 3. Autofocus
+      if (brand.includes("SONY") || brand.includes("CANON")) {
+        if (year >= 2021) skills.autofocus = 6;
+        else if (year >= 2018) skills.autofocus = 5;
+        else if (year >= 2015) skills.autofocus = 4;
+        else skills.autofocus = 3;
+      } else if (brand.includes("FUJI") || brand.includes("PANASONIC") || brand.includes("LUMIX")) {
+        if (year >= 2022) skills.autofocus = 5;
+        else if (year >= 2018) skills.autofocus = 4;
+        else skills.autofocus = 3;
+      } else if (brand.includes("BLACKMAGIC") || brand.includes("RED") || id.includes("bmpcc")) {
+        skills.autofocus = 1; // Manual/cine focus
+      } else {
+        if (year >= 2020) skills.autofocus = 4;
+        else if (year >= 2015) skills.autofocus = 3;
+        else skills.autofocus = 2;
+      }
+
+      // 4. Cinematic Look
+      const isCineBrand = brand.includes("RED") || brand.includes("BLACKMAGIC") || id.includes("bmpcc") || name.includes("ALEXA") || name.includes("AMIRA");
+      const isCinemaLine = id.includes("fx3") || id.includes("fx30") || id.includes("komodo") || name.includes("CINEMA") || name.includes("C70") || name.includes("C200") || name.includes("C300");
+      if (isCineBrand || isCinemaLine) {
+        skills.cinematicLook = cam.rawSupport ? 6 : 5;
+      } else {
+        if (sensor.includes("FULL") || sensor.includes("FF")) {
+          skills.cinematicLook = cam.rawSupport ? 5 : 4;
+        } else {
+          skills.cinematicLook = 3;
+        }
+      }
+
+      // 5. Customization
+      if (brand.includes("RED") || id.includes("komodo") || name.includes("ALEXA")) {
+        skills.customization = 6;
+      } else if (id.includes("fx3") || id.includes("fx30") || id.includes("bmpcc")) {
+        skills.customization = 5;
+      } else if (sensor.includes("FULL") || sensor.includes("FF") || sensor.includes("APS-C") || sensor.includes("MFT")) {
+        skills.customization = 4;
+      } else {
+        skills.customization = 2;
+      }
+
+      // 6. Portability
+      if (weight < 300) skills.portability = 6;
+      else if (weight < 500) skills.portability = 5;
+      else if (weight < 750) skills.portability = 4;
+      else if (weight < 1000) skills.portability = 3;
+      else if (weight < 1400) skills.portability = 2;
+      else skills.portability = 1;
+
+      // 7. Flexibility
+      if (id.includes("fx3") || id.includes("a7siii") || id.includes("fx30") || id.includes("bmpcc") || brand.includes("RED")) {
+        skills.flexibility = 4; // Muy específicas para video
+      } else if (skills.photoCharacter >= 4 && skills.videoPower >= 4) {
+        skills.flexibility = 6; // Híbrida excelente
+      } else if (skills.photoCharacter >= 3 && skills.videoPower >= 4) {
+        skills.flexibility = 5;
+      } else {
+        skills.flexibility = 3;
+      }
+
+      // 8. Luxury Aura
+      if (brand.includes("RED") || price >= 6000 || name.includes("ALEXA")) {
+        skills.luxuryAura = 6;
+      } else if (price >= 3500) {
+        skills.luxuryAura = 5;
+      } else if (price >= 2000) {
+        skills.luxuryAura = 4;
+      } else if (price >= 1000) {
+        skills.luxuryAura = 3;
+      } else if (price >= 500) {
+        skills.luxuryAura = 2;
+      } else {
+        skills.luxuryAura = 1;
+      }
+
+      return skills;
+    }
+
+    function updateCameraSkills() {
+      if (!activeCamA || !activeCamB) {
+        document.getElementById('skillsComparisonBox').classList.add('hidden');
+        return;
+      }
+
+      document.getElementById('skillsComparisonBox').classList.remove('hidden');
+
+      const skillsA = calculateCameraSkills(activeCamA);
+      const skillsB = calculateCameraSkills(activeCamB);
+
+      const skillsData = [
+        { key: "videoPower", name: "Video Power", icon: "🎥" },
+        { key: "photoCharacter", name: "Photo Character", icon: "📷" },
+        { key: "autofocus", name: "Autofocus", icon: "🎯" },
+        { key: "cinematicLook", name: "Cinematic Look", icon: "🎬" },
+        { key: "customization", name: "Customization", icon: "🛠️" },
+        { key: "portability", name: "Portability", icon: "🧳" },
+        { key: "flexibility", name: "Flexibility", icon: "🔗" },
+        { key: "luxuryAura", name: "Luxury Aura", icon: "👑" }
+      ];
+
+      const container = document.getElementById('skillsContainer');
+      if (!container) return;
+
+      container.innerHTML = skillsData.map(skill => {
+        const valA = skillsA[skill.key];
+        const valB = skillsB[skill.key];
+
+        const barA = generateSegmentedBar(valA, 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]', 'bg-zinc-800/60 border border-zinc-700/30');
+        const barB = generateSegmentedBar(valB, 'bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.5)]', 'bg-zinc-800/60 border border-zinc-700/30');
+
+        return `
+          <div class="space-y-3 bg-white/5 border border-white/10 rounded-2xl p-4">
+            <div class="flex justify-between items-center text-xs font-bold text-zinc-300">
+              <span class="flex items-center gap-1.5">${skill.icon} ${skill.name}</span>
+              <div class="flex gap-3 font-mono">
+                <span class="text-red-400">Ref: ${valA}/6</span>
+                <span class="text-sky-400">Comp: ${valB}/6</span>
+              </div>
+            </div>
+            
+            <div class="space-y-2 mt-2">
+              <!-- Cámara A -->
+              <div class="flex items-center gap-2">
+                <span class="text-[9px] font-bold text-zinc-500 w-12 uppercase truncate">Ref (A)</span>
+                ${barA}
+              </div>
+              <!-- Cámara B -->
+              <div class="flex items-center gap-2">
+                <span class="text-[9px] font-bold text-zinc-500 w-12 uppercase truncate">Comp (B)</span>
+                ${barB}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function generateSegmentedBar(value, colorClass, emptyClass) {
+      let html = '<div class="flex gap-1 flex-grow h-2.5">';
+      for (let i = 1; i <= 6; i++) {
+        if (i <= value) {
+          html += `<div class="w-full h-full rounded-[2px] ${colorClass} transition-all duration-300"></div>`;
+        } else {
+          html += `<div class="w-full h-full rounded-[2px] ${emptyClass} transition-all duration-300"></div>`;
+        }
+      }
+      html += '</div>';
+      return html;
     }
 
     // =========================================
