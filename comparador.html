@@ -234,7 +234,7 @@
 
           <!-- Cámara B -->
           <div class="flex flex-col items-center gap-3">
-            <span class="text-xs font-bold text-emerald-400" id="sizeLabelCamB">Cámara B</span>
+            <span class="text-xs font-bold text-sky-400" id="sizeLabelCamB">Cámara B</span>
             <div id="svgContainerCamB" class="flex items-center justify-center min-h-[160px]"></div>
             <span class="text-[10px] text-zinc-500 font-semibold" id="sizeMetricsCamB">-</span>
           </div>
@@ -292,31 +292,8 @@
     <!-- COMPARACIONES POPULARES (SEO) -->
     <div class="mt-16">
       <h3 class="text-zinc-500 uppercase tracking-wider text-xs font-bold mb-5 text-left">Comparaciones Populares</h3>
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm text-left">
-        <a href="?c1=sony-fx3&c2=bmpcc-6k-pro" class="glass-card rounded-2xl p-4 hover:border-white/20 hover:scale-[1.01] transition-all flex flex-col justify-between">
-          <span class="text-zinc-400 font-semibold text-[10px] uppercase tracking-wider mb-1">Cine de Entrada</span>
-          <span class="font-bold text-white text-xs md:text-sm">Sony FX3 vs BMPCC 6K Pro</span>
-        </a>
-        <a href="?c1=sony-a7iv&c2=panasonic-lumix-dc-s5-ii" class="glass-card rounded-2xl p-4 hover:border-white/20 hover:scale-[1.01] transition-all flex flex-col justify-between">
-          <span class="text-zinc-400 font-semibold text-[10px] uppercase tracking-wider mb-1">Híbridas Full Frame</span>
-          <span class="font-bold text-white text-xs md:text-sm">Sony a7 IV vs Lumix S5 II</span>
-        </a>
-        <a href="?c1=sony-a7siii&c2=sony-fx3" class="glass-card rounded-2xl p-4 hover:border-white/20 hover:scale-[1.01] transition-all flex flex-col justify-between">
-          <span class="text-zinc-400 font-semibold text-[10px] uppercase tracking-wider mb-1">Mismo Sensor</span>
-          <span class="font-bold text-white text-xs md:text-sm">Sony a7S III vs Sony FX3</span>
-        </a>
-        <a href="?c1=bmpcc-4k&c2=panasonic-gh5" class="glass-card rounded-2xl p-4 hover:border-white/20 hover:scale-[1.01] transition-all flex flex-col justify-between">
-          <span class="text-zinc-400 font-semibold text-[10px] uppercase tracking-wider mb-1">Micro Cuatro Tercios</span>
-          <span class="font-bold text-white text-xs md:text-sm">BMPCC 4K vs Lumix GH5</span>
-        </a>
-        <a href="?c1=sony-fx30&c2=bmpcc-6k-pro" class="glass-card rounded-2xl p-4 hover:border-white/20 hover:scale-[1.01] transition-all flex flex-col justify-between">
-          <span class="text-zinc-400 font-semibold text-[10px] uppercase tracking-wider mb-1">Super 35</span>
-          <span class="font-bold text-white text-xs md:text-sm">Sony FX30 vs BMPCC 6K Pro</span>
-        </a>
-        <a href="?c1=canon-r5&c2=sony-a7r-v" class="glass-card rounded-2xl p-4 hover:border-white/20 hover:scale-[1.01] transition-all flex flex-col justify-between">
-          <span class="text-zinc-400 font-semibold text-[10px] uppercase tracking-wider mb-1">Alta Resolución</span>
-          <span class="font-bold text-white text-xs md:text-sm">Canon EOS R5 vs Sony a7R V</span>
-        </a>
+      <div id="popularMatchesContainer" class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm text-left">
+        <!-- Carga dinámica por JS -->
       </div>
     </div>
 
@@ -509,6 +486,9 @@
       document.getElementById('camBSearch').value = activeCamB ? activeCamB.name : "";
       compare();
       
+      // Renderizar el bloque de comparación dinámico y aleatorio
+      renderPopularMatches();
+      
       // Intentar cargar la tasa en tiempo real en segundo plano
       await fetchExchangeRate();
     }
@@ -609,7 +589,11 @@
       // Actualizar URL y meta tags en base al estado de selección (SEO)
       if (activeCamA && activeCamB) {
         const newUrl = `${window.location.pathname}?c1=${activeCamA.id}&c2=${activeCamB.id}`;
-        window.history.replaceState({ path: newUrl }, '', newUrl);
+        try {
+          window.history.replaceState({ path: newUrl }, '', newUrl);
+        } catch (e) {
+          console.warn("replaceState bloqueado por el navegador (ejecución local):", e);
+        }
         document.title = `${activeCamA.name} vs ${activeCamB.name} | Comparador de Cámaras — Kori Kamera Store`;
         
         const description = `Compara las especificaciones técnicas de la ${activeCamA.name} y la ${activeCamB.name}. Análisis dual para fotógrafos y filmmakers con precios estimados en pesos chilenos.`;
@@ -618,11 +602,19 @@
       } else if (activeCamA || activeCamB) {
         const singleId = activeCamA ? activeCamA.id : activeCamB.id;
         const newUrl = `${window.location.pathname}?c1=${singleId}`;
-        window.history.replaceState({ path: newUrl }, '', newUrl);
+        try {
+          window.history.replaceState({ path: newUrl }, '', newUrl);
+        } catch (e) {
+          console.warn("replaceState bloqueado por el navegador (ejecución local):", e);
+        }
         document.title = `Comparador de Cámaras — Kori Kamera Store`;
       } else {
         const newUrl = window.location.pathname;
-        window.history.replaceState({ path: newUrl }, '', newUrl);
+        try {
+          window.history.replaceState({ path: newUrl }, '', newUrl);
+        } catch (e) {
+          console.warn("replaceState bloqueado por el navegador (ejecución local):", e);
+        }
         document.title = `Comparador de Cámaras (Buscador & Análisis Dual) — Kori Kamera Store`;
       }
 
@@ -1069,7 +1061,7 @@
       container.style.height = maxH + 'px';
 
       svgOverlayA.innerHTML = generateCameraSVG(activeCamA, sizeView, 'rgb(239, 68, 68)', 'rgba(239, 68, 68, 0.12)');
-      svgOverlayB.innerHTML = generateCameraSVG(activeCamB, sizeView, 'rgb(16, 185, 129)', 'rgba(16, 185, 129, 0.12)');
+      svgOverlayB.innerHTML = generateCameraSVG(activeCamB, sizeView, 'rgb(56, 189, 248)', 'rgba(56, 189, 248, 0.12)');
     }
 
     function updateSizeComparison() {
@@ -1097,7 +1089,7 @@
 
       // Renderizar lado a lado
       document.getElementById('svgContainerCamA').innerHTML = generateCameraSVG(activeCamA, sizeView, 'rgb(239, 68, 68)', 'rgba(239, 68, 68, 0.15)');
-      document.getElementById('svgContainerCamB').innerHTML = generateCameraSVG(activeCamB, sizeView, 'rgb(16, 185, 129)', 'rgba(16, 185, 129, 0.15)');
+      document.getElementById('svgContainerCamB').innerHTML = generateCameraSVG(activeCamB, sizeView, 'rgb(56, 189, 248)', 'rgba(56, 189, 248, 0.15)');
 
       // Renderizar superposición
       drawOverlayComparison();
@@ -1119,7 +1111,7 @@
       if (diffV > 0) {
         volText = `<span class="text-red-400">+${diffV}% vol.</span>`;
       } else if (diffV < 0) {
-        volText = `<span class="text-emerald-400">${diffV}% vol.</span>`;
+        volText = `<span class="text-sky-400">${diffV}% vol.</span>`;
       } else {
         volText = `<span class="text-zinc-400">Iguales</span>`;
       }
@@ -1130,10 +1122,49 @@
       if (val > 0) {
         return `<span class="text-red-400">+${val} mm</span>`;
       } else if (val < 0) {
-        return `<span class="text-emerald-400">${val} mm</span>`;
+        return `<span class="text-sky-400">${val} mm</span>`;
       } else {
         return `<span class="text-zinc-400">Igual</span>`;
       }
+    }
+
+    // =========================================
+    // COMPARACIONES POPULARES DINÁMICAS (SEO)
+    // =========================================
+    function renderPopularMatches() {
+      const container = document.getElementById('popularMatchesContainer');
+      if (!container) return;
+
+      const popularMatches = [
+        { label: "Cine de Entrada", name: "Sony FX3 vs BMPCC 6K Pro", idA: "sony-fx3", idB: "bmpcc-6k-pro" },
+        { label: "Híbridas Full Frame", name: "Sony a7 IV vs Lumix S5 II", idA: "sony-a7iv", idB: "panasonic-lumix-dc-s5-ii" },
+        { label: "Mismo Sensor", name: "Sony a7S III vs Sony FX3", idA: "sony-a7siii", idB: "sony-fx3" },
+        { label: "Micro Cuatro Tercios", name: "BMPCC 4K vs Lumix GH5", idA: "bmpcc-4k", idB: "panasonic-gh5" },
+        { label: "Super 35", name: "Sony FX30 vs BMPCC 6K Pro", idA: "sony-fx30", idB: "bmpcc-6k-pro" },
+        { label: "Alta Resolución", name: "Canon EOS R5 vs Sony a7R V", idA: "canon-r5", idB: "sony-a7r-v" },
+        { label: "Cine Compacto", name: "Sony FX3 vs RED Komodo 6K", idA: "sony-fx3", idB: "red-komodo" },
+        { label: "Híbridas de Video", name: "Lumix S5 IIX vs Sony FX30", idA: "panasonic-lumix-dc-s5-iix", idB: "sony-fx30" },
+        { label: "Evolución MFT", name: "Lumix GH5 vs Lumix GH6", idA: "panasonic-gh5", idB: "panasonic-lumix-dc-gh6" },
+        { label: "Sony APS-C vs FF", name: "Sony FX30 vs Sony a7 IV", idA: "sony-fx30", idB: "sony-a7iv" },
+        { label: "Canon Full Frame", name: "Canon R5 vs Canon R6 Mark II", idA: "canon-r5", idB: "canon-eos-r6-mark-ii" },
+        { label: "Fuji Retro", name: "Fujifilm X-T5 vs Sony a7 IV", idA: "fujifilm-x-t5", idB: "sony-a7iv" },
+        { label: "Cine Indie", name: "BMPCC 4K vs Sony FX30", idA: "bmpcc-4k", idB: "sony-fx30" },
+        { label: "Panasonic S Series", name: "Lumix S5 II vs Lumix S5 IIX", idA: "panasonic-lumix-dc-s5-ii", idB: "panasonic-lumix-dc-s5-iix" },
+        { label: "Cine RAW", name: "RED Komodo vs BMPCC 6K Pro", idA: "red-komodo", idB: "bmpcc-6k-pro" },
+        { label: "Foto Pro", name: "Canon R5 vs Sony a7R IV", idA: "canon-r5", idB: "sony-a7r-iv" },
+        { label: "Panasonic Híbrida", name: "Lumix S5 II vs Sony a7 IV", idA: "panasonic-lumix-dc-s5-ii", idB: "sony-a7iv" },
+        { label: "Sony 12MP Duo", name: "Sony a7S III vs Sony FX30", idA: "sony-a7siii", idB: "sony-fx30" }
+      ];
+
+      // Barajar y tomar 9 elementos de forma aleatoria en cada visita
+      const shuffled = popularMatches.sort(() => 0.5 - Math.random()).slice(0, 9);
+
+      container.innerHTML = shuffled.map(match => `
+        <a href="?c1=${match.idA}&c2=${match.idB}" class="glass-card rounded-2xl p-4 hover:border-white/20 hover:scale-[1.01] transition-all flex flex-col justify-between">
+          <span class="text-zinc-400 font-semibold text-[10px] uppercase tracking-wider mb-1">${match.label}</span>
+          <span class="font-bold text-white text-xs md:text-sm text-left">${match.name}</span>
+        </a>
+      `).join('');
     }
 
   </script>
