@@ -613,6 +613,7 @@ function openMatteboxPage(fromHash = false){
   if(gabo3d) gabo3d.classList.add('hidden')
 
   product.classList.remove('hidden')
+  product.offsetHeight; // Force reflow for Safari
 
   requestAnimationFrame(()=>{
    product.classList.remove('page-hidden')
@@ -662,6 +663,7 @@ function goHome(fromHash = false){
   if(gabo3d) gabo3d.classList.add('hidden')
   
   home.classList.remove('hidden')
+  home.offsetHeight; // Force reflow for Safari
   requestAnimationFrame(()=>{
    home.classList.remove('page-hidden')
    home.classList.add('page-visible')
@@ -704,6 +706,7 @@ function openCatalogPage(fromHash = false){
   if(gabo3d) gabo3d.classList.add('hidden')
   
   catalog.classList.remove('hidden')
+  catalog.offsetHeight; // Force reflow for Safari
   requestAnimationFrame(()=>{
    catalog.classList.remove('page-hidden')
    catalog.classList.add('page-visible')
@@ -745,6 +748,7 @@ function openGabo3DprintPage(fromHash = false){
   
   if(gabo3d) {
    gabo3d.classList.remove('hidden')
+   gabo3d.offsetHeight; // Force reflow for Safari
    requestAnimationFrame(()=>{
     gabo3d.classList.remove('page-hidden')
     gabo3d.classList.add('page-visible')
@@ -897,8 +901,9 @@ function openTp1Page(fromHash = false){
   }
  })
  setTimeout(()=>{
-  tp1.classList.remove('hidden')
-  requestAnimationFrame(()=>{tp1.classList.remove('page-hidden');tp1.classList.add('page-visible')})
+   tp1.classList.remove('hidden')
+   tp1.offsetHeight; // Force reflow for Safari
+   requestAnimationFrame(()=>{tp1.classList.remove('page-hidden');tp1.classList.add('page-visible')})
   window.scrollTo({top:0,behavior:'smooth'})
  },170)
  setTimeout(()=>{if(overlay) overlay.classList.remove('active')},560)
@@ -1926,26 +1931,28 @@ function initGabo3dScrollReveal() {
   const cards = document.querySelectorAll('#gabo3dGrid > div');
   if (!cards.length) return;
   
+  if (!('IntersectionObserver' in window)) {
+    cards.forEach(card => card.classList.add('revealed'));
+    return;
+  }
+  
   const observerOptions = {
     root: null,
-    rootMargin: '0px 0px -80px 0px', // se activa un poco antes de aparecer completamente en el viewport
-    threshold: 0.05
+    rootMargin: '0px 0px -50px 0px',
+    threshold: 0.01
   };
   
   const observer = new IntersectionObserver((entries, obs) => {
-    // Filtramos solo las que están entrando en pantalla
     const visibleEntries = entries.filter(e => e.isIntersecting);
     
     visibleEntries.forEach((entry, index) => {
       const card = entry.target;
-      // Desfase de delay de 120ms entre cada tarjeta que entra al mismo tiempo
       const delay = index * 120;
       
       setTimeout(() => {
         card.classList.add('revealed');
       }, delay);
       
-      // Dejar de observar la tarjeta ya revelada
       obs.unobserve(card);
     });
   }, observerOptions);
@@ -1954,6 +1961,16 @@ function initGabo3dScrollReveal() {
     card.classList.add('reveal-card');
     observer.observe(card);
   });
+
+  // Para asegurar de que en iOS/Safari no queden ocultos por fallos de scroll,
+  // forzamos la revelación de las primeras 4 tarjetas después de 800ms si no se han revelado.
+  setTimeout(() => {
+    cards.forEach((card, index) => {
+      if (index < 4 && !card.classList.contains('revealed')) {
+        card.classList.add('revealed');
+      }
+    });
+  }, 800);
 }
 
 
