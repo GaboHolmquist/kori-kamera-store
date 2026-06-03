@@ -90,7 +90,7 @@ Contacto
     </div>
 
     <!-- Slideshow Banner -->
-    <div class="relative w-full max-w-3xl rounded-[35px] border border-white/10 overflow-hidden bg-zinc-950 shadow-2xl mb-6 select-none cursor-pointer" style="aspect-ratio: 16/9;">
+    <div class="relative w-full max-w-3xl rounded-[35px] border border-white/10 overflow-hidden bg-zinc-950 shadow-2xl mb-4 select-none cursor-pointer" style="aspect-ratio: 16/9;">
       <div class="gallery-arrow left">‹</div>
       <div class="gallery-arrow right">›</div>
       
@@ -108,8 +108,22 @@ Contacto
         <div class="w-2 h-2 rounded-full bg-white/30"></div>
         <div class="w-2 h-2 rounded-full bg-white/30"></div>
         <div class="w-2 h-2 rounded-full bg-white/30"></div>
-        <div class="w-2 h-2 rounded-full bg-white/30"></div>
       </div>
+    </div>
+
+    <!-- Banner Info / Link Directo -->
+    <div id="bannerInfoContainer" class="w-full max-w-3xl rounded-3xl border border-white/10 bg-zinc-900/80 p-5 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 transition-all duration-300">
+      <div class="flex items-center gap-3">
+        <!-- Indicador visual de color -->
+        <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_8px_currentColor] transition-colors duration-300" id="bannerInfoDot"></span>
+        <div class="text-left">
+          <p class="text-zinc-500 text-[10px] uppercase tracking-wider font-extrabold">Mostrando</p>
+          <h3 id="bannerInfoTitle" class="text-sm md:text-base font-bold text-white uppercase tracking-wide">Matte Box MKB-V4</h3>
+        </div>
+      </div>
+      <a id="bannerInfoLink" href="#mkb-v4" class="w-full sm:w-auto text-center px-6 py-2.5 rounded-full bg-white text-black text-xs md:text-sm font-semibold hover:bg-zinc-200 hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-md">
+        Ver Producto
+      </a>
     </div>
 
     <!-- Whatsapp Community Bubble -->
@@ -170,7 +184,7 @@ Contacto
         </div>
         <div class="p-6 flex-grow flex flex-col justify-between">
           <div>
-            <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Gabo3Dprint</h2>
+            <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Cocteleria 3D x Gabo3Dprint</h2>
             <p class="text-zinc-400 text-xs md:text-sm leading-relaxed">
               Diseños de coctelería 3D, para competencias, restaurantes y bares
             </p>
@@ -688,10 +702,19 @@ Comprar
     </div>
 
     <!-- Filtros de categoría -->
-    <div class="flex justify-center gap-3 mb-16 max-w-3xl mx-auto">
+    <div class="flex flex-wrap justify-center gap-2.5 md:gap-3 mb-8 max-w-3xl mx-auto">
       <button onclick="filterGabo3d('all', this)" class="gabo3d-filter-btn px-6 py-2.5 rounded-full border border-white/20 bg-white text-black text-xs md:text-sm font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer">Todo</button>
-      <button onclick="filterGabo3d('consumo', this)" class="gabo3d-filter-btn px-6 py-2.5 rounded-full border border-white/10 bg-white/5 text-zinc-400 text-xs md:text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-white/10 hover:text-white cursor-pointer">Consumo</button>
+      <button onclick="filterGabo3d('consumo', this)" class="gabo3d-filter-btn px-6 py-2.5 rounded-full border border-white/10 bg-white/5 text-zinc-400 text-xs md:text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-white/10 hover:text-white cursor-pointer">Para Público</button>
       <button onclick="filterGabo3d('competencias', this)" class="gabo3d-filter-btn px-6 py-2.5 rounded-full border border-white/10 bg-white/5 text-zinc-400 text-xs md:text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-white/10 hover:text-white cursor-pointer">Competencias</button>
+      <button onclick="toggleGabo3dBartenderFilter(this)" id="gabo3dBartenderBtn" class="gabo3d-filter-btn px-6 py-2.5 rounded-full border border-white/10 bg-white/5 text-zinc-400 text-xs md:text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-white/10 hover:text-white cursor-pointer flex items-center gap-1.5">
+        <span>Bartender</span>
+        <span class="transition-transform duration-300 inline-block text-[10px]" id="gabo3dBartenderArrow">▼</span>
+      </button>
+    </div>
+
+    <!-- Contenedor para sub-filtros de Bartender -->
+    <div id="gabo3dBartenderContainer" class="hidden overflow-hidden transition-all duration-500 ease-in-out max-w-3xl mx-auto flex flex-wrap justify-center gap-2 mb-12 opacity-0 h-0">
+      <!-- Generado dinámicamente con JS -->
     </div>
 
     <!-- 3D Print Portfolio Grid (2 Columns, max-w-3xl to align with banner) -->
@@ -711,13 +734,6 @@ Comprar
 
 <!-- GABO3DPRINT POPUP MODAL -->
 <div id="gabo3dPopup" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 overflow-y-auto p-5">
-  <!-- Botones de navegación (flechas laterales) -->
-  <button onclick="navigateGabo3dItem(-1, event)" class="fixed left-2 md:left-6 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/10 bg-black/40 backdrop-blur-md text-white text-xl md:text-2xl flex items-center justify-center hover:bg-white/20 hover:scale-105 active:scale-95 transition-all duration-300 z-50 cursor-pointer select-none">
-    ‹
-  </button>
-  <button onclick="navigateGabo3dItem(1, event)" class="fixed right-2 md:right-6 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/10 bg-black/40 backdrop-blur-md text-white text-xl md:text-2xl flex items-center justify-center hover:bg-white/20 hover:scale-105 active:scale-95 transition-all duration-300 z-50 cursor-pointer select-none">
-    ›
-  </button>
 
   <div class="min-h-full flex items-start justify-center py-10 md:py-20">
     <div class="w-full max-w-2xl rounded-[38px] border border-white/10 bg-zinc-950/95 backdrop-blur-2xl overflow-hidden shadow-2xl relative">
@@ -750,9 +766,20 @@ Comprar
       <!-- Detail section below -->
       <div class="p-8 md:p-10 text-left space-y-6">
         <div>
-          <h2 id="gabo3dPopupTitle" class="text-2xl md:text-3xl font-black text-white leading-tight">
-            <!-- Dynamically populated -->
-          </h2>
+          <div class="flex items-center justify-between gap-4">
+            <h2 id="gabo3dPopupTitle" class="text-xl md:text-3xl font-black text-white leading-tight">
+              <!-- Dynamically populated -->
+            </h2>
+            <!-- Botones de navegación (flechas a la altura del título) -->
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="navigateGabo3dItem(-1, event)" class="w-8 h-8 md:w-11 md:h-11 rounded-full border border-white/10 bg-white/5 text-white flex items-center justify-center hover:bg-white/15 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer select-none">
+                ‹
+              </button>
+              <button onclick="navigateGabo3dItem(1, event)" class="w-8 h-8 md:w-11 md:h-11 rounded-full border border-white/10 bg-white/5 text-white flex items-center justify-center hover:bg-white/15 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer select-none">
+                ›
+              </button>
+            </div>
+          </div>
           <div id="gabo3dPopupDesc" class="mt-4 text-zinc-400 leading-relaxed text-sm md:text-base">
             <!-- Dynamically populated -->
           </div>

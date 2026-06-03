@@ -29,26 +29,60 @@ function crossfade(layerAId,layerBId,activeRef,newSrc,setActive){
 // =========================================
 // HOMEPAGE BANNER SLIDESHOW
 // =========================================
-
 const bannerImages = [
- 'foto1.jpeg',
- 'foto2.jpeg',
- 'foto3.jpeg',
- 'foto4.jpeg',
- 'foto5.jpeg',
- 'foto6.jpeg'
+  { file: 'productos/banner/foto1.jpeg', title: 'Matte Box MKB-V4', link: '#mkb-v4', color: 'text-blue-500', btnText: 'Ver Producto' },
+  { file: 'productos/portadaP3.jpeg', title: 'Cocteleria 3D x Gabo3Dprint', link: '#gabo3dprint', color: 'text-yellow-500', btnText: 'Ver Portafolio' },
+  { file: 'productos/preview_comparador.jpg', title: 'Comparador de Cámaras', link: 'comparador.html', color: 'text-purple-500', btnText: 'Comparar Ahora' },
+  { file: 'productos/banner/foto3.jpeg', title: 'Matte Box MKB-V4', link: '#mkb-v4', color: 'text-blue-500', btnText: 'Ver Producto' },
+  { file: 'productos/portadaP3.jpeg', title: 'Cocteleria 3D x Gabo3Dprint', link: '#gabo3dprint', color: 'text-yellow-500', btnText: 'Ver Portafolio' }
 ];
 let currentBannerIndex = 0;
 let bannerActiveLayer = 'A';
 let bannerInterval = null;
 
 function updateBannerGallery() {
- const src = 'productos/banner/' + bannerImages[currentBannerIndex];
- crossfade('bannerLayerA', 'bannerLayerB', bannerActiveLayer, src, (v) => { bannerActiveLayer = v; });
- const dots = document.querySelectorAll('#bannerDots div');
- dots.forEach((dot, i) => {
-  dot.className = 'w-2 h-2 rounded-full ' + (i === currentBannerIndex ? 'bg-white/90' : 'bg-white/30');
- });
+  const item = bannerImages[currentBannerIndex];
+  const src = item.file;
+  crossfade('bannerLayerA', 'bannerLayerB', bannerActiveLayer, src, (v) => { bannerActiveLayer = v; });
+  
+  // Actualizar los dots
+  const dotsContainer = document.getElementById('bannerDots');
+  if (dotsContainer) {
+    if (dotsContainer.children.length !== bannerImages.length) {
+      dotsContainer.innerHTML = '';
+      bannerImages.forEach(() => {
+        const dot = document.createElement('div');
+        dotsContainer.appendChild(dot);
+      });
+    }
+    const dots = dotsContainer.children;
+    for (let i = 0; i < dots.length; i++) {
+      dots[i].className = 'w-2 h-2 rounded-full transition-all duration-300 ' + (i === currentBannerIndex ? 'bg-white w-4' : 'bg-white/30');
+    }
+  }
+
+  // Actualizar banner de información debajo
+  const infoTitle = document.getElementById('bannerInfoTitle');
+  const infoLink = document.getElementById('bannerInfoLink');
+  const infoDot = document.getElementById('bannerInfoDot');
+  
+  if (infoTitle) infoTitle.innerText = item.title;
+  if (infoLink) {
+    infoLink.href = item.link;
+    infoLink.innerText = item.btnText;
+    
+    if (item.link.startsWith('#')) {
+      infoLink.onclick = (e) => {
+        e.preventDefault();
+        window.location.hash = item.link;
+      };
+    } else {
+      infoLink.onclick = null;
+    }
+  }
+  if (infoDot) {
+    infoDot.className = 'w-2.5 h-2.5 rounded-full transition-colors duration-300 shadow-[0_0_8px_currentColor] ' + item.color;
+  }
 }
 
 function nextBannerImage() {
@@ -106,10 +140,10 @@ let currentRigIndex=0
 function updateRigGallery(){
  const src='productos/mattebox/rig M/'+rigImages[currentRigIndex]
  crossfade('rigLayerA','rigLayerB',rigActiveLayer,src,(v)=>{rigActiveLayer=v})
- const dots=document.querySelectorAll('#rigDots div')
- dots.forEach((dot,i)=>{
-  dot.className='w-2 h-2 rounded-full '+(i===currentRigIndex?'bg-white/90':'bg-white/30')
- })
+  const dots=document.querySelectorAll('#rigDots div')
+  dots.forEach((dot,i)=>{
+   dot.className='w-2 h-2 rounded-full transition-all duration-300 '+(i===currentRigIndex?'bg-white/90 w-4':'bg-white/30')
+  })
 }
 
 function nextRigImage(){
@@ -167,10 +201,10 @@ let currentProductIndex=0
 function updateProductGallery(){
  const src='productos/mattebox/Colores M/'+currentColor.toLowerCase()+'/'+productImages[currentColor][currentProductIndex]
  crossfade('prodLayerA','prodLayerB',prodActiveLayer,src,(v)=>{prodActiveLayer=v})
- const dots=document.querySelectorAll('#productDots div')
- dots.forEach((dot,i)=>{
-  dot.className='w-2 h-2 rounded-full '+(i===currentProductIndex?'bg-white/90':'bg-white/30')
- })
+  const dots=document.querySelectorAll('#productDots div')
+  dots.forEach((dot,i)=>{
+   dot.className='w-2 h-2 rounded-full transition-all duration-300 '+(i===currentProductIndex?'bg-white/90 w-4':'bg-white/30')
+  })
 }
 
 function nextProductImage(){
@@ -792,8 +826,8 @@ let tp1RigActiveLayer='A'
 function updateTp1RigGallery(){
  const src='productos/tp1/Rig TP/'+tp1RigImages[currentTp1RigIndex]
  crossfade('tp1RigLayerA','tp1RigLayerB',tp1RigActiveLayer,src,(v)=>{tp1RigActiveLayer=v})
- const dots=document.querySelectorAll('#tp1RigDots div')
- dots.forEach((dot,i)=>{dot.className='w-2 h-2 rounded-full '+(i===currentTp1RigIndex?'bg-white/90':'bg-white/30')})
+  const dots=document.querySelectorAll('#tp1RigDots div')
+  dots.forEach((dot,i)=>{dot.className='w-2 h-2 rounded-full transition-all duration-300 '+(i===currentTp1RigIndex?'bg-white/90 w-4':'bg-white/30')})
 }
 
 function nextTp1RigImage(){currentTp1RigIndex=(currentTp1RigIndex+1)%tp1RigImages.length;updateTp1RigGallery()}
@@ -820,8 +854,8 @@ let tp1ProdActiveLayer='A'
 function updateTp1ProductGallery(){
  const src='productos/tp1/Colores TP/'+tp1ProductImages[currentTp1ProductIndex]
  crossfade('tp1ProdLayerA','tp1ProdLayerB',tp1ProdActiveLayer,src,(v)=>{tp1ProdActiveLayer=v})
- const dots=document.querySelectorAll('#tp1ProductDots div')
- dots.forEach((dot,i)=>{dot.className='w-2 h-2 rounded-full '+(i===currentTp1ProductIndex?'bg-white/90':'bg-white/30')})
+  const dots=document.querySelectorAll('#tp1ProductDots div')
+  dots.forEach((dot,i)=>{dot.className='w-2 h-2 rounded-full transition-all duration-300 '+(i===currentTp1ProductIndex?'bg-white/90 w-4':'bg-white/30')})
 }
 
 function nextTp1ProductImage(){currentTp1ProductIndex=(currentTp1ProductIndex+1)%tp1ProductImages.length;updateTp1ProductGallery()}
@@ -1120,11 +1154,11 @@ const gabo3dPortfolio = [
   {
     id: "item3d7",
     title: "Diseño de Cristalería",
-    bartender: "Yefri Avilera",
+    bartender: "Yefry Avilera",
     intervencion: "Competencia",
     competencia: "Glassology Onis Glass",
     anio: "2023",
-    concepto: "Diseño que llegó a las semifinales en Athena, Grecia junto con Yefri.",
+    concepto: "Diseño que llegó a las semifinales en Athena, Grecia junto con Yefry.",
     images: [
       "productos/item3d7_1.jpg",
       "productos/item3d7_2.jpg",
@@ -1540,7 +1574,7 @@ const gabo3dPortfolio = [
     id: "item3d17c",
     title: "Alambique",
     coctel: "En el Valle",
-    bartender: "Yefri Avilera",
+    bartender: "Yefry Avilera",
     ubicacion: "Galpón Italia",
     anio: "2022",
     concepto: "Este cóctel trae la base de cualquier destilado, el alambique, con un verdadero serpentín de cobre moldeado a mano que envuelve al cóctel.",
@@ -1558,7 +1592,7 @@ const gabo3dPortfolio = [
     id: "item3d18c",
     title: "Pulpo Shot",
     coctel: "Octoshot",
-    bartender: "Yefri Avilera",
+    bartender: "Yefry Avilera",
     ubicacion: "Galpón Alonso",
     anio: "2024",
     concepto: "Este pulpo trae entre sus tentáculos 7 shots, a su vez tiene un orificio para ingresar humo y que este expulse el humo por sus ojos.",
@@ -1650,6 +1684,81 @@ function getGabo3dImageSrc(item, index, callback) {
 }
 
 let gabo3dActiveFilter = 'all';
+let gabo3dActiveBartender = null;
+
+// Obtener bartenders únicos de la base de datos
+function getUniqueGabo3dBartenders() {
+  const bartenders = new Set();
+  gabo3dPortfolio.forEach(item => {
+    if (item.bartender && item.bartender.trim()) {
+      bartenders.add(item.bartender.trim());
+    }
+  });
+  return Array.from(bartenders).sort((a, b) => a.localeCompare(b));
+}
+
+// Poblar dinámicamente el contenedor de sub-filtros de bartender
+function populateGabo3dBartenderFilters() {
+  const container = document.getElementById('gabo3dBartenderContainer');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  const bartenders = getUniqueGabo3dBartenders();
+  
+  bartenders.forEach(name => {
+    const btn = document.createElement('button');
+    btn.onclick = (e) => filterGabo3dByBartender(name, btn);
+    btn.className = 'gabo3d-bartender-subbtn px-4 py-1.5 rounded-full border border-white/5 bg-white/5 text-zinc-400 text-[11px] md:text-xs font-semibold transition-all duration-300 hover:bg-white/10 hover:text-white cursor-pointer';
+    btn.innerText = name;
+    container.appendChild(btn);
+  });
+}
+
+// Expandir / colapsar contenedor de sub-filtros con animación
+function toggleGabo3dBartenderFilter(btnElement) {
+  const container = document.getElementById('gabo3dBartenderContainer');
+  const arrow = document.getElementById('gabo3dBartenderArrow');
+  if (!container) return;
+  
+  const isHidden = container.classList.contains('hidden');
+  
+  if (isHidden) {
+    // Abrir
+    container.classList.remove('hidden');
+    const targetHeight = container.scrollHeight;
+    container.style.height = '0px';
+    container.style.opacity = '0';
+    container.offsetHeight; // Forzar reflow
+    container.style.transition = 'height 300ms cubic-bezier(0.4, 0, 0.2, 1), opacity 300ms cubic-bezier(0.4, 0, 0.2, 1)';
+    container.style.height = targetHeight + 'px';
+    container.style.opacity = '1';
+    if (arrow) arrow.style.transform = 'rotate(180deg)';
+  } else {
+    // Cerrar
+    container.style.transition = 'height 300ms cubic-bezier(0.4, 0, 0.2, 1), opacity 300ms cubic-bezier(0.4, 0, 0.2, 1)';
+    container.style.height = '0px';
+    container.style.opacity = '0';
+    if (arrow) arrow.style.transform = 'rotate(0deg)';
+    setTimeout(() => {
+      container.classList.add('hidden');
+    }, 300);
+  }
+}
+
+// Colapsar contenedor de sub-filtros de forma segura
+function collapseGabo3dBartenderFilter() {
+  const container = document.getElementById('gabo3dBartenderContainer');
+  const arrow = document.getElementById('gabo3dBartenderArrow');
+  if (!container || container.classList.contains('hidden')) return;
+  
+  container.style.transition = 'height 300ms cubic-bezier(0.4, 0, 0.2, 1), opacity 300ms cubic-bezier(0.4, 0, 0.2, 1)';
+  container.style.height = '0px';
+  container.style.opacity = '0';
+  if (arrow) arrow.style.transform = 'rotate(0deg)';
+  setTimeout(() => {
+    container.classList.add('hidden');
+  }, 300);
+}
 
 // Mezcla determinista basada en una semilla (LCG PRNG)
 function seededShuffle(array, seed) {
@@ -1676,9 +1785,12 @@ function renderGabo3dPortfolio() {
   
   grid.innerHTML = '';
   
-  // 1. Filtrar los items de acuerdo a si el ID contiene la letra 'c'
+  // 1. Filtrar los items de acuerdo a si el ID contiene la letra 'c' o por bartender activo
   const filteredItems = gabo3dPortfolio.filter(item => {
     if (gabo3dActiveFilter === 'all') return true;
+    if (gabo3dActiveFilter === 'bartender') {
+      return item.bartender && item.bartender.trim() === gabo3dActiveBartender;
+    }
     
     // Si la ID contiene la letra 'c' (por ejemplo, item3d1c), la categoría es 'consumo'
     // En caso contrario, es 'competencias'
@@ -1749,15 +1861,61 @@ function renderGabo3dPortfolio() {
 // Función para filtrar y actualizar los botones
 function filterGabo3d(category, btnElement) {
   gabo3dActiveFilter = category;
+  gabo3dActiveBartender = null;
+  
+  // Colapsar bartender container
+  collapseGabo3dBartenderFilter();
   
   // Actualizar clases activas de los botones de filtro
   const buttons = document.querySelectorAll('.gabo3d-filter-btn');
   buttons.forEach(btn => {
-    btn.className = 'gabo3d-filter-btn px-6 py-2.5 rounded-full border border-white/10 bg-white/5 text-zinc-400 text-xs md:text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-white/10 hover:text-white cursor-pointer';
+    btn.classList.remove('bg-white', 'text-black', 'border-white/20');
+    btn.classList.add('bg-white/5', 'text-zinc-400', 'border-white/10');
   });
   
   if (btnElement) {
-    btnElement.className = 'gabo3d-filter-btn px-6 py-2.5 rounded-full border border-white/20 bg-white text-black text-xs md:text-sm font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer';
+    btnElement.classList.remove('bg-white/5', 'text-zinc-400', 'border-white/10');
+    btnElement.classList.add('bg-white', 'text-black', 'border-white/20');
+  }
+  
+  // Limpiar clases activas de los sub-botones de bartender
+  const subBtns = document.querySelectorAll('.gabo3d-bartender-subbtn');
+  subBtns.forEach(btn => {
+    btn.classList.remove('bg-white/15', 'text-white', 'border-white/30');
+    btn.classList.add('bg-white/5', 'text-zinc-400', 'border-white/5');
+  });
+  
+  renderGabo3dPortfolio();
+}
+
+// Función para filtrar por un bartender específico
+function filterGabo3dByBartender(bartenderName, btnElement) {
+  gabo3dActiveFilter = 'bartender';
+  gabo3dActiveBartender = bartenderName;
+  
+  // Destacar el botón principal "Bartender" y apagar el resto
+  const mainBtn = document.getElementById('gabo3dBartenderBtn');
+  const buttons = document.querySelectorAll('.gabo3d-filter-btn');
+  buttons.forEach(btn => {
+    btn.classList.remove('bg-white', 'text-black', 'border-white/20');
+    btn.classList.add('bg-white/5', 'text-zinc-400', 'border-white/10');
+  });
+  
+  if (mainBtn) {
+    mainBtn.classList.remove('bg-white/5', 'text-zinc-400', 'border-white/10');
+    mainBtn.classList.add('bg-white', 'text-black', 'border-white/20');
+  }
+  
+  // Actualizar los sub-botones de bartenders
+  const subBtns = document.querySelectorAll('.gabo3d-bartender-subbtn');
+  subBtns.forEach(btn => {
+    btn.classList.remove('bg-white/15', 'text-white', 'border-white/30');
+    btn.classList.add('bg-white/5', 'text-zinc-400', 'border-white/5');
+  });
+  
+  if (btnElement) {
+    btnElement.classList.remove('bg-white/5', 'text-zinc-400', 'border-white/5');
+    btnElement.classList.add('bg-white/15', 'text-white', 'border-white/30');
   }
   
   renderGabo3dPortfolio();
@@ -1882,7 +2040,7 @@ function openGabo3dItem(itemId, fromHash = false) {
     dotsContainer.innerHTML = '';
     item.images.forEach((_, i) => {
       const dot = document.createElement('div');
-      dot.className = 'w-2 h-2 rounded-full ' + (i === 0 ? 'bg-white/90' : 'bg-white/30');
+      dot.className = 'w-2 h-2 rounded-full transition-all duration-300 ' + (i === 0 ? 'bg-white/90 w-4' : 'bg-white/30');
       dotsContainer.appendChild(dot);
     });
   }
@@ -1977,7 +2135,7 @@ function updateGabo3dPopupGallery() {
     // Actualizar dots
     const dots = document.querySelectorAll('#gabo3dPopupDots div');
     dots.forEach((dot, i) => {
-      dot.className = 'w-2 h-2 rounded-full ' + (i === currentGabo3dImgIndex ? 'bg-white/90' : 'bg-white/30');
+      dot.className = 'w-2 h-2 rounded-full transition-all duration-300 ' + (i === currentGabo3dImgIndex ? 'bg-white/90 w-4' : 'bg-white/30');
     });
   });
 }
@@ -2057,8 +2215,39 @@ if (gabo3dPopup) {
   });
 }
 
-// Renderizar la grilla inicialmente al cargar
+// Genera de forma dinámica datos estructurados (JSON-LD) para SEO de todos los ítems
+function generateGabo3dSEO() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": gabo3dPortfolio.map((item) => ({
+      "@type": "CreativeWork",
+      "name": item.title,
+      "headline": item.coctel,
+      "creator": {
+        "@type": "Person",
+        "name": item.bartender
+      },
+      "description": item.concepto,
+      "contentLocation": item.ubicacion,
+      "temporalCoverage": item.anio,
+      "image": item.images[0] ? window.location.origin + '/' + item.images[0] : undefined
+    }))
+  };
+  
+  let script = document.getElementById('gabo3dSchema');
+  if (!script) {
+    script = document.createElement('script');
+    script.id = 'gabo3dSchema';
+    script.type = 'application/ld+json';
+    document.head.appendChild(script);
+  }
+  script.text = JSON.stringify(schema);
+}
+
+// Renderizar la grilla e inicializar sub-filtros de bartender al cargar
+populateGabo3dBartenderFilters();
 renderGabo3dPortfolio();
+generateGabo3dSEO();
 
 // =========================================
 // HASH-BASED ROUTING
