@@ -687,6 +687,13 @@ Comprar
       <p class="mt-4 text-zinc-500 uppercase tracking-[0.35em] text-xs md:text-sm">Diseño y Fabricación 3D Personalizada de coctelería</p>
     </div>
 
+    <!-- Filtros de categoría -->
+    <div class="flex justify-center gap-3 mb-16 max-w-3xl mx-auto">
+      <button onclick="filterGabo3d('all', this)" class="gabo3d-filter-btn px-6 py-2.5 rounded-full border border-white/20 bg-white text-black text-xs md:text-sm font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer">Todo</button>
+      <button onclick="filterGabo3d('consumo', this)" class="gabo3d-filter-btn px-6 py-2.5 rounded-full border border-white/10 bg-white/5 text-zinc-400 text-xs md:text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-white/10 hover:text-white cursor-pointer">Consumo</button>
+      <button onclick="filterGabo3d('competencias', this)" class="gabo3d-filter-btn px-6 py-2.5 rounded-full border border-white/10 bg-white/5 text-zinc-400 text-xs md:text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-white/10 hover:text-white cursor-pointer">Competencias</button>
+    </div>
+
     <!-- 3D Print Portfolio Grid (2 Columns, max-w-3xl to align with banner) -->
     <div id="gabo3dGrid" class="grid grid-cols-2 gap-6 md:gap-8 max-w-3xl mx-auto">
       <!-- Dynamically populated by main.js -->
@@ -704,6 +711,14 @@ Comprar
 
 <!-- GABO3DPRINT POPUP MODAL -->
 <div id="gabo3dPopup" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 overflow-y-auto p-5">
+  <!-- Botones de navegación (flechas laterales) -->
+  <button onclick="navigateGabo3dItem(-1, event)" class="fixed left-2 md:left-6 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/10 bg-black/40 backdrop-blur-md text-white text-xl md:text-2xl flex items-center justify-center hover:bg-white/20 hover:scale-105 active:scale-95 transition-all duration-300 z-50 cursor-pointer select-none">
+    ‹
+  </button>
+  <button onclick="navigateGabo3dItem(1, event)" class="fixed right-2 md:right-6 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/10 bg-black/40 backdrop-blur-md text-white text-xl md:text-2xl flex items-center justify-center hover:bg-white/20 hover:scale-105 active:scale-95 transition-all duration-300 z-50 cursor-pointer select-none">
+    ›
+  </button>
+
   <div class="min-h-full flex items-start justify-center py-10 md:py-20">
     <div class="w-full max-w-2xl rounded-[38px] border border-white/10 bg-zinc-950/95 backdrop-blur-2xl overflow-hidden shadow-2xl relative">
       
@@ -738,9 +753,9 @@ Comprar
           <h2 id="gabo3dPopupTitle" class="text-2xl md:text-3xl font-black text-white leading-tight">
             <!-- Dynamically populated -->
           </h2>
-          <p id="gabo3dPopupDesc" class="mt-4 text-zinc-400 leading-relaxed text-sm md:text-base">
+          <div id="gabo3dPopupDesc" class="mt-4 text-zinc-400 leading-relaxed text-sm md:text-base">
             <!-- Dynamically populated -->
-          </p>
+          </div>
         </div>
 
         <!-- Discrete CTA section below -->
