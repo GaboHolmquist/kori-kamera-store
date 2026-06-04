@@ -10,6 +10,16 @@
   status = 200
 
 [[redirects]]
+  from = "/mattebox"
+  to = "/mattebox.html"
+  status = 200
+
+[[redirects]]
+  from = "/gabo3dprint"
+  to = "/gabo3dprint.html"
+  status = 200
+
+[[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200

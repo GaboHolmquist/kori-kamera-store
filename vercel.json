@@ -4,6 +4,16 @@
       "source": "/comparador",
       "destination": "/comparador.html",
       "permanent": true
+    },
+    {
+      "source": "/mattebox",
+      "destination": "/mattebox.html",
+      "permanent": true
+    },
+    {
+      "source": "/gabo3dprint",
+      "destination": "/gabo3dprint.html",
+      "permanent": true
     }
   ]
 }
