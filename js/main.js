@@ -1017,15 +1017,15 @@ fetchAndApplyStock();
 // =========================================
 
 const bartenderAvatars = {
-  "Yefry Avilera": "productos/avatars/yefry.jpg",
-  "Yefri Avilera": "productos/avatars/yefry.jpg",
-  "Luis Gajardo": "productos/avatars/luis.jpg",
-  "Edgar Martinez": "productos/avatars/edgar.jpg",
-  "Yerson López": "productos/avatars/yerson.jpg",
-  "Pablo Prüfer": "productos/avatars/pablo.jpg",
-  "Pablo Prufer": "productos/avatars/pablo.jpg",
-  "Brian Rey": "productos/avatars/brian.jpg",
-  "Yeni Uribe": "productos/avatars/yeni.jpg"
+  "Yefry Avilera": "productos/avatars/yefry.png",
+  "Yefri Avilera": "productos/avatars/yefry.png",
+  "Luis Gajardo": "productos/avatars/luis.png",
+  "Edgar Martinez": "productos/avatars/edgar.png",
+  "Yerson López": "productos/avatars/yerson.png",
+  "Pablo Prüfer": "productos/avatars/pablo.png",
+  "Pablo Prufer": "productos/avatars/pablo.png",
+  "Brian Rey": "productos/avatars/brian.png",
+  "Yeni Uribe": "productos/avatars/yeni.png"
 };
 
 const gabo3dPortfolio = [
@@ -1270,6 +1270,24 @@ const gabo3dPortfolio = [
     ]
   },
   {
+    id: "item3d13",
+    title: "Jardín con Cascada",
+    coctel: "Predecesor",
+    bartender: "Edgar Martinez",
+    intervencion: "Competencia",
+    anio: "2023",
+    concepto: "Un jardín de flores comestibles que tienen una cascada que simula ser bambú a medio cortar, el cual muestra el cóctel antes de caer a nuestra cristalería. Mientras esto ocurre, el líquido es rociado por un perfume.",
+    images: [
+      "productos/item3d13_1.jpg",
+      "productos/item3d13_2.jpg"
+    ],
+    fallbacks: [
+      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
     id: "item3d1c",
     title: "Roca lunar",
     bartender: "Pablo Prüfer",
@@ -1451,7 +1469,8 @@ const gabo3dPortfolio = [
     images: [
       "productos/item3d10c_1.jpg",
       "productos/item3d10c_2.jpg",
-      "productos/item3d10c_3.jpg"
+      "productos/item3d10c_3.jpg",
+      "productos/item3d10c_4.jpg"
     ],
     fallbacks: [
       "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
@@ -2022,7 +2041,7 @@ function openGabo3dItem(itemId, fromHash = false) {
       
       descHtml += `
       <div class="flex flex-col items-center shrink-0">
-        <div class="w-16 h-16 rounded-full border border-white/10 bg-zinc-800/80 overflow-hidden flex items-center justify-center shadow-lg relative">
+        <div class="w-[70px] h-[70px] rounded-full border border-white/10 bg-zinc-800/80 overflow-hidden flex items-center justify-center shadow-lg relative">
           ${avatarSrc ? `
             <img src="${avatarSrc}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
             <span class="text-sm font-bold text-zinc-400 uppercase hidden">${initials}</span>
@@ -2030,7 +2049,7 @@ function openGabo3dItem(itemId, fromHash = false) {
             <span class="text-sm font-bold text-zinc-400 uppercase">${initials}</span>
           `}
         </div>
-        <span class="text-[9px] text-zinc-500 uppercase tracking-widest mt-2">Creador</span>
+        <span class="text-[9px] text-zinc-500 uppercase tracking-widest mt-2">Bartender</span>
       </div>`;
     }
     
