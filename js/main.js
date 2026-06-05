@@ -1,4 +1,23 @@
 // =========================================
+// POLYFILLS para Safari / iOS
+// =========================================
+window.requestIdleCallback = window.requestIdleCallback || function(cb) { return setTimeout(cb, 1); };
+window.cancelIdleCallback = window.cancelIdleCallback || function(id) { clearTimeout(id); };
+
+// Scroll lock helper para iOS (overflow:hidden no funciona en body)
+let _scrollLockY = 0;
+function lockBodyScroll() {
+  _scrollLockY = window.scrollY;
+  document.body.classList.add('ios-scroll-lock');
+  document.body.style.top = `-${_scrollLockY}px`;
+}
+function unlockBodyScroll() {
+  document.body.classList.remove('ios-scroll-lock');
+  document.body.style.top = '';
+  window.scrollTo(0, _scrollLockY);
+}
+
+// =========================================
 // CROSSFADE GALLERY — sistema de dos capas
 // =========================================
 
@@ -542,6 +561,7 @@ function openPopup(){
  const titleEl = document.getElementById('popupProductTitle');
  if (titleEl) titleEl.innerText = 'MATTE BOX MKB-V4';
  document.getElementById('popup').classList.remove('hidden')
+ lockBodyScroll();
  updateFinalPrice()
  validatePurchaseForm()
 }
@@ -551,6 +571,7 @@ function openPurchasePopupForTP1(){
  const titleEl = document.getElementById('popupProductTitle');
  if (titleEl) titleEl.innerText = 'FOOT RIG TP1';
  document.getElementById('popup').classList.remove('hidden')
+ lockBodyScroll();
  updateFinalPrice()
  validatePurchaseForm()
 }
@@ -572,6 +593,7 @@ function toggleInvoice(button){
 
 function closePopup(){
  document.getElementById('popup').classList.add('hidden')
+ unlockBodyScroll();
 }
 
 const popup=document.getElementById('popup')
@@ -2109,7 +2131,7 @@ function openGabo3dItem(itemId, fromHash = false) {
   const modal = document.getElementById('gabo3dPopup');
   if (modal) {
     modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
+    lockBodyScroll();
   }
   
   if (!fromHash) {
@@ -2122,7 +2144,7 @@ function closeGabo3dPopup(fromHashChange = false) {
   const modal = document.getElementById('gabo3dPopup');
   if (modal) {
     modal.classList.add('hidden');
-    document.body.style.overflow = '';
+    unlockBodyScroll();
   }
   
   currentGabo3dItemId = null;

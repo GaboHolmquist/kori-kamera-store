@@ -7,12 +7,11 @@ img, video{
  user-drag:none;
  -webkit-user-select:none;
  user-select:none;
- pointer-events:none;
 }
 
-/* Las galerías necesitan pointer-events para el click de navegación */
-#rigGallery, #productGallery, #bannerGallery, #gabo3dPopupGallery{
- pointer-events:auto;
+/* Solo las imágenes dentro de galerías pierden pointer-events (el ::after las cubre) */
+.gallery-wrap img, .gallery-wrap video{
+ pointer-events:none;
 }
 
 /* Capa invisible encima de cada galería para bloquear click derecho en la imagen */
@@ -27,6 +26,7 @@ img, video{
 background:linear-gradient(90deg,hsla(215,99%,42%,0.34),hsla(275,90%,36%,0.34))!important;
 color:#fff!important;
 border-color:rgba(255,255,255,.18)!important;
+-webkit-backdrop-filter:blur(12px);
 backdrop-filter:blur(12px)
 }
 .gallery-arrow{
@@ -39,6 +39,7 @@ color:rgba(255,255,255,.58);
 pointer-events:none;
 text-shadow:0 0 18px rgba(255,255,255,.18);
 animation:floatArrow 2.8s ease-in-out infinite;
+-webkit-backdrop-filter:blur(6px);
 backdrop-filter:blur(6px)
 }
 
@@ -143,6 +144,7 @@ backface-visibility:hidden;
 padding:5px 10px;
 border-radius:20px;
 background:rgba(0,0,0,0.4);
+-webkit-backdrop-filter:blur(6px);
 backdrop-filter:blur(6px);
 pointer-events:none;
 }
@@ -188,6 +190,7 @@ rgba(255,255,255,0.06)
 );
 border:1px solid rgba(255,255,255,0.08);
 border-radius:999px;
+-webkit-backdrop-filter:blur(10px);
 backdrop-filter:blur(10px);
 }
 
@@ -220,6 +223,12 @@ scrollbar-width:thin;
 
 /* Transición suave para el cambio de altura dinámica en el modal */
 #gabo3dPopupSlider {
-  transition: aspect-ratio 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
-              height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* iOS scroll lock: fija el body cuando un modal está abierto */
+body.ios-scroll-lock {
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
 }
