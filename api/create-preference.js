@@ -57,7 +57,7 @@ export default async function handler(req, res) {
     }
 
     // Definición de precios (dinámico según testMode y producto)
-    const basePrice = isTP1 ? 100 : (testMode ? 100 : 89990);
+    const basePrice = isTP1 ? 100 : (testMode ? 100 : 74990);
     const reducersPrice = isTP1 ? 0 : (testMode ? 1 : 20000);
     const adapterPrice = isTP1 ? 0 : (testMode ? 1 : 15000);
     const customAdapterPrice = isTP1 ? 0 : (testMode ? 1 : 8000);

@@ -246,7 +246,7 @@ const isTestMode = urlParams.get('test') === 'true';
 let activeProduct = 'MATTEBOX'; // Puede ser 'MATTEBOX' o 'TP1'
 
 const selectedExtras={reducers:false,adapter:false,engraving:false,customAdapter:false}
-const basePrice = isTestMode ? 100 : 89990;
+const basePrice = isTestMode ? 100 : 74990;
 let needsInvoice=false
 let shippingPrice = isTestMode ? 1 : 5990;
 let shippingMethod='Bluexpress'
