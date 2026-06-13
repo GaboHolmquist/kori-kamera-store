@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>¡Pago Exitoso! — Kori Kamera Store</title>
   <meta name="description" content="Tu pago ha sido procesado con éxito. Por favor, confirma tu pedido." />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/tailwind.js"></script>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" href="favicon.png" />
   <style>
@@ -48,27 +48,41 @@
         
         <div class="flex justify-between gap-4">
           <span class="text-zinc-500">Producto:</span>
-          <span class="font-semibold text-zinc-200">Matte Box MKB-V4</span>
+          <span id="orderProductName" class="font-semibold text-zinc-200">Matte Box MKB-V4</span>
         </div>
 
-        <div class="flex justify-between gap-4">
-          <span class="text-zinc-500">Color seleccionado:</span>
-          <span id="orderColor" class="font-semibold text-zinc-200">-</span>
+        <div id="physicalDetails" class="space-y-3.5">
+          <div class="flex justify-between gap-4">
+            <span class="text-zinc-500">Color seleccionado:</span>
+            <span id="orderColor" class="font-semibold text-zinc-200">-</span>
+          </div>
+
+          <div class="flex justify-between gap-4">
+            <span class="text-zinc-500">Extras:</span>
+            <span id="orderExtras" class="font-semibold text-zinc-200 text-right max-w-[250px]">-</span>
+          </div>
+
+          <div class="flex justify-between gap-4">
+            <span class="text-zinc-500">Grabado personalizado:</span>
+            <span id="orderEngraving" class="font-semibold text-zinc-200">-</span>
+          </div>
+
+          <div class="flex justify-between gap-4">
+            <span class="text-zinc-500">Método de entrega:</span>
+            <span id="orderShipping" class="font-semibold text-zinc-200">-</span>
+          </div>
         </div>
 
-        <div class="flex justify-between gap-4">
-          <span class="text-zinc-500">Extras:</span>
-          <span id="orderExtras" class="font-semibold text-zinc-200 text-right max-w-[250px]">-</span>
-        </div>
+        <div id="workshopDetails" class="hidden space-y-3.5">
+          <div class="flex justify-between gap-4">
+            <span class="text-zinc-500">Instagram:</span>
+            <span id="orderInstagram" class="font-semibold text-zinc-200">-</span>
+          </div>
 
-        <div class="flex justify-between gap-4">
-          <span class="text-zinc-500">Grabado personalizado:</span>
-          <span id="orderEngraving" class="font-semibold text-zinc-200">-</span>
-        </div>
-
-        <div class="flex justify-between gap-4">
-          <span class="text-zinc-500">Método de entrega:</span>
-          <span id="orderShipping" class="font-semibold text-zinc-200">-</span>
+          <div class="flex justify-between gap-4">
+            <span class="text-zinc-500">Correo:</span>
+            <span id="orderEmail" class="font-semibold text-zinc-200">-</span>
+          </div>
         </div>
 
         <div class="flex justify-between gap-4 border-t border-white/5 pt-3">
@@ -107,46 +121,92 @@
     // Recuperar datos guardados localmente del formulario antes de pagar
     let orderData = {};
     try {
-      orderData = JSON.parse(localStorage.getItem('last_order_details') || '{}');
+      orderData = JSON.parse(sessionStorage.getItem('last_order_details') || localStorage.getItem('last_order_details') || '{}');
     } catch(e) {
       console.error('Error cargando los detalles del pedido:', e);
     }
 
     // Completar los campos de la interfaz
     document.getElementById('orderPaymentId').innerText = paymentId;
-    document.getElementById('orderColor').innerText = orderData.color || 'OBSIDIAN';
-    document.getElementById('orderShipping').innerText = orderData.shippingMethod || 'Bluexpress';
-    
-    // Extras list
-    const extras = [];
-    if (orderData.reducers) extras.push('Kit Reductores');
-    if (orderData.adapter) extras.push('Adaptador 77mm');
-    if (orderData.customAdapter) {
-      const details = [];
-      if (orderData.customAdapterDetails?.mm) details.push(orderData.customAdapterDetails.mm + 'mm');
-      if (orderData.customAdapterDetails?.lens) details.push(orderData.customAdapterDetails.lens);
-      extras.push('Adaptador Personalizado' + (details.length ? ` (${details.join(' — ')})` : ''));
-    }
-    document.getElementById('orderExtras').innerText = extras.length ? extras.join(', ') : 'Sin extras';
 
-    // Grabado
-    const engravingText = orderData.engraving ? (orderData.engravingText || 'Pendiente') : 'No agregado';
-    document.getElementById('orderEngraving').innerText = engravingText;
+    const isWorkshop = orderData.activeProduct === 'TALLER_BASICO' || orderData.activeProduct === 'TALLER_EXTENDIDO' || orderData.activeProduct === 'TALLER_ILUMINACION' || orderData.activeProduct === 'TALLER_VIDEO';
+
+    if (isWorkshop) {
+      if (orderData.activeProduct === 'TALLER_BASICO') {
+        document.getElementById('orderProductName').innerText = 'Taller de Fotografía Básico';
+      } else if (orderData.activeProduct === 'TALLER_EXTENDIDO') {
+        document.getElementById('orderProductName').innerText = 'Taller de Fotografía Extendido';
+      } else if (orderData.activeProduct === 'TALLER_ILUMINACION') {
+        document.getElementById('orderProductName').innerText = 'Taller de Iluminación para Reels';
+      } else if (orderData.activeProduct === 'TALLER_VIDEO') {
+        document.getElementById('orderProductName').innerText = 'Taller de Video con Smartphone';
+      }
+      
+      // Ocultar sección física y mostrar sección de taller
+      document.getElementById('physicalDetails').classList.add('hidden');
+      document.getElementById('workshopDetails').classList.remove('hidden');
+      
+      document.getElementById('orderInstagram').innerText = orderData.instagram || '-';
+      document.getElementById('orderEmail').innerText = orderData.email || '-';
+    } else {
+      document.getElementById('orderProductName').innerText = 'Matte Box MKB-V4';
+      
+      document.getElementById('orderColor').innerText = orderData.color || 'OBSIDIAN';
+      document.getElementById('orderShipping').innerText = orderData.shippingMethod || 'Bluexpress';
+      
+      // Extras list
+      const extras = [];
+      if (orderData.reducers) extras.push('Kit Reductores');
+      if (orderData.adapter) extras.push('Adaptador 77mm');
+      if (orderData.customAdapter) {
+        const details = [];
+        if (orderData.customAdapterDetails?.mm) details.push(orderData.customAdapterDetails.mm + 'mm');
+        if (orderData.customAdapterDetails?.lens) details.push(orderData.customAdapterDetails.lens);
+        extras.push('Adaptador Personalizado' + (details.length ? ` (${details.join(' — ')})` : ''));
+      }
+      document.getElementById('orderExtras').innerText = extras.length ? extras.join(', ') : 'Sin extras';
+
+      // Grabado
+      const engravingText = orderData.engraving ? (orderData.engravingText || 'Pendiente') : 'No agregado';
+      document.getElementById('orderEngraving').innerText = engravingText;
+    }
 
     // Configurar botón de WhatsApp
     const whatsappBtn = document.getElementById('whatsappBtn');
     whatsappBtn.addEventListener('click', () => {
       const name = orderData.name || 'Cliente';
-      const phone = orderData.phone || '';
       
-      const extrasMsg = extras.length ? extras.join(', ') : 'Sin extras';
-      
-      let invoiceText = '';
-      if (orderData.invoice && orderData.invoiceDetails) {
-        invoiceText = `\n\nFACTURA:\nEmpresa: ${orderData.invoiceDetails.company || ''}\nRUT: ${orderData.invoiceDetails.rut || ''}\nGiro: ${orderData.invoiceDetails.business || ''}\nDirección: ${orderData.invoiceDetails.address || ''}`;
-      }
+      let message = '';
+      if (isWorkshop) {
+        const instagram = orderData.instagram || '';
+        const email = orderData.email || '';
+        let productName = '';
+        if (orderData.activeProduct === 'TALLER_BASICO') productName = 'Taller de Fotografía Básico';
+        else if (orderData.activeProduct === 'TALLER_EXTENDIDO') productName = 'Taller de Fotografía Extendido';
+        else if (orderData.activeProduct === 'TALLER_ILUMINACION') productName = 'Taller de Iluminación para Reels';
+        else if (orderData.activeProduct === 'TALLER_VIDEO') productName = 'Taller de Video con Smartphone';
+        message = `hola soy ${name} compre el taller de ${productName}. Mis datos: Instagram: ${instagram}, Correo: ${email}. ID de Pago: ${paymentId}`;
+      } else {
+        const phone = orderData.phone || '';
+        const extrasMsg = [];
+        if (orderData.reducers) extrasMsg.push('Kit Reductores');
+        if (orderData.adapter) extrasMsg.push('Adaptador 77mm');
+        if (orderData.customAdapter) {
+          const details = [];
+          if (orderData.customAdapterDetails?.mm) details.push(orderData.customAdapterDetails.mm + 'mm');
+          if (orderData.customAdapterDetails?.lens) details.push(orderData.customAdapterDetails.lens);
+          extrasMsg.push('Adaptador Personalizado' + (details.length ? ` (${details.join(' — ')})` : ''));
+        }
+        const extrasText = extrasMsg.length ? extrasMsg.join(', ') : 'Sin extras';
+        const engravingText = orderData.engraving ? (orderData.engravingText || 'Pendiente') : 'No agregado';
+        
+        let invoiceText = '';
+        if (orderData.invoice && orderData.invoiceDetails) {
+          invoiceText = `\n\nFACTURA:\nEmpresa: ${orderData.invoiceDetails.company || ''}\nRUT: ${orderData.invoiceDetails.rut || ''}\nGiro: ${orderData.invoiceDetails.business || ''}\nDirección: ${orderData.invoiceDetails.address || ''}`;
+        }
 
-      const message = `Hola Kori Kamera Store, acabo de pagar mi pedido!\n\nID de Pago: ${paymentId}\nNombre: ${name}\nTeléfono: ${phone}\nColor: ${orderData.color || 'OBSIDIAN'}\nExtras: ${extrasMsg}\nNombre personalizado: ${engravingText}\nEntrega: ${orderData.shippingMethod || 'Bluexpress'}${invoiceText}`;
+        message = `Hola Kori Kamera Store, acabo de pagar mi pedido!\n\nID de Pago: ${paymentId}\nNombre: ${name}\nTeléfono: ${phone}\nColor: ${orderData.color || 'OBSIDIAN'}\nExtras: ${extrasText}\nNombre personalizado: ${engravingText}\nEntrega: ${orderData.shippingMethod || 'Bluexpress'}${invoiceText}`;
+      }
       
       const encodedMsg = encodeURIComponent(message);
       window.open(`https://wa.me/56950870076?text=${encodedMsg}`, '_blank');

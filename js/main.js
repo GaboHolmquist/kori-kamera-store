@@ -51,9 +51,11 @@ function crossfade(layerAId,layerBId,activeRef,newSrc,setActive){
 const bannerImages = [
   { file: 'productos/banner/foto1.jpeg', title: 'Matte Box MKB-V4', link: '#mkb-v4', color: 'text-blue-500', btnText: 'Ver Producto' },
   { file: 'productos/portadaP3.jpeg', title: 'Cocteleria 3D x Gabo3Dprint', link: '#gabo3dprint', color: 'text-yellow-500', btnText: 'Ver Portafolio' },
+  { file: 'productos/portada_talleres.jpg', title: 'Talleres', link: '#talleres', color: 'text-green-500', btnText: 'Ver Talleres' },
   { file: 'productos/preview_comparador.jpg', title: 'Comparador de Cámaras', link: 'comparador.html', color: 'text-purple-500', btnText: 'Comparar Ahora' },
   { file: 'productos/banner/foto3.jpeg', title: 'Matte Box MKB-V4', link: '#mkb-v4', color: 'text-blue-500', btnText: 'Ver Producto' },
-  { file: 'productos/portadaP3.jpeg', title: 'Cocteleria 3D x Gabo3Dprint', link: '#gabo3dprint', color: 'text-yellow-500', btnText: 'Ver Portafolio' }
+  { file: 'productos/portadaP3.jpeg', title: 'Cocteleria 3D x Gabo3Dprint', link: '#gabo3dprint', color: 'text-yellow-500', btnText: 'Ver Portafolio' },
+  { file: 'productos/portada_talleres.jpg', title: 'Talleres', link: '#talleres', color: 'text-green-500', btnText: 'Ver Talleres' }
 ];
 let currentBannerIndex = 0;
 let bannerActiveLayer = 'A';
@@ -618,6 +620,7 @@ function openMatteboxPage(fromHash = false){
  const catalog=document.getElementById('catalogPage')
  const product=document.getElementById('productPage')
  const gabo3d=document.getElementById('gabo3dprintPage')
+ const talleres=document.getElementById('talleresPage')
  
  stopBannerInterval()
  
@@ -625,7 +628,7 @@ function openMatteboxPage(fromHash = false){
   overlay.classList.add('active')
  }
 
- ;[home,catalog,gabo3d].forEach(el=>{
+ ;[home,catalog,gabo3d,talleres].forEach(el=>{
   if(el){el.classList.remove('page-visible');el.classList.add('page-hidden')}
  })
 
@@ -633,6 +636,7 @@ function openMatteboxPage(fromHash = false){
   if(home) home.classList.add('hidden')
   if(catalog) catalog.classList.add('hidden')
   if(gabo3d) gabo3d.classList.add('hidden')
+  if(talleres) talleres.classList.add('hidden')
 
   product.classList.remove('hidden')
   product.offsetHeight; // Force reflow for Safari
@@ -668,13 +672,14 @@ function goHome(fromHash = false){
  const product=document.getElementById('productPage')
  const tp1=document.getElementById('tp1Page')
  const gabo3d=document.getElementById('gabo3dprintPage')
+ const talleres=document.getElementById('talleresPage')
 
  stopRigInterval()
  stopBannerInterval()
 
  if(overlay) overlay.classList.add('active')
 
- ;[catalog,product,tp1,gabo3d].forEach(el=>{
+ ;[catalog,product,tp1,gabo3d,talleres].forEach(el=>{
   if(el){el.classList.remove('page-visible');el.classList.add('page-hidden')}
  })
 
@@ -683,6 +688,7 @@ function goHome(fromHash = false){
   if(product) product.classList.add('hidden')
   if(tp1) tp1.classList.add('hidden')
   if(gabo3d) gabo3d.classList.add('hidden')
+  if(talleres) talleres.classList.add('hidden')
   
   home.classList.remove('hidden')
   home.offsetHeight; // Force reflow for Safari
@@ -712,12 +718,13 @@ function openCatalogPage(fromHash = false){
  const product=document.getElementById('productPage')
  const tp1=document.getElementById('tp1Page')
  const gabo3d=document.getElementById('gabo3dprintPage')
+ const talleres=document.getElementById('talleresPage')
 
  stopBannerInterval()
 
  if(overlay) overlay.classList.add('active')
 
- ;[home,product,tp1,gabo3d].forEach(el=>{
+ ;[home,product,tp1,gabo3d,talleres].forEach(el=>{
   if(el){el.classList.remove('page-visible');el.classList.add('page-hidden')}
  })
 
@@ -726,6 +733,7 @@ function openCatalogPage(fromHash = false){
   if(product) product.classList.add('hidden')
   if(tp1) tp1.classList.add('hidden')
   if(gabo3d) gabo3d.classList.add('hidden')
+  if(talleres) talleres.classList.add('hidden')
   
   catalog.classList.remove('hidden')
   catalog.offsetHeight; // Force reflow for Safari
@@ -753,12 +761,13 @@ function openGabo3DprintPage(fromHash = false){
  const catalog=document.getElementById('catalogPage')
  const product=document.getElementById('productPage')
  const tp1=document.getElementById('tp1Page')
+ const talleres=document.getElementById('talleresPage')
 
  stopBannerInterval()
 
  if(overlay) overlay.classList.add('active')
 
- ;[home,catalog,product,tp1].forEach(el=>{
+ ;[home,catalog,product,tp1,talleres].forEach(el=>{
   if(el){el.classList.remove('page-visible');el.classList.add('page-hidden')}
  })
 
@@ -767,6 +776,7 @@ function openGabo3DprintPage(fromHash = false){
   if(catalog) catalog.classList.add('hidden')
   if(product) product.classList.add('hidden')
   if(tp1) tp1.classList.add('hidden')
+  if(talleres) talleres.classList.add('hidden')
   
   if(gabo3d) {
    gabo3d.classList.remove('hidden')
@@ -774,6 +784,7 @@ function openGabo3DprintPage(fromHash = false){
    requestAnimationFrame(()=>{
     gabo3d.classList.remove('page-hidden')
     gabo3d.classList.add('page-visible')
+    initGabo3dScrollReveal()
    })
   }
   window.scrollTo({top:0,behavior:'smooth'})
@@ -824,7 +835,7 @@ function preloadImages(){
  }
 
  // Primeras imágenes de ambas galerías y banner — prioritarias
- bannerImages.forEach(f=>cache('productos/banner/'+f))
+ bannerImages.forEach(f=>cache(f.file))
  cache('productos/mattebox/rig M/'+rigImages[0])
  cache('productos/mattebox/rig M/'+rigImages[1])
  cache('productos/mattebox/Colores M/obsidian/'+productImages['OBSIDIAN'][0])
@@ -845,7 +856,7 @@ preloadImages()
 // TP1 GALLERIES
 // =========================================
 
-const tp1RigImages=['00001.jpeg','00002.jpeg','00003.jpeg','00004.jpeg','00005.jpeg','00006.jpeg']
+const tp1RigImages=['portada.jpeg']
 let currentTp1RigIndex=0
 let tp1RigActiveLayer='A'
 
@@ -912,11 +923,12 @@ function openTp1Page(fromHash = false){
  const mattebox=document.getElementById('productPage')
  const tp1=document.getElementById('tp1Page')
  const gabo3d=document.getElementById('gabo3dprintPage')
+ const talleres=document.getElementById('talleresPage')
  
  stopBannerInterval()
  
  if(overlay) overlay.classList.add('active')
- ;[home,catalog,mattebox,gabo3d].forEach(el=>{
+ ;[home,catalog,mattebox,gabo3d,talleres].forEach(el=>{
   if(el){
    el.classList.remove('page-visible')
    el.classList.add('page-hidden','hidden')
@@ -926,6 +938,37 @@ function openTp1Page(fromHash = false){
    tp1.classList.remove('hidden')
    tp1.offsetHeight; // Force reflow for Safari
    requestAnimationFrame(()=>{tp1.classList.remove('page-hidden');tp1.classList.add('page-visible')})
+  window.scrollTo({top:0,behavior:'smooth'})
+ },170)
+ setTimeout(()=>{if(overlay) overlay.classList.remove('active')},560)
+}
+
+function openTalleresPage(fromHash = false){
+ if(!fromHash){
+  window.location.hash = 'talleres';
+  return;
+ }
+ const overlay=document.getElementById('transitionOverlay')
+ const home=document.getElementById('homePage')
+ const catalog=document.getElementById('catalogPage')
+ const product=document.getElementById('productPage')
+ const tp1=document.getElementById('tp1Page')
+ const gabo3d=document.getElementById('gabo3dprintPage')
+ const talleres=document.getElementById('talleresPage')
+ 
+ stopBannerInterval()
+ 
+ if(overlay) overlay.classList.add('active')
+ ;[home,catalog,product,tp1,gabo3d].forEach(el=>{
+  if(el){
+   el.classList.remove('page-visible')
+   el.classList.add('page-hidden','hidden')
+  }
+ })
+ setTimeout(()=>{
+  talleres.classList.remove('hidden')
+  talleres.offsetHeight;
+  requestAnimationFrame(()=>{talleres.classList.remove('page-hidden');talleres.classList.add('page-visible')})
   window.scrollTo({top:0,behavior:'smooth'})
  },170)
  setTimeout(()=>{if(overlay) overlay.classList.remove('active')},560)
@@ -1717,11 +1760,17 @@ let currentGabo3dItemsList = [];
 let currentGabo3dItemId = null;
 let currentGabo3dImgIndex = 0;
 let gabo3dActiveLayer = 'A';
+let gabo3dObserver = null;
 
 // Resuelve la URL de la imagen (usa la local si existe, sino el fallback)
 function getGabo3dImageSrc(item, index, callback) {
   const localSrc = item.images[index];
   const fallbackSrc = item.fallbacks[index] || item.fallbacks[0];
+  
+  if (!localSrc) {
+    callback(fallbackSrc);
+    return;
+  }
   
   const img = new Image();
   img.onload = () => callback(localSrc);
@@ -1875,7 +1924,7 @@ function renderGabo3dPortfolio() {
     // Imagen Secundaria (Hover/Touch)
     const img2 = document.createElement('img');
     img2.className = 'absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-in-out';
-    img2.src = item.images[1];
+    img2.src = item.images[1] || item.images[0];
     img2.alt = item.title + ' hover';
     img2.onerror = () => {
       img2.onerror = null;
@@ -1972,8 +2021,23 @@ function initGabo3dScrollReveal() {
   const cards = document.querySelectorAll('#gabo3dGrid > div');
   if (!cards.length) return;
   
+  if (gabo3dObserver) {
+    gabo3dObserver.disconnect();
+  }
+  
   if (!('IntersectionObserver' in window)) {
     cards.forEach(card => card.classList.add('revealed'));
+    return;
+  }
+  
+  // Si la página del portafolio está oculta, no configurar observador aún (se re-inicializará al mostrar la página)
+  const page = document.getElementById('gabo3dprintPage');
+  if (page && page.classList.contains('hidden')) {
+    cards.forEach(card => {
+      if (!card.classList.contains('revealed')) {
+        card.classList.add('reveal-card');
+      }
+    });
     return;
   }
   
@@ -1983,7 +2047,7 @@ function initGabo3dScrollReveal() {
     threshold: 0.01
   };
   
-  const observer = new IntersectionObserver((entries, obs) => {
+  gabo3dObserver = new IntersectionObserver((entries, obs) => {
     const visibleEntries = entries.filter(e => e.isIntersecting);
     
     visibleEntries.forEach((entry, index) => {
@@ -1999,19 +2063,21 @@ function initGabo3dScrollReveal() {
   }, observerOptions);
   
   cards.forEach(card => {
-    card.classList.add('reveal-card');
-    observer.observe(card);
+    if (!card.classList.contains('revealed')) {
+      card.classList.add('reveal-card');
+      gabo3dObserver.observe(card);
+    }
   });
 
   // Para asegurar de que en iOS/Safari no queden ocultos por fallos de scroll,
-  // forzamos la revelación de las primeras 4 tarjetas después de 800ms si no se han revelado.
+  // forzamos la revelación de las primeras 4 tarjetas después de 100ms si no se han revelado.
   setTimeout(() => {
     cards.forEach((card, index) => {
       if (index < 4 && !card.classList.contains('revealed')) {
         card.classList.add('revealed');
       }
     });
-  }, 800);
+  }, 100);
 }
 
 
@@ -2329,6 +2395,9 @@ window.addEventListener('hashchange', () => {
   const itemId = hash.replace('#gabo3dprint-', '');
   openGabo3DprintPage(true);
   openGabo3dItem(itemId, true);
+ } else if (hash === '#talleres') {
+  closeGabo3dPopup(true);
+  openTalleresPage(true);
  } else {
   closeGabo3dPopup(true);
   goHome(true);
@@ -2364,6 +2433,7 @@ function handleInitialRouting() {
   document.getElementById('gabo3dprintPage').classList.remove('hidden', 'page-hidden');
   document.getElementById('gabo3dprintPage').classList.add('page-visible');
   stopBannerInterval();
+  initGabo3dScrollReveal();
  } else if (hash.startsWith('#gabo3dprint-')) {
   const itemId = hash.replace('#gabo3dprint-', '');
   document.getElementById('homePage').classList.add('hidden', 'page-hidden');
@@ -2372,8 +2442,148 @@ function handleInitialRouting() {
   document.getElementById('gabo3dprintPage').classList.add('page-visible');
   stopBannerInterval();
   openGabo3dItem(itemId, true);
+  initGabo3dScrollReveal();
+ } else if (hash === '#talleres') {
+  document.getElementById('homePage').classList.add('hidden', 'page-hidden');
+  document.getElementById('homePage').classList.remove('page-visible');
+  document.getElementById('talleresPage').classList.remove('hidden', 'page-hidden');
+  document.getElementById('talleresPage').classList.add('page-visible');
+  stopBannerInterval();
  }
 }
 
 handleInitialRouting();
+
+// WORKSHOP PURCHASE FLOW
+let workshopActiveProduct = '';
+
+function openWorkshopPopup(productId) {
+  workshopActiveProduct = productId;
+  
+  const titleEl = document.getElementById('workshopPopupTitle');
+  const priceEl = document.getElementById('workshopPopupPrice');
+  
+  if (productId === 'TALLER_BASICO') {
+    if (titleEl) titleEl.innerText = 'Taller de Fotografía Básico';
+    if (priceEl) priceEl.innerText = '$39.990';
+  } else if (productId === 'TALLER_EXTENDIDO') {
+    if (titleEl) titleEl.innerText = 'Taller de Fotografía Extendido';
+    if (priceEl) priceEl.innerText = '$129.990';
+  } else if (productId === 'TALLER_ILUMINACION') {
+    if (titleEl) titleEl.innerText = 'Taller de Iluminación para Reels';
+    if (priceEl) priceEl.innerText = '$59.990';
+  } else if (productId === 'TALLER_VIDEO') {
+    if (titleEl) titleEl.innerText = 'Taller de Video con Smartphone';
+    if (priceEl) priceEl.innerText = '$59.990';
+  }
+
+  const popup = document.getElementById('workshopPopup');
+  if (popup) {
+    popup.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+  
+  // Limpiar campos anteriores
+  const nameInput = document.getElementById('workshopCustomerName');
+  const instagramInput = document.getElementById('workshopCustomerInstagram');
+  const emailInput = document.getElementById('workshopCustomerEmail');
+  if (nameInput) nameInput.value = '';
+  if (instagramInput) instagramInput.value = '';
+  if (emailInput) emailInput.value = '';
+  
+  validateWorkshopForm();
+}
+
+function closeWorkshopPopup() {
+  const popup = document.getElementById('workshopPopup');
+  if (popup) {
+    popup.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+}
+
+function validateWorkshopForm() {
+  const name = document.getElementById('workshopCustomerName')?.value.trim() || '';
+  const instagram = document.getElementById('workshopCustomerInstagram')?.value.trim() || '';
+  const email = document.getElementById('workshopCustomerEmail')?.value.trim() || '';
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isValid = name.length > 0 && instagram.length > 0 && emailRegex.test(email);
+  
+  const btn = document.getElementById('workshopPurchaseButton');
+  if (btn) {
+    if (isValid) {
+      btn.disabled = false;
+      btn.innerText = 'Pagar con Mercado Pago';
+      btn.className = 'w-full py-5 rounded-2xl bg-white text-black font-semibold hover:scale-[1.01] transition-all duration-300 cursor-pointer';
+    } else {
+      btn.disabled = true;
+      btn.innerText = 'Completar datos';
+      btn.className = 'w-full py-5 rounded-2xl bg-white/10 text-white/30 font-semibold cursor-not-allowed transition-all duration-300';
+    }
+  }
+}
+
+async function startWorkshopCheckout() {
+  const name = document.getElementById('workshopCustomerName')?.value.trim() || '';
+  const instagram = document.getElementById('workshopCustomerInstagram')?.value.trim() || '';
+  const email = document.getElementById('workshopCustomerEmail')?.value.trim() || '';
+
+  const orderDetails = {
+    name: name,
+    instagram: instagram,
+    email: email,
+    activeProduct: workshopActiveProduct,
+    testMode: isTestMode
+  };
+
+  try {
+    localStorage.setItem('last_order_details', JSON.stringify(orderDetails));
+  } catch (e) {
+    console.error('Error guardando en localStorage:', e);
+  }
+
+  const btn = document.getElementById('workshopPurchaseButton');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = 'Procesando pago...';
+    btn.className = 'w-full py-5 rounded-2xl bg-white/30 text-white/40 font-semibold cursor-not-allowed transition-all duration-300';
+  }
+
+  try {
+    // Si estamos en entorno local, simular el proceso de pago
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname.startsWith('192.168.')) {
+      console.log('Entorno local detectado para talleres. Simulando flujo de pago offline...');
+      setTimeout(() => {
+        window.location.href = '/pago-exitoso.html';
+      }, 1500);
+      return;
+    }
+
+    const response = await fetch('/api/create-preference', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orderDetails)
+    });
+
+    if (!response.ok) {
+      const errData = await response.json();
+      throw new Error(errData.error || 'Error al generar la preferencia de pago.');
+    }
+
+    const result = await response.json();
+    const redirectUrl = result.init_point;
+    if (redirectUrl) {
+      window.location.href = redirectUrl;
+    } else {
+      throw new Error('No se recibió la URL de redirección.');
+    }
+  } catch (error) {
+    console.error('Error en el proceso de pago de talleres:', error);
+    alert('Hubo un problema al procesar tu solicitud: ' + error.message + '\n\nPor favor, inténtalo de nuevo.');
+    validateWorkshopForm(); // Restaura el botón
+  }
+}
 

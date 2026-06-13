@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+
 exports.handler = async (event, context) => {
   // Mercado Pago envía notificaciones POST
   if (event.httpMethod !== 'POST') {
@@ -45,6 +47,62 @@ exports.handler = async (event, context) => {
 
     console.log(`Procesando notificación de pago: ${paymentId}`);
 
+    // 3. Verificar firma del Webhook si se configura el secreto
+    const webhookSecret = process.env.MP_WEBHOOK_SECRET;
+    if (webhookSecret) {
+      // Netlify normaliza los headers de event a minúsculas
+      const xSignature = event.headers['x-signature'] || event.headers['X-Signature'];
+      const xRequestId = event.headers['x-request-id'] || event.headers['X-Request-Id'];
+
+      if (!xSignature || !xRequestId) {
+        console.error('Faltan encabezados de firma de Mercado Pago');
+        return {
+          statusCode: 400,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: 'Faltan encabezados de firma' })
+        };
+      }
+
+      try {
+        const parts = xSignature.split(',');
+        const tsPart = parts.find(p => p.trim().startsWith('ts='));
+        const v1Part = parts.find(p => p.trim().startsWith('v1='));
+        if (!tsPart || !v1Part) {
+          throw new Error('Formato de x-signature inválido');
+        }
+        const ts = tsPart.split('=')[1];
+        const v1 = v1Part.split('=')[1];
+
+        const manifest = `id:${paymentId.toLowerCase()};request-id:${xRequestId};ts:${ts};`;
+        const computedSignature = crypto
+          .createHmac('sha256', webhookSecret)
+          .update(manifest)
+          .digest('hex');
+
+        const bufComputed = Buffer.from(computedSignature, 'hex');
+        const bufV1 = Buffer.from(v1, 'hex');
+
+        if (bufComputed.length !== bufV1.length || !crypto.timingSafeEqual(bufComputed, bufV1)) {
+          console.error('Firma de webhook de Mercado Pago inválida');
+          return {
+            statusCode: 403,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ error: 'Firma inválida' })
+          };
+        }
+        console.log('Firma de webhook de Mercado Pago verificada con éxito.');
+      } catch (sigErr) {
+        console.error('Error al verificar firma:', sigErr);
+        return {
+          statusCode: 400,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: 'Error de verificación de firma' })
+        };
+      }
+    } else {
+      console.warn('ADVERTENCIA DE SEGURIDAD: MP_WEBHOOK_SECRET no está configurada. Firma del webhook no verificada.');
+    }
+
     // Consultar detalles de pago en la API de Mercado Pago
     const accessToken = process.env.MP_ACCESS_TOKEN;
     if (!accessToken) {
@@ -73,25 +131,25 @@ exports.handler = async (event, context) => {
       const token = process.env.UPSTASH_REDIS_REST_TOKEN;
 
       if (!url || !token) {
-        throw new Error('Falta configuración de Upstash Redis en Netlify.');
+        throw new Error('Falta configuración de Upstash Redis.');
       }
 
-      // Idempotencia: Evitar descontar dos veces si se repite la notificación
+      // Idempotencia atómica: Evitar descontar dos veces si se repite la notificación
       const processedKey = `payment:processed:${paymentId}`;
       
-      const checkResponse = await fetch(`${url}/get/${processedKey}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+      const setResponse = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(['SET', processedKey, 'true', 'EX', 604800, 'NX'])
       });
-      const checkData = await checkResponse.json();
+      const setData = await setResponse.json();
 
-      if (checkData.result === 'true') {
-        console.log(`El pago ${paymentId} ya fue procesado anteriormente. Omitiendo decremento.`);
+      if (setData.result !== 'OK') {
+        console.log(`El pago ${paymentId} ya fue procesado anteriormente (SETNX retornado null). Omitiendo decremento.`);
       } else {
-        // Guardar marca de procesado con expiración de 7 días (604800 segundos)
-        await fetch(`${url}/setex/${processedKey}/604800/true`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
         // Decrementar el stock de la base de datos
         const decrResponse = await fetch(`${url}/decr/stock`, {
           headers: { 'Authorization': `Bearer ${token}` }
@@ -114,7 +172,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 500,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: 'Error interno en webhook.', details: err.message })
+      body: JSON.stringify({ error: 'Error interno en webhook.' })
     };
   }
 };

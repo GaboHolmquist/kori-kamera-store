@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pago Fallido — Kori Kamera Store</title>
   <meta name="description" content="Hubo un problema al procesar tu pago. Inténtalo de nuevo." />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/tailwind.js"></script>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" href="favicon.png" />
   <style>
@@ -69,7 +69,7 @@
     // Obtener detalles guardados para personalizar la ayuda
     let orderData = {};
     try {
-      orderData = JSON.parse(localStorage.getItem('last_order_details') || '{}');
+      orderData = JSON.parse(sessionStorage.getItem('last_order_details') || '{}');
     } catch(e) {}
 
     const supportBtn = document.getElementById('supportBtn');

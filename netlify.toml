@@ -20,6 +20,21 @@
   status = 200
 
 [[redirects]]
+  from = "/talleres"
+  to = "/talleres.html"
+  status = 200
+
+[[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.mercadopago.com https://*.mlstatic.com; media-src 'self'; connect-src 'self' https://*.mercadopago.com https://*.upstash.io;"
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    X-XSS-Protection = "1; mode=block"

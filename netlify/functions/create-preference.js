@@ -14,9 +14,11 @@ exports.handler = async (event, context) => {
     const {
       name,
       phone,
+      email = '',
+      instagram = '',
+      activeProduct = 'MATTEBOX',
       color = 'OBSIDIAN',
       reducers = false,
-      placeholder1, // unused
       adapter = false,
       customAdapter = false,
       customAdapterDetails = {},
@@ -24,13 +26,13 @@ exports.handler = async (event, context) => {
       engravingText = '',
       shippingMethod = 'Bluexpress',
       invoice = false,
-      invoiceDetails = {},
-      testMode = false,
-      activeProduct = 'MATTEBOX'
+      invoiceDetails = {}
     } = data;
 
+    const isWorkshop = activeProduct === 'TALLER_BASICO' || activeProduct === 'TALLER_EXTENDIDO' || activeProduct === 'TALLER_ILUMINACION' || activeProduct === 'TALLER_VIDEO';
+
     // Validación mínima
-    if (!name || !phone) {
+    if (!name || (!isWorkshop && !phone)) {
       return {
         statusCode: 400,
         headers: { 'Content-Type': 'application/json' },
@@ -38,63 +40,88 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Identificar el producto
-    const isTP1 = activeProduct === 'TP1';
+    // Sanitizar campos de entrada básicos
+    const cleanName = String(name).slice(0, 100).replace(/[<>]/g, '').trim();
+    const cleanPhone = phone ? String(phone).slice(0, 30).replace(/[<>]/g, '').trim() : '';
+    const cleanColor = String(color).slice(0, 50).toUpperCase().trim();
 
-    // Validar stock en Upstash Redis para compras reales
-    if (!isTP1) {
-      const url = process.env.UPSTASH_REDIS_REST_URL;
-      const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+    // Validar stock en Upstash Redis para compras reales (solo para Matte Box)
+    const url = process.env.UPSTASH_REDIS_REST_URL;
+    const token = process.env.UPSTASH_REDIS_REST_TOKEN;
 
-      if (url && token) {
-        try {
-          const stockResponse = await fetch(`${url}/get/stock`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-          if (stockResponse.ok) {
-            const stockData = await stockResponse.json();
-            const currentStock = stockData.result !== null ? parseInt(stockData.result, 10) : 10;
-            if (currentStock <= 0) {
-              return {
-                statusCode: 400,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ error: 'Lo sentimos, el producto se encuentra temporalmente sin stock.' })
-              };
-            }
+    if (!isWorkshop && url && token) {
+      try {
+        const stockResponse = await fetch(`${url}/get/stock`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (stockResponse.ok) {
+          const stockData = await stockResponse.json();
+          const currentStock = stockData.result !== null ? parseInt(stockData.result, 10) : 10;
+          if (currentStock <= 0) {
+            return {
+              statusCode: 400,
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ error: 'Lo sentimos, el producto se encuentra temporalmente sin stock.' })
+            };
           }
-        } catch (stockErr) {
-          console.error('Error al validar stock en checkout, continuando:', stockErr);
         }
+      } catch (stockErr) {
+        console.error('Error al validar stock en checkout, continuando:', stockErr);
       }
     }
 
-    // Definición de precios (dinámico según testMode y producto)
-    const basePrice = isTP1 ? 100 : (testMode ? 100 : 74990);
-    const reducersPrice = isTP1 ? 0 : (testMode ? 1 : 20000);
-    const adapterPrice = isTP1 ? 0 : (testMode ? 1 : 15000);
-    const customAdapterPrice = isTP1 ? 0 : (testMode ? 1 : 8000);
-    const engravingPriceVal = isTP1 ? 0 : (testMode ? 1 : 8000);
-
     const items = [];
 
-    // Ítem base
-    const testLabel = testMode ? ' [PRUEBA]' : '';
-    const productTitle = isTP1 
-      ? `Foot Rig TP1 - Estándar - ${name}`
-      : `Matte Box MKB-V4 - ${color.toUpperCase()} - ${name}${testLabel}`;
+    if (activeProduct === 'TALLER_BASICO') {
+      items.push({
+        title: "taller basico fotografia",
+        quantity: 1,
+        unit_price: 39990,
+        currency_id: 'CLP'
+      });
+    } else if (activeProduct === 'TALLER_EXTENDIDO') {
+      items.push({
+        title: "Taller Extendido",
+        quantity: 1,
+        unit_price: 129990,
+        currency_id: 'CLP'
+      });
+    } else if (activeProduct === 'TALLER_ILUMINACION') {
+      items.push({
+        title: "Taller iluminacion",
+        quantity: 1,
+        unit_price: 59990,
+        currency_id: 'CLP'
+      });
+    } else if (activeProduct === 'TALLER_VIDEO') {
+      items.push({
+        title: "Taller Video",
+        quantity: 1,
+        unit_price: 59990,
+        currency_id: 'CLP'
+      });
+    } else {
+      // Definición de precios reales
+      const basePrice = 74990;
+      const reducersPrice = 20000;
+      const adapterPrice = 15000;
+      const customAdapterPrice = 8000;
+      const engravingPriceVal = 8000;
 
-    items.push({
-      title: productTitle,
-      quantity: 1,
-      unit_price: basePrice,
-      currency_id: 'CLP'
-    });
+      // Ítem base
+      const productTitle = `Matte Box MKB-V4 - ${cleanColor} - ${cleanName}`;
 
-    // Extras (solo si no es TP1)
-    if (!isTP1) {
+      items.push({
+        title: productTitle,
+        quantity: 1,
+        unit_price: basePrice,
+        currency_id: 'CLP'
+      });
+
+      // Extras
       if (reducers) {
         items.push({
-          title: "Kit reductores de filtros (77mm a 37mm)" + (testMode ? ' [PRUEBA]' : ''),
+          title: "Kit reductores de filtros (77mm a 37mm)",
           quantity: 1,
           unit_price: reducersPrice,
           currency_id: 'CLP'
@@ -103,7 +130,7 @@ exports.handler = async (event, context) => {
 
       if (adapter) {
         items.push({
-          title: "Adaptador 4x5 a filtros redondos 77mm" + (testMode ? ' [PRUEBA]' : ''),
+          title: "Adaptador 4x5 a filtros redondos 77mm",
           quantity: 1,
           unit_price: adapterPrice,
           currency_id: 'CLP'
@@ -113,45 +140,55 @@ exports.handler = async (event, context) => {
       if (customAdapter) {
         const mm = customAdapterDetails.mm || '';
         const lens = customAdapterDetails.lens || '';
-        const desc = [mm ? `${mm}mm` : '', lens].filter(Boolean).join(' — ');
+        const cleanMm = String(mm).slice(0, 50).replace(/[<>]/g, '').trim();
+        const cleanLens = String(lens).slice(0, 100).replace(/[<>]/g, '').trim();
+        const desc = [cleanMm ? `${cleanMm}mm` : '', cleanLens].filter(Boolean).join(' — ');
         items.push({
-          title: `Adaptador personalizado: ${desc || 'Detalles por coordinar'}` + (testMode ? ' [PRUEBA]' : ''),
+          title: `Adaptador personalizado: ${desc || 'Detalles por coordinar'}`,
           quantity: 1,
           unit_price: customAdapterPrice,
           currency_id: 'CLP'
         });
       }
 
-      const engravingFree = !testMode && (reducers && adapter);
+      const engravingFree = reducers && adapter;
       if (engraving) {
+        const cleanEngravingText = String(engravingText).slice(0, 100).replace(/[<>]/g, '').trim();
         items.push({
-          title: `Grabado personalizado: "${engravingText || 'Pendiente'}"` + (engravingFree ? ' (Gratis)' : '') + (testMode ? ' [PRUEBA]' : ''),
+          title: `Grabado personalizado: "${cleanEngravingText || 'Pendiente'}"` + (engravingFree ? ' (Gratis)' : ''),
           quantity: 1,
           unit_price: engravingFree ? 0 : engravingPriceVal,
           currency_id: 'CLP'
         });
       }
-    }
 
-    // Costo de envío (gratis/coordinado para TP1 para que el total real sea exactamente $100 CLP)
-    let shippingCost = 0;
-    if (!isTP1) {
+      // Validación de método de envío y costo
+      const allowedShippingMethods = ['Bluexpress', 'Express', 'Retiro Metro Ecuador o Tobalaba'];
+      if (!allowedShippingMethods.includes(shippingMethod)) {
+        return {
+          statusCode: 400,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: 'Método de envío no válido.' })
+        };
+      }
+
+      let shippingCost = 0;
       if (shippingMethod === 'Bluexpress') {
-        shippingCost = testMode ? 1 : 5990;
+        shippingCost = 5990;
       } else if (shippingMethod === 'Express') {
-        shippingCost = testMode ? 1 : 9990;
+        shippingCost = 9990;
       } else if (shippingMethod === 'Retiro Metro Ecuador o Tobalaba') {
         shippingCost = 0;
       }
-    }
 
-    if (shippingCost > 0) {
-      items.push({
-        title: `Envío: ${shippingMethod}` + (testMode ? ' [PRUEBA]' : ''),
-        quantity: 1,
-        unit_price: shippingCost,
-        currency_id: 'CLP'
-      });
+      if (shippingCost > 0) {
+        items.push({
+          title: `Envío: ${shippingMethod}`,
+          quantity: 1,
+          unit_price: shippingCost,
+          currency_id: 'CLP'
+        });
+      }
     }
 
     // Verificar token en las variables de entorno
@@ -165,24 +202,23 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Obtener URL base dinámica para los retornos
-    const host = event.headers.host || 'korikamera.store';
-    const protocol = host.includes('localhost') ? 'http' : 'https';
-    const baseUrl = `${protocol}://${host}`;
+    // Obtener URL base segura
+    const baseUrl = process.env.BASE_URL || 'https://korikamera.store';
 
     // Construir la preferencia de Mercado Pago
-    const rawDigits = phone.replace(/\D/g, '');
+    const rawDigits = cleanPhone ? cleanPhone.replace(/\D/g, '') : '';
     const phoneArea = rawDigits.startsWith('56') ? '56' : '';
     const phoneNumber = rawDigits.startsWith('56') ? rawDigits.slice(2) : rawDigits;
 
     const mpPreferenceBody = {
       items: items,
       payer: {
-        name: name,
-        phone: {
+        name: cleanName,
+        email: email ? String(email).slice(0, 100).replace(/[<>]/g, '').trim() : undefined,
+        phone: cleanPhone ? {
           area_code: phoneArea,
           number: phoneNumber
-        }
+        } : undefined
       },
       back_urls: {
         success: `${baseUrl}/pago-exitoso.html`,
@@ -191,23 +227,25 @@ exports.handler = async (event, context) => {
       },
       auto_return: 'approved',
       metadata: {
-        customer_name: name,
-        customer_phone: phone,
-        color: color,
-        reducers: reducers,
-        adapter: adapter,
-        custom_adapter: customAdapter,
-        custom_adapter_mm: customAdapterDetails.mm || '',
-        custom_adapter_lens: customAdapterDetails.lens || '',
-        engraving: engraving,
-        engraving_text: engravingText,
+        active_product: activeProduct,
+        customer_name: cleanName,
+        customer_phone: cleanPhone,
+        customer_instagram: instagram ? String(instagram).slice(0, 100).replace(/[<>]/g, '').trim() : '',
+        customer_email: email ? String(email).slice(0, 100).replace(/[<>]/g, '').trim() : '',
+        color: cleanColor,
+        reducers: !!reducers,
+        adapter: !!adapter,
+        custom_adapter: !!customAdapter,
+        custom_adapter_mm: String(customAdapterDetails.mm || '').slice(0, 50).replace(/[<>]/g, '').trim(),
+        custom_adapter_lens: String(customAdapterDetails.lens || '').slice(0, 100).replace(/[<>]/g, '').trim(),
+        engraving: !!engraving,
+        engraving_text: String(engravingText || '').slice(0, 100).replace(/[<>]/g, '').trim(),
         shipping_method: shippingMethod,
-        invoice_needed: invoice,
-        invoice_company: invoiceDetails.company || '',
-        invoice_rut: invoiceDetails.rut || '',
-        invoice_business: invoiceDetails.business || '',
-        invoice_address: invoiceDetails.address || '',
-        test_mode: testMode
+        invoice_needed: !!invoice,
+        invoice_company: String(invoiceDetails.company || '').slice(0, 100).replace(/[<>]/g, '').trim(),
+        invoice_rut: String(invoiceDetails.rut || '').slice(0, 30).replace(/[<>]/g, '').trim(),
+        invoice_business: String(invoiceDetails.business || '').slice(0, 100).replace(/[<>]/g, '').trim(),
+        invoice_address: String(invoiceDetails.address || '').slice(0, 200).replace(/[<>]/g, '').trim()
       },
       statement_descriptor: "KORI KAMERA STORE",
       payment_methods: {
@@ -232,15 +270,11 @@ exports.handler = async (event, context) => {
       return {
         statusCode: 502,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Error al comunicarse con Mercado Pago.', details: errorData })
+        body: JSON.stringify({ error: 'Error al comunicarse con la pasarela de pagos.' })
       };
     }
 
-    const preference = await mpResponse.ok ? await mpResponse.json() : null;
-
-    if (!preference) {
-      throw new Error('No se pudo decodificar la preferencia de Mercado Pago.');
-    }
+    const preference = await mpResponse.json();
 
     return {
       statusCode: 200,
@@ -257,7 +291,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 500,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: 'Error interno del servidor.', message: err.message })
+      body: JSON.stringify({ error: 'Error interno del servidor.' })
     };
   }
 };

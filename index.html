@@ -16,7 +16,7 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:type" content="website" />
-<script src="https://cdn.tailwindcss.com"></script>
+<script src="js/tailwind.js"></script>
 <link rel="stylesheet" href="css/style.css" />
 <link rel="icon" type="image/png" href="favicon.png" />
 </head>
@@ -59,6 +59,10 @@ FOOT RIG TP1 <span class="text-[10px] uppercase tracking-widest text-red-400 ml-
 
 <button onclick="openGabo3DprintPage();toggleMenu()" class="w-full text-left px-5 py-4 border-b border-white/5 hover:bg-white/5 transition-all duration-300">
 Gabo3Dprint
+</button>
+
+<button onclick="openTalleresPage();toggleMenu()" class="w-full text-left px-5 py-4 border-b border-white/5 hover:bg-white/5 transition-all duration-300">
+Talleres
 </button>
 
 <a href="https://www.instagram.com/korikamerastore/" target="_blank" class="block w-full text-left px-5 py-4 border-b border-white/5 hover:bg-white/5 transition-all duration-300">
@@ -191,6 +195,28 @@ Contacto
           </div>
           <div class="mt-4 flex items-center justify-between text-xs font-semibold text-zinc-300">
             <span>Ver portafolio</span>
+            <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </div>
+        </div>
+      </button>
+
+      <!-- Card: Talleres -->
+      <button onclick="openTalleresPage()" class="group text-left rounded-[30px] border border-white/10 bg-zinc-900/80 overflow-hidden backdrop-blur-xl hover:scale-[1.02] hover:border-white/20 transition-all duration-300 flex flex-col justify-between">
+        <div class="w-full bg-zinc-800 relative overflow-hidden" style="aspect-ratio: 21/9;">
+          <img src="productos/portada_talleres.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        </div>
+        <div class="p-6 flex-grow flex flex-col justify-between">
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Talleres</h2>
+            <div class="text-zinc-400 text-xs md:text-sm leading-relaxed mt-2 space-y-1 font-semibold">
+              <div>- Fotografía Básico</div>
+              <div>- Fotografía Extendido</div>
+              <div>- Iluminación</div>
+              <div>- Video con Smartphone</div>
+            </div>
+          </div>
+          <div class="mt-4 flex items-center justify-between text-xs font-semibold text-zinc-300">
+            <span>Ver talleres</span>
             <span class="group-hover:translate-x-1 transition-transform">→</span>
           </div>
         </div>
@@ -597,7 +623,7 @@ Comprar
 <div class="gallery-arrow right">›</div>
 <div id="tp1RigGallery" onclick="handleTp1RigGalleryClick(event)" class="cursor-pointer select-none" style="aspect-ratio:4/5;position:relative;overflow:hidden;">
 <div class="gallery-wrap">
-<div id="tp1RigLayerA" class="gallery-layer" style="opacity:1;z-index:2;"><img src="productos/tp1/Rig TP/00001.jpeg" /></div>
+<div id="tp1RigLayerA" class="gallery-layer" style="opacity:1;z-index:2;"><img src="productos/tp1/Rig TP/portada.jpeg" /></div>
 <div id="tp1RigLayerB" class="gallery-layer" style="opacity:0;z-index:1;"><img src="" /></div>
 </div>
 </div>
@@ -628,19 +654,19 @@ Comprar
 </div>
 
 <!-- VIDEO TP1 -->
-<div class="mt-10 rounded-[35px] border border-white/10 overflow-hidden bg-zinc-900">
+<div class="hidden mt-10 rounded-[35px] border border-white/10 overflow-hidden bg-zinc-900">
 <div class="aspect-video">
-<video src="productos/tp1/Video TP/videoTP1.mp4" autoplay loop muted playsinline preload="auto" class="w-full h-full object-cover"></video>
+<video src="" autoplay loop muted playsinline preload="none" class="w-full h-full object-cover"></video>
 </div>
 </div>
 
 <!-- PRODUCT GALLERY TP1 -->
-<div class="mt-10 relative rounded-[35px] border border-white/10 overflow-hidden bg-zinc-900">
+<div class="hidden mt-10 relative rounded-[35px] border border-white/10 overflow-hidden bg-zinc-900">
 <div class="gallery-arrow left">‹</div>
 <div class="gallery-arrow right">›</div>
 <div id="tp1ProductGallery" onclick="handleTp1ProductGalleryClick(event)" class="cursor-pointer" style="aspect-ratio:4/3;position:relative;overflow:hidden;">
 <div class="gallery-wrap">
-<div id="tp1ProdLayerA" class="gallery-layer" style="opacity:1;z-index:2;"><img src="productos/tp1/Colores TP/00001.jpeg" /></div>
+<div id="tp1ProdLayerA" class="gallery-layer" style="opacity:1;z-index:2;"><img src="productos/tp1/Rig TP/portada.jpeg" /></div>
 <div id="tp1ProdLayerB" class="gallery-layer" style="opacity:0;z-index:1;"><img src="" /></div>
 </div>
 </div>
@@ -651,42 +677,7 @@ Comprar
 </div>
 </div>
 
-<!-- COMPRAR TP1 CON CONTRASEÑA -->
-<div id="tp1PurchaseContainer" class="mt-10 rounded-[35px] border border-white/10 bg-white/5 p-8 md:p-10 text-center">
-  <!-- Estado bloqueado (Login) -->
-  <div id="tp1LockState" class="space-y-5">
-    <div class="flex items-center justify-center gap-3 mb-2">
-      <div class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></div>
-      <span class="text-yellow-300 uppercase tracking-[0.3em] text-xs font-semibold">Área Restringida / Pruebas</span>
-    </div>
-    <h2 class="text-3xl font-black text-white">FOOT RIG TP1</h2>
-    <p class="text-zinc-400 max-w-sm mx-auto leading-relaxed text-sm">
-      Esta sección es de acceso privado para pruebas de pago reales. Ingresa la contraseña para acceder al botón de compra de $100 CLP.
-    </p>
-    <div class="max-w-xs mx-auto flex flex-col gap-3 mt-4">
-      <input type="password" id="tp1PasswordInput" placeholder="Contraseña de acceso" class="w-full rounded-2xl border border-white/10 bg-black/40 px-5 py-4 outline-none focus:border-white/30 text-center text-white placeholder:text-zinc-600" />
-      <button onclick="checkTp1Password()" class="w-full py-4 rounded-2xl bg-white text-black font-extrabold hover:scale-[1.01] transition-all duration-300 shadow-md">
-        Desbloquear
-      </button>
-    </div>
-    <p id="tp1ErrorMsg" class="text-red-400 text-xs font-medium mt-2 hidden">Contraseña incorrecta. Inténtalo nuevamente.</p>
-  </div>
-
-  <!-- Estado desbloqueado (Botón de compra) -->
-  <div id="tp1UnlockState" class="hidden space-y-5">
-    <div class="flex items-center justify-center gap-3 mb-2">
-      <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
-      <span class="text-emerald-300 uppercase tracking-[0.3em] text-xs font-semibold">Desbloqueado con éxito</span>
-    </div>
-    <h2 class="text-3xl font-black text-white">Adquirir FOOT RIG TP1</h2>
-    <p class="text-zinc-400 max-w-sm mx-auto leading-relaxed text-sm">
-      Compra real de prueba habilitada por **$100 CLP** mediante Mercado Pago.
-    </p>
-    <button onclick="openPurchasePopupForTP1()" class="inline-flex items-center gap-3 rounded-full bg-white text-black px-8 py-4 hover:scale-[1.02] transition-all duration-300 font-extrabold shadow-lg">
-      <span>Comprar por $100 CLP</span>
-    </button>
-  </div>
-</div>
+<!-- Formulario de prueba TP1 removido por seguridad. El producto estará disponible próximamente. -->
 
 </section>
 </div>
@@ -797,6 +788,381 @@ Comprar
   </div>
 </div>
 
+
+<!-- TALLERES PAGE -->
+<div id="talleresPage" class="hidden page-hidden">
+  <section class="max-w-5xl mx-auto px-5 py-24">
+
+    <div class="text-center mb-16">
+      <h1 class="text-5xl md:text-7xl font-black tracking-tight bg-gradient-to-r from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent">Talleres</h1>
+      <p class="mt-4 text-zinc-500 uppercase tracking-[0.35em] text-xs md:text-sm">Aprende con nosotros</p>
+    </div>
+
+    <!-- Cover Image -->
+    <div class="relative w-full max-w-3xl mx-auto rounded-[35px] border border-white/10 overflow-hidden bg-zinc-950 shadow-2xl mb-14" style="aspect-ratio: 16/9;">
+      <img src="productos/portada_talleres.jpg" class="w-full h-full object-cover" />
+    </div>
+
+    <!-- Workshop Cards Grid -->
+    <div class="grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
+
+      <!-- Taller 0: Taller Gratuito de Fotografía -->
+      <div class="rounded-[30px] border border-white/10 bg-zinc-900/80 backdrop-blur-xl overflow-hidden hover:border-white/20 transition-all duration-300 flex flex-col justify-between">
+        <div class="p-6 flex-grow flex flex-col">
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-700 flex items-center justify-center text-lg">🎁</div>
+              <h2 class="text-xl font-bold text-white">Taller Gratuito</h2>
+            </div>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-green-500/10 text-green-400 border border-green-500/20 uppercase tracking-wider">Gratis</span>
+          </div>
+
+          <!-- Profesor 1 -->
+          <div class="flex items-center gap-3 mb-2 bg-white/5 rounded-2xl p-2.5 border border-white/5">
+            <div class="w-9 h-9 rounded-full border border-white/10 overflow-hidden bg-zinc-800 flex items-center justify-center shrink-0">
+              <img src="productos/gabo_holmquist.jpg" class="w-full h-full object-cover" />
+            </div>
+            <div>
+              <p class="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold leading-none mb-1">Profesor</p>
+              <a href="https://www.instagram.com/gaboholmquist/" target="_blank" class="text-xs font-bold text-zinc-300 hover:text-white hover:underline transition-all duration-300">
+                Gabo Holmquist
+              </a>
+            </div>
+          </div>
+
+          <!-- Profesor 2 -->
+          <div class="flex items-center gap-3 mb-2 bg-white/5 rounded-2xl p-2.5 border border-white/5">
+            <div class="w-9 h-9 rounded-full border border-white/10 overflow-hidden bg-zinc-800 flex items-center justify-center shrink-0">
+              <img src="productos/yessen_bruce.jpg" class="w-full h-full object-cover" />
+            </div>
+            <div>
+              <p class="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold leading-none mb-1">Profesor</p>
+              <a href="https://www.instagram.com/5dot6/" target="_blank" class="text-xs font-bold text-zinc-300 hover:text-white hover:underline transition-all duration-300">
+                Yessen Bruce
+              </a>
+            </div>
+          </div>
+
+          <!-- Horario y Duración -->
+          <div class="mt-1 mb-4 flex flex-wrap gap-2 text-[11px] text-zinc-400">
+            <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/5">📅 Sábado 20 a las 15h</span>
+            <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/5">⏱️ Duración: 2h</span>
+          </div>
+
+          <p class="text-zinc-400 text-sm leading-relaxed flex-grow">
+            Sábado 20, cupo 20 personas, Taller/salida fotográfica, la idea es disfrutar de una tarde fotográfica y aprender cosas básicas, el horario y lugar se enviará en el grupo de la comunidad, inscríbete para más información nos vemos.
+          </p>
+          <a href="https://chat.whatsapp.com/IN7ZVoNA0rdEa69HSzSmvF" target="_blank" class="mt-5 w-full text-center px-6 py-3 rounded-full bg-white text-black text-sm font-semibold hover:bg-zinc-200 hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-md block">
+            Inscribirse
+          </a>
+        </div>
+      </div>
+
+      <!-- Taller 3: Taller de Iluminación para Reels -->
+      <div class="rounded-[30px] border border-white/10 bg-zinc-900/80 backdrop-blur-xl overflow-hidden hover:border-white/20 transition-all duration-300 flex flex-col justify-between">
+        <div class="p-6 flex-grow flex flex-col">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center text-lg">💡</div>
+            <h2 class="text-xl font-bold text-white">Taller de Iluminación para Reels</h2>
+          </div>
+
+          <!-- Profesor -->
+          <div class="flex items-center gap-3 mb-2 bg-white/5 rounded-2xl p-2.5 border border-white/5">
+            <div class="w-9 h-9 rounded-full border border-white/10 overflow-hidden bg-zinc-800 flex items-center justify-center shrink-0">
+              <img src="productos/gabo_holmquist.jpg" class="w-full h-full object-cover" />
+            </div>
+            <div>
+              <p class="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold leading-none mb-1">Profesor</p>
+              <a href="https://www.instagram.com/gaboholmquist/" target="_blank" class="text-xs font-bold text-zinc-300 hover:text-white hover:underline transition-all duration-300">
+                Gabo Holmquist
+              </a>
+            </div>
+          </div>
+
+          <!-- Horario y Duración -->
+          <div class="mt-1 mb-4 flex flex-wrap gap-2 text-[11px] text-zinc-400">
+            <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/5">📅 Sábado 18 de Julio a las 10am</span>
+            <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/5">⏱️ Duración: 3h</span>
+          </div>
+
+          <p class="text-zinc-400 text-sm leading-relaxed mb-4">
+            Domina la luz en espacios reducidos, entornos cambiantes y a tener agilidad a la hora de montar tus esquemas de luz
+          </p>
+
+          <!-- Temario List -->
+          <div class="space-y-2 text-xs text-zinc-500 border-t border-white/5 pt-4">
+            <p class="text-zinc-400 font-semibold mb-1">Veremos:</p>
+            <div class="flex gap-2"><span>•</span> <span>Equipos de iluminación</span></div>
+            <div class="flex gap-2"><span>•</span> <span>Modificadores de luz</span></div>
+            <div class="flex gap-2"><span>•</span> <span>Luz natural y luz artificial</span></div>
+            <div class="flex gap-2"><span>•</span> <span>Esquemas de luz</span></div>
+            <div class="flex gap-2"><span>•</span> <span>Trípodes y accesorios</span></div>
+            <div class="flex gap-2"><span>•</span> <span>Luz de retrato y producto</span></div>
+          </div>
+
+          <div class="mt-4 flex items-baseline gap-2">
+            <span class="text-2xl font-black text-white">$59.990</span>
+          </div>
+
+          <button onclick="openWorkshopPopup('TALLER_ILUMINACION')" class="mt-5 w-full text-center px-6 py-3 rounded-full bg-white text-black text-sm font-semibold hover:bg-zinc-200 hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-md block">
+            Inscribirse
+          </button>
+        </div>
+      </div>
+
+      <!-- Taller 1: Taller de Fotografía Básico -->
+      <div class="rounded-[30px] border border-white/10 bg-zinc-900/80 backdrop-blur-xl overflow-hidden hover:border-white/20 transition-all duration-300 flex flex-col justify-between">
+        <div class="p-6 flex-grow flex flex-col">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-lg">📷</div>
+            <h2 class="text-xl font-bold text-white">Taller de Fotografía Básico</h2>
+          </div>
+
+          <!-- Profesor -->
+          <div class="flex items-center gap-3 mb-2 bg-white/5 rounded-2xl p-2.5 border border-white/5">
+            <div class="w-9 h-9 rounded-full border border-white/10 overflow-hidden bg-zinc-800 flex items-center justify-center shrink-0">
+              <img src="productos/yessen_bruce.jpg" class="w-full h-full object-cover" />
+            </div>
+            <div>
+              <p class="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold leading-none mb-1">Profesor</p>
+              <a href="https://www.instagram.com/5dot6/" target="_blank" class="text-xs font-bold text-zinc-300 hover:text-white hover:underline transition-all duration-300">
+                Yessen Bruce
+              </a>
+            </div>
+          </div>
+
+          <!-- Horario y Duración -->
+          <div class="mt-1 mb-4 flex flex-wrap gap-2 text-[11px] text-zinc-400">
+            <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/5">📅 Sábado 4 de Julio a las 14h</span>
+            <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/5">⏱️ Duración: 3h</span>
+          </div>
+
+          <p class="text-zinc-400 text-sm leading-relaxed flex-grow">
+            Con este curso aprenderás como usar tu cámara y los fundamentos de la fotografía, composición, exposición, enfoque. Ideal para quienes inician en el mundo de la imagen.
+          </p>
+          
+          <div class="mt-3 text-zinc-500 text-xs leading-relaxed border-t border-white/5 pt-3">
+            <span class="text-zinc-400 font-semibold">Incluye:</span> Teoría y Práctica, también cupón de descuento para el curso extendido.
+          </div>
+
+          <div class="mt-4 flex items-baseline gap-2">
+            <span class="text-2xl font-black text-white">$39.990</span>
+          </div>
+
+          <button onclick="openWorkshopPopup('TALLER_BASICO')" class="mt-5 w-full text-center px-6 py-3 rounded-full bg-white text-black text-sm font-semibold hover:bg-zinc-200 hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-md block">
+            Inscribirse
+          </button>
+        </div>
+      </div>
+
+      <!-- Taller 2: Taller de Fotografía Extendido -->
+      <div class="rounded-[30px] border border-white/10 bg-zinc-900/80 backdrop-blur-xl overflow-hidden hover:border-white/20 transition-all duration-300 flex flex-col justify-between">
+        <div class="p-6 flex-grow flex flex-col">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center text-lg">📸</div>
+            <h2 class="text-xl font-bold text-white">Taller de Fotografía Extendido</h2>
+          </div>
+
+          <!-- Profesor -->
+          <div class="flex items-center gap-3 mb-2 bg-white/5 rounded-2xl p-2.5 border border-white/5">
+            <div class="w-9 h-9 rounded-full border border-white/10 overflow-hidden bg-zinc-800 flex items-center justify-center shrink-0">
+              <img src="productos/yessen_bruce.jpg" class="w-full h-full object-cover" />
+            </div>
+            <div>
+              <p class="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold leading-none mb-1">Profesor</p>
+              <a href="https://www.instagram.com/5dot6/" target="_blank" class="text-xs font-bold text-zinc-300 hover:text-white hover:underline transition-all duration-300">
+                Yessen Bruce
+              </a>
+            </div>
+          </div>
+
+          <!-- Horario y Duración -->
+          <div class="mt-1 mb-4 flex flex-wrap gap-2 text-[11px] text-zinc-400">
+            <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/5">📅 Domingos de Julio a las 15h</span>
+            <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/5">⏱️ 2h por clase</span>
+          </div>
+
+          <p class="text-zinc-400 text-sm leading-relaxed mb-4">
+            Aprende fotografía en 4 clases de manera práctica y domina tu cámara, la luz, la composición y los ajustes esenciales (ISO, diafragma y obturación). Un taller ideal para principiantes que quieren tomar fotos profesionales y desarrollar su creatividad.
+          </p>
+
+          <!-- Clases List -->
+          <div class="space-y-3 text-xs text-zinc-500 border-t border-white/5 pt-4">
+            <div class="flex gap-2">
+              <span class="text-zinc-300 font-semibold shrink-0">Clase 1:</span>
+              <span>Conoce tu cámara, identifica sus partes, fotografiar con seguridad, práctica incluida.</span>
+            </div>
+            <div class="flex gap-2">
+              <span class="text-zinc-300 font-semibold shrink-0">Clase 2:</span>
+              <span>Descubre cómo el diafragma controla la luz y el desenfoque del fondo, práctica incluida.</span>
+            </div>
+            <div class="flex gap-2">
+              <span class="text-zinc-300 font-semibold shrink-0">Clase 3:</span>
+              <span>Entiende cómo la velocidad de obturación influye en el movimiento, la luz y el estilo de tus fotos, práctica incluida.</span>
+            </div>
+            <div class="flex gap-2">
+              <span class="text-zinc-300 font-semibold shrink-0">Clase 4:</span>
+              <span>Aprende reglas básicas de composición como la regla de los tercios y las líneas guía para crear imágenes más atractivas y equilibradas, práctica incluida.</span>
+            </div>
+          </div>
+
+          <div class="mt-4 flex items-baseline gap-2">
+            <span class="text-2xl font-black text-white">$129.990</span>
+          </div>
+
+          <button onclick="openWorkshopPopup('TALLER_EXTENDIDO')" class="mt-5 w-full text-center px-6 py-3 rounded-full bg-white text-black text-sm font-semibold hover:bg-zinc-200 hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-md block">
+            Inscribirse
+          </button>
+        </div>
+      </div>
+
+      <!-- Taller 4: Taller de Video con Smartphone -->
+      <div class="rounded-[30px] border border-white/10 bg-zinc-900/80 backdrop-blur-xl overflow-hidden hover:border-white/20 transition-all duration-300 flex flex-col justify-between">
+        <div class="p-6 flex-grow flex flex-col">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-lg">📱</div>
+            <h2 class="text-xl font-bold text-white">Taller de Video con Smartphone</h2>
+          </div>
+
+          <!-- Profesor -->
+          <div class="flex items-center gap-3 mb-2 bg-white/5 rounded-2xl p-2.5 border border-white/5">
+            <div class="w-9 h-9 rounded-full border border-white/10 overflow-hidden bg-zinc-800 flex items-center justify-center shrink-0">
+              <img src="productos/gabo_holmquist.jpg" class="w-full h-full object-cover" />
+            </div>
+            <div>
+              <p class="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold leading-none mb-1">Profesor</p>
+              <a href="https://www.instagram.com/gaboholmquist/" target="_blank" class="text-xs font-bold text-zinc-300 hover:text-white hover:underline transition-all duration-300">
+                Gabo Holmquist
+              </a>
+            </div>
+          </div>
+
+          <!-- Horario y Duración -->
+          <div class="mt-1 mb-4 flex flex-wrap gap-2 text-[11px] text-zinc-400">
+            <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/5">📅 Sábado 18 de Julio a las 15h</span>
+            <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/5">⏱️ Duración: 3h</span>
+          </div>
+
+          <p class="text-zinc-400 text-sm leading-relaxed mb-4">
+            Crea contenido profesional con tu teléfono, desde una posteoia sencilla hasta un reels mas elaborado
+          </p>
+
+          <!-- Temario List -->
+          <div class="space-y-2 text-xs text-zinc-500 border-t border-white/5 pt-4">
+            <p class="text-zinc-400 font-semibold mb-1">Veremos:</p>
+            <div class="flex gap-2"><span>•</span> <span>Tipos de teléfonos (iPhone y Samsung)</span></div>
+            <div class="flex gap-2"><span>•</span> <span>Apps para grabar (Blackmagic Camera y Samsung Camera)</span></div>
+            <div class="flex gap-2"><span>•</span> <span>Formatos de grabación</span></div>
+            <div class="flex gap-2"><span>•</span> <span>Apps complementarias</span></div>
+            <div class="flex gap-2"><span>•</span> <span>Apps de edición (InShot y Edits)</span></div>
+            <div class="flex gap-2"><span>•</span> <span>Accesorios para tu teléfono</span></div>
+            <div class="flex gap-2"><span>•</span> <span>Posteo y calidades</span></div>
+          </div>
+
+          <div class="mt-4 flex items-baseline gap-2">
+            <span class="text-2xl font-black text-white">$59.990</span>
+          </div>
+
+          <button onclick="openWorkshopPopup('TALLER_VIDEO')" class="mt-5 w-full text-center px-6 py-3 rounded-full bg-white text-black text-sm font-semibold hover:bg-zinc-200 hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-md block">
+            Inscribirse
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- WhatsApp CTA -->
+    <div class="max-w-3xl mx-auto mt-14">
+      <a href="https://wa.me/56950870076?text=Hola%20Kori%20Kamera%20Store,%20quiero%20información%20sobre%20los%20talleres" target="_blank" class="flex items-center justify-between gap-5 rounded-[28px] border border-green-900/30 bg-gradient-to-r from-green-950/80 to-green-900/40 px-5 py-5 hover:scale-[1.01] transition-all duration-300 group">
+        <div>
+          <p class="text-xs uppercase tracking-[0.25em] text-green-400/70 mb-2">¿Tienes dudas?</p>
+          <h3 class="text-base md:text-xl font-semibold text-green-50 leading-relaxed">
+            Escríbenos al WhatsApp para más información sobre horarios y valores.
+          </h3>
+        </div>
+        <div class="text-3xl text-green-200 group-hover:translate-x-1 transition-transform duration-300">→</div>
+      </a>
+    </div>
+
+    <!-- Instagram CTA -->
+    <a href="https://www.instagram.com/korikamerastore/" target="_blank" class="mt-14 mx-auto w-fit flex items-center gap-3 rounded-full border border-white/10 bg-gradient-to-r from-[hsl(215,99%,34%)]/70 to-purple-950/70 px-6 py-3 hover:scale-[1.02] transition-all duration-300">
+      <div class="w-3 h-3 rounded-full bg-[hsl(215,99%,60%)]"></div>
+      <span class="text-sm md:text-base text-zinc-200 font-medium">Síguenos en Instagram</span>
+    </a>
+
+  </section>
+</div>
+
+<!-- WORKSHOP POPUP -->
+<div id="workshopPopup" class="hidden fixed inset-0 bg-black/70 backdrop-blur-md z-50 overflow-y-auto p-5">
+  <div class="min-h-full flex items-center justify-center py-10">
+    <div class="w-full max-w-md rounded-[38px] border border-white/10 bg-zinc-950/95 backdrop-blur-2xl p-7 md:p-8 shadow-2xl">
+      <div class="flex items-start justify-between gap-5 mb-8">
+        <div>
+          <p class="text-zinc-500 uppercase tracking-[0.25em] text-xs mb-3">
+            Inscripción Taller
+          </p>
+          <h2 id="workshopPopupTitle" class="text-2xl md:text-3xl font-black leading-tight text-white">
+            Fotografía Básico
+          </h2>
+        </div>
+        <button onclick="closeWorkshopPopup()" class="w-12 h-12 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300 text-xl flex items-center justify-center text-zinc-400 hover:text-white">
+          ×
+        </button>
+      </div>
+
+      <!-- Customer Details Form -->
+      <div class="space-y-5 mb-8">
+        <div>
+          <p class="text-zinc-500 uppercase tracking-[0.25em] text-xs mb-3">
+            Nombre Completo
+          </p>
+          <input id="workshopCustomerName" type="text" placeholder="Tu nombre y apellido" oninput="validateWorkshopForm()"
+            class="w-full rounded-2xl border border-white/10 bg-black/40 px-5 py-4 outline-none focus:border-white/30 transition-all text-white placeholder:text-zinc-500" />
+        </div>
+
+        <div>
+          <p class="text-zinc-500 uppercase tracking-[0.25em] text-xs mb-3">
+            Usuario de Instagram
+          </p>
+          <input id="workshopCustomerInstagram" type="text" placeholder="@tu_usuario" oninput="validateWorkshopForm()"
+            class="w-full rounded-2xl border border-white/10 bg-black/40 px-5 py-4 outline-none focus:border-white/30 transition-all text-white placeholder:text-zinc-500" />
+        </div>
+
+        <div>
+          <p class="text-zinc-500 uppercase tracking-[0.25em] text-xs mb-3">
+            Correo Electrónico
+          </p>
+          <input id="workshopCustomerEmail" type="email" placeholder="nombre@correo.com" oninput="validateWorkshopForm()"
+            class="w-full rounded-2xl border border-white/10 bg-black/40 px-5 py-4 outline-none focus:border-white/30 transition-all text-white placeholder:text-zinc-500" />
+        </div>
+      </div>
+
+      <!-- Workshop Price & Buy Button -->
+      <div class="rounded-[30px] border border-white/10 bg-white/5 p-6 mb-8 flex justify-between items-center">
+        <div>
+          <p class="text-zinc-500 uppercase tracking-[0.25em] text-xs mb-1">
+            Total a pagar
+          </p>
+          <h3 id="workshopPopupPrice" class="text-3xl font-black text-white">
+            $39.990
+          </h3>
+        </div>
+        <div class="text-right">
+          <p class="uppercase tracking-[0.18em] text-[10px] text-zinc-400 font-semibold mb-1">
+            Cupos limitados
+          </p>
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-wider">Pocas vacantes</span>
+        </div>
+      </div>
+
+      <button id="workshopPurchaseButton" onclick="startWorkshopCheckout()" disabled
+        class="w-full py-5 rounded-2xl bg-white/10 text-white/30 font-semibold cursor-not-allowed transition-all duration-300">
+        Completar datos
+      </button>
+    </div>
+  </div>
+</div>
 
 <!-- POPUP -->
 <div id="popup" class="hidden fixed inset-0 bg-black/70 backdrop-blur-md z-50 overflow-y-auto p-5">
@@ -1012,7 +1378,6 @@ Cancelar
 </button>
 </div>
 
-</div>
 </div>
 </div>
 </div>
