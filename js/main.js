@@ -1970,9 +1970,11 @@ function openWorkshopPopup(productId) {
   const nameInput = document.getElementById('workshopCustomerName');
   const instagramInput = document.getElementById('workshopCustomerInstagram');
   const emailInput = document.getElementById('workshopCustomerEmail');
+  const couponInput = document.getElementById('workshopCustomerCoupon');
   if (nameInput) nameInput.value = '';
   if (instagramInput) instagramInput.value = '';
   if (emailInput) emailInput.value = '';
+  if (couponInput) couponInput.value = '';
   
   validateWorkshopForm();
 }
@@ -1993,6 +1995,25 @@ function validateWorkshopForm() {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isValid = name.length > 0 && instagram.length > 0 && emailRegex.test(email);
   
+  // Calcular descuento de cupón con verificación de reverso para no dejar texto claro
+  const couponInput = document.getElementById('workshopCustomerCoupon');
+  const couponVal = couponInput ? couponInput.value.trim().toLowerCase() : '';
+  const rev = couponVal.split('').reverse().join('');
+  let discountPercent = 0;
+  if (rev === '01onmula') {
+    discountPercent = 0.10;
+  } else if (rev === '02rellatnessey') {
+    discountPercent = 0.20;
+  }
+
+  // Actualizar precio visual en el popup
+  const ws = workshopsList.find(w => w.id === workshopActiveProduct);
+  const priceEl = document.getElementById('workshopPopupPrice');
+  if (ws && priceEl) {
+    const discountedPrice = Math.round(ws.price * (1 - discountPercent));
+    priceEl.innerText = `$${discountedPrice.toLocaleString('es-CL')}`;
+  }
+
   const btn = document.getElementById('workshopPurchaseButton');
   if (btn) {
     if (isValid) {
@@ -2011,11 +2032,13 @@ async function startWorkshopCheckout() {
   const name = document.getElementById('workshopCustomerName')?.value.trim() || '';
   const instagram = document.getElementById('workshopCustomerInstagram')?.value.trim() || '';
   const email = document.getElementById('workshopCustomerEmail')?.value.trim() || '';
+  const coupon = document.getElementById('workshopCustomerCoupon')?.value.trim() || '';
 
   const orderDetails = {
     name: name,
     instagram: instagram,
     email: email,
+    coupon: coupon,
     activeProduct: workshopActiveProduct,
     testMode: isTestMode
   };

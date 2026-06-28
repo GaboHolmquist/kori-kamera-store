@@ -25,7 +25,8 @@ export default async function handler(req, res) {
       engravingText = '',
       shippingMethod = 'Bluexpress',
       invoice = false,
-      invoiceDetails = {}
+      invoiceDetails = {},
+      coupon = ''
     } = data;
  
     const dataFilePath = path.join(process.cwd(), 'data', 'workshops.json');
@@ -73,11 +74,20 @@ export default async function handler(req, res) {
  
     const items = [];
  
+    let discountPercent = 0;
+    const cleanCoupon = String(coupon).trim().toLowerCase();
+    if (cleanCoupon === 'alumno10') {
+      discountPercent = 0.10;
+    } else if (cleanCoupon === 'yessentaller20') {
+      discountPercent = 0.20;
+    }
+
     if (isWorkshop) {
+      const finalPrice = Math.round(wsProduct.price * (1 - discountPercent));
       items.push({
         title: wsProduct.mpName || wsProduct.title,
         quantity: 1,
-        unit_price: wsProduct.price,
+        unit_price: finalPrice,
         currency_id: 'CLP'
       });
     } else {
