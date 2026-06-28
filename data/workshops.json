@@ -1,0 +1,73 @@
+{
+  "workshops": [
+    {
+      "id": "TALLER_GRATUITO",
+      "title": "Taller Gratuito",
+      "type": "free",
+      "icon": "🎁",
+      "price": 0,
+      "mpName": "",
+      "schedule": "Sábado 20 a las 15h",
+      "duration": "2h",
+      "description": "Sábado 20, cupo 20 personas, Taller/salida fotográfica, la idea es disfrutar de una tarde fotográfica y aprender cosas básicas, el horario y lugar se enviará en el grupo de la comunidad, inscríbete para más información nos vemos.",
+      "profesores": [
+        {
+          "name": "Gabo Holmquist",
+          "avatar": "productos/gabo_holmquist.jpg",
+          "instagram": "https://www.instagram.com/gaboholmquist/"
+        },
+        {
+          "name": "Yessen Bruce",
+          "avatar": "productos/yessen_bruce.jpg",
+          "instagram": "https://www.instagram.com/5dot6/"
+        }
+      ],
+      "url": "https://chat.whatsapp.com/IN7ZVoNA0rdEa69HSzSmvF",
+      "status": "no_disponible",
+      "buttonText": "Únete a la comunidad para el próximo"
+    },
+    {
+      "id": "TALLER_BASICO",
+      "title": "Taller de Fotografía Básico",
+      "type": "paid",
+      "icon": "📷",
+      "price": 39990,
+      "mpName": "taller basico fotografia",
+      "schedule": "Sábado 4 de Julio a las 14h",
+      "duration": "3h",
+      "description": "Con este curso aprenderás como usar tu cámara y los fundamentos de la fotografía, composición, exposición, enfoque. Ideal para quienes inician en el mundo de la imagen.",
+      "profesores": [
+        {
+          "name": "Yessen Bruce",
+          "avatar": "productos/yessen_bruce.jpg",
+          "instagram": "https://www.instagram.com/5dot6/"
+        }
+      ],
+      "incluye": "Teoría y Práctica, también cupón de descuento para el curso extendido."
+    },
+    {
+      "id": "TALLER_EXTENDIDO",
+      "title": "Taller de Fotografía Extendido",
+      "type": "paid",
+      "icon": "📸",
+      "price": 129990,
+      "mpName": "Taller Extendido",
+      "schedule": "Domingos de Julio a las 15h",
+      "duration": "2h por clase",
+      "description": "Aprende fotografía en 4 clases de manera práctica y domina tu cámara, la luz, la composición y los ajustes esenciales (ISO, diafragma y obturación). Un taller ideal para principiantes que quieren tomar fotos profesionales y desarrollar su creatividad.",
+      "profesores": [
+        {
+          "name": "Yessen Bruce",
+          "avatar": "productos/yessen_bruce.jpg",
+          "instagram": "https://www.instagram.com/5dot6/"
+        }
+      ],
+      "clases": [
+        "Clase 1: Conoce tu cámara, identifica sus partes, fotografiar con seguridad, práctica incluida.",
+        "Clase 2: Descubre cómo el diafragma controla la luz y el desenfoque del fondo, práctica incluida.",
+        "Clase 3: Entiende cómo la velocidad de obturación influye en el movimiento, la luz y el estilo de tus fotos, práctica incluida.",
+        "Clase 4: Aprende reglas básicas de composición como la regla de los tercios y las líneas guía para crear imágenes más atractivas y equilibradas, práctica incluida."
+      ]
+    }
+  ]
+}

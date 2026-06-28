@@ -1,4 +1,6 @@
-// Trigger Netlify rebuild with Upstash environment variables
+const fs = require('fs');
+const path = require('path');
+
 exports.handler = async (event, context) => {
   // Permitir solo peticiones POST
   if (event.httpMethod !== 'POST') {
@@ -29,7 +31,20 @@ exports.handler = async (event, context) => {
       invoiceDetails = {}
     } = data;
 
-    const isWorkshop = activeProduct === 'TALLER_BASICO' || activeProduct === 'TALLER_EXTENDIDO' || activeProduct === 'TALLER_ILUMINACION' || activeProduct === 'TALLER_VIDEO';
+    let dataFilePath = path.join(process.cwd(), 'data', 'workshops.json');
+    if (!fs.existsSync(dataFilePath)) {
+      dataFilePath = path.join(__dirname, '..', '..', 'data', 'workshops.json');
+    }
+    let workshops = [];
+    try {
+      const fileContent = fs.readFileSync(dataFilePath, 'utf8');
+      const parsedData = JSON.parse(fileContent);
+      workshops = parsedData.workshops || [];
+    } catch (err) {
+      console.error("Error reading workshops.json in Netlify function:", err);
+    }
+    const wsProduct = workshops.find(w => w.id === activeProduct);
+    const isWorkshop = !!wsProduct;
 
     // Validación mínima
     if (!name || (!isWorkshop && !phone)) {
@@ -72,32 +87,11 @@ exports.handler = async (event, context) => {
 
     const items = [];
 
-    if (activeProduct === 'TALLER_BASICO') {
+    if (isWorkshop) {
       items.push({
-        title: "taller basico fotografia",
+        title: wsProduct.mpName || wsProduct.title,
         quantity: 1,
-        unit_price: 39990,
-        currency_id: 'CLP'
-      });
-    } else if (activeProduct === 'TALLER_EXTENDIDO') {
-      items.push({
-        title: "Taller Extendido",
-        quantity: 1,
-        unit_price: 129990,
-        currency_id: 'CLP'
-      });
-    } else if (activeProduct === 'TALLER_ILUMINACION') {
-      items.push({
-        title: "Taller iluminacion",
-        quantity: 1,
-        unit_price: 59990,
-        currency_id: 'CLP'
-      });
-    } else if (activeProduct === 'TALLER_VIDEO') {
-      items.push({
-        title: "Taller Video",
-        quantity: 1,
-        unit_price: 59990,
+        unit_price: wsProduct.price,
         currency_id: 'CLP'
       });
     } else {

@@ -1091,670 +1091,10 @@ const bartenderAvatars = {
   "Pablo Prufer": "productos/avatars/pablo.png",
   "Brian Rey": "productos/avatars/brian.png",
   "Yeni Uribe": "productos/avatars/yeni.png"
-};
+}
 
-const gabo3dPortfolio = [
-  {
-    id: "item3d1",
-    title: "TEMPLO ZEN CON TORII",
-    coctel: "Alma dual",
-    bartender: "Edgar Martinez",
-    intervencion: "Competencia",
-    competencia: "Tio Pepe",
-    anio: "2022",
-    concepto: "Esta intervención refleja 3 elementos: un jardín zen de sal fina, un templo japonés negro con elementos dorados y un Torii rojo en la entrada, y en medio Alma dual, el cóctel hecho por Edgar.",
-    images: [
-      "productos/item3d1_1.jpg",
-      "productos/item3d1_2.jpg",
-      "productos/item3d1_3.jpg",
-      "productos/item3d1_4.jpg",
-      "productos/item3d1_5.jpg",
-      "productos/item3d1_6.jpg",
-      "productos/item3d1_7.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d2",
-    title: "BALSA KON TIKI",
-    coctel: "Kon-Tiki",
-    bartender: "Luis Gajardo",
-    intervencion: "Competencia",
-    competencia: "Tiki Fest",
-    concepto: "Este barco es una réplica de la balsa que usó el explorador y etnógrafo noruego Thor Heyerdahl en su épica a la Polinesia. Los barriles almacenan el cóctel hecho por Luis.",
-    images: [
-      "productos/item3d2_1.jpg",
-      "productos/item3d2_2.jpg",
-      "productos/item3d2_3.jpg",
-      "productos/item3d2_4.jpg",
-      "productos/item3d2_5.jpg",
-      "productos/item3d2_6.jpg",
-      "productos/item3d2_7.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1615840287214-7fe58a8f3685?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1582179729302-ac487d55986f?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d3",
-    title: "Macetero",
-    coctel: "La flor de la vida",
-    bartender: "Yefry Avilera",
-    intervencion: "Competencia",
-    competencia: "Worldclass",
-    anio: "2023",
-    concepto: "Este macetero cuenta con un soporte para el cóctel y espacio para las plantas, de manera que cuando no se ocupe pueda mantenerlas vivas. Un cóctel directo de la naturaleza por Yefry.",
-    images: [
-      "productos/item3d3_1.jpg",
-      "productos/item3d3_2.jpg",
-      "productos/item3d3_3.jpg",
-      "productos/item3d3_4.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1517256064527-09c53b2d0bc6?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d4",
-    title: "Volcán Poligonal",
-    bartender: "Yefry Avilera",
-    intervencion: "Competencia",
-    competencia: "Worldclass",
-    anio: "2022",
-    concepto: "un volcán que permite iluminar el cóctel desde abajo y lanzar humo desde el interior del volcán con una máquina de humo, también tiene espacio para colocar un maridaje",
-    images: [
-      "productos/item3d4_1.jpg",
-      "productos/item3d4_2.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d5",
-    title: "Medio barril",
-    coctel: "En la frontera",
-    bartender: "Yefry Avilera",
-    intervencion: "Competencia",
-    competencia: "Cardenal Mendoza Cocktail Competition",
-    anio: "2022",
-    concepto: "Este medio barril representa los barriles donde reposa el Brandy Cardenal Mendoza",
-    images: [
-      "productos/item3d5_1.jpg",
-      "productos/item3d5_2.jpg",
-      "productos/item3d5_3.jpg",
-      "productos/item3d5_4.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1615840287214-7fe58a8f3685?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1582179729302-ac487d55986f?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d6",
-    title: "Caracol de cristal",
-    coctel: "Slow Single",
-    bartender: "Yefry Avilera",
-    intervencion: "Competencia",
-    competencia: "Worldclass",
-    anio: "2023",
-    concepto: "Es un caracol cúpula para transportar el cóctel, también permite humificarlo.",
-    images: [
-      "productos/item3d6_1.jpg",
-      "productos/item3d6_2.jpg",
-      "productos/item3d6_3.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1517256064527-09c53b2d0bc6?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d7",
-    title: "Diseño de Cristalería",
-    bartender: "Yefry Avilera",
-    intervencion: "Competencia",
-    competencia: "Glassology Onis Glass",
-    anio: "2023",
-    concepto: "Diseño que llegó a las semifinales en Athena, Grecia junto con Yefry.",
-    images: [
-      "productos/item3d7_1.jpg",
-      "productos/item3d7_2.jpg",
-      "productos/item3d7_3.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d8",
-    title: "Barril 1/4",
-    coctel: "Alquimia del Tiempo",
-    bartender: "Yefry Avilera",
-    intervencion: "Competencia",
-    anio: "2025",
-    concepto: "Una base pequeña que realza el color del cóctel por el color plateado del centro de la base de barril, envejecido para mostrar este paso del tiempo.",
-    images: [
-      "productos/item3d8_1.jpg",
-      "productos/item3d8_2.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1615840287214-7fe58a8f3685?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1582179729302-ac487d55986f?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d9",
-    title: "Base TEN",
-    coctel: "Trascender",
-    bartender: "Yefry Avilera",
-    intervencion: "Competencia",
-    competencia: "Hopscotch Promo Pre-Challenge Johnnie Walker",
-    anio: "2025",
-    concepto: "Una base con distintos tipos de tipografías, con un mensaje oculto.",
-    images: [
-      "productos/item3d9_1.jpg",
-      "productos/item3d9_2.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1517256064527-09c53b2d0bc6?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d10",
-    title: "Espejos dobles luminosos",
-    coctel: "Lux Viae",
-    bartender: "Yefry Avilera",
-    intervencion: "Competencia",
-    competencia: "Hopscotch Promo Pre-Challenge Johnnie Walker",
-    anio: "2025",
-    concepto: "Estos espejos permiten ver el cóctel de todos los ángulos y verte a ti cuando lo tomas, la base contiene iluminación y los paneles azules brillan.",
-    images: [
-      "productos/item3d10_1.jpg",
-      "productos/item3d10_2.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d11",
-    title: "Rallador",
-    bartender: "Yerson López",
-    intervencion: "Competencia",
-    competencia: "La Coctelera Festival",
-    anio: "2022",
-    concepto: "Top 8 en la competencia, este rallador se caracteriza por transmitir sensaciones táctiles mientras sostienes este vaso y pruebas el cóctel, completas la experiencia.",
-    images: [
-      "productos/item3d11_1.jpg",
-      "productos/item3d11_2.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1615840287214-7fe58a8f3685?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1582179729302-ac487d55986f?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d12",
-    title: "Hielera Lux",
-    coctel: "Kyfi",
-    bartender: "Yefry Avilera",
-    intervencion: "Competencia",
-    competencia: "Tanqueray Ten Challenge",
-    anio: "2023",
-    concepto: "Servicio en mesa, este cóctel se transporta dentro del hielo en una hielera hecha a medida, inspirado en la textura de las botellas de Tanqueray Ten.",
-    images: [
-      "productos/item3d12_1.jpg",
-      "productos/item3d12_2.jpg",
-      "productos/item3d12_3.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1517256064527-09c53b2d0bc6?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d13",
-    title: "Jardín con Cascada",
-    coctel: "Predecesor",
-    bartender: "Edgar Martinez",
-    intervencion: "Competencia",
-    anio: "2023",
-    concepto: "Un jardín de flores comestibles que tienen una cascada que simula ser bambú a medio cortar, el cual muestra el cóctel antes de caer a nuestra cristalería. Mientras esto ocurre, el líquido es rociado por un perfume.",
-    images: [
-      "productos/item3d13_1.jpg",
-      "productos/item3d13_2.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d1c",
-    title: "Roca lunar",
-    bartender: "Pablo Prüfer",
-    intervencion: "Para Público",
-    ubicacion: "Enigma Bar",
-    anio: "2025",
-    concepto: "Esta base representa las rocas de la luna y tiene un fondo doble que permite ingresar agua caliente y pellet de hielo seco para generar niebla.",
-    images: [
-      "productos/item3d1c_1.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d2c",
-    title: "Huevo de Fabergé",
-    coctel: "Fabergé",
-    bartender: "Yefry Avilera",
-    intervencion: "Para Público",
-    ubicacion: "Galpón Italia",
-    anio: "2024",
-    concepto: "Este cóctel toma el concepto de los huevos de Fabergé y esconde un cóctel elevado y protegido a la mesa.",
-    images: [
-      "productos/item3d2c_1.jpg",
-      "productos/item3d2c_2.jpg",
-      "productos/item3d2c_3.jpg",
-      "productos/item3d2c_4.jpg",
-      "productos/item3d2c_5.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1615840287214-7fe58a8f3685?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1582179729302-ac487d55986f?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d3c",
-    title: "Sombrero japonés",
-    coctel: "Órale Wey San",
-    intervencion: "Para Público",
-    ubicacion: "KATO",
-    anio: "2026",
-    concepto: "Este sombrero cubre la cristalería y almacena humo; una vez destapado reposa en el cuello de la cristalería.",
-    images: [
-      "productos/item3d3c_1.jpg",
-      "productos/item3d3c_2.jpg",
-      "productos/item3d3c_3.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1517256064527-09c53b2d0bc6?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d4c",
-    title: "Templo Japonés",
-    coctel: "Asian Garden",
-    intervencion: "Para Público",
-    ubicacion: "KATO",
-    anio: "2026",
-    concepto: "Templo con un techo de 2 pisos, que deja poca visibilidad al cóctel que trae dentro, con una de las caras abiertas para sacar el cóctel.",
-    images: [
-      "productos/item3d4c_1.jpg",
-      "productos/item3d4c_2.jpg",
-      "productos/item3d4c_3.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d5c",
-    title: "Abanico",
-    coctel: "Sensu",
-    intervencion: "Para Público",
-    ubicacion: "KATO",
-    anio: "2026",
-    concepto: "Abanico tipo hielera, en este caso enfría la cristalería para poder degustar el cóctel en un pequeño platito.",
-    images: [
-      "productos/item3d5c_1.jpg",
-      "productos/item3d5c_2.jpg",
-      "productos/item3d5c_3.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1615840287214-7fe58a8f3685?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1582179729302-ac487d55986f?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d6c",
-    title: "Volcán Activo",
-    coctel: "Blossom Chic",
-    intervencion: "Para Público",
-    ubicacion: "KATO",
-    anio: "2026",
-    concepto: "Volcán con interior y rejilla para colocar pellets de hielo seco y que la niebla simule el humo de un volcán activo.",
-    images: [
-      "productos/item3d6c_1.jpg",
-      "productos/item3d6c_2.jpg",
-      "productos/item3d6c_3.jpg",
-      "productos/item3d6c_4.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1517256064527-09c53b2d0bc6?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d7c",
-    title: "Tony Tony Chopper",
-    coctel: "Chopper",
-    intervencion: "Para Público",
-    anio: "2024",
-    concepto: "Sombrero inspirado en el de Tony Tony Chopper, con cristalería por dentro; este está pensado para ser un mocktail para niños *sin alcohol.",
-    images: [
-      "productos/item3d7c_1.jpg",
-      "productos/item3d7c_2.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d8c",
-    title: "Valdivia",
-    coctel: "Hogar",
-    intervencion: "Para Público",
-    anio: "2024",
-    concepto: "Este cóctel representa las costas de Valdivia con sus riscos escarpados casi verticales, un faro y cañones de una antigua base.",
-    images: [
-      "productos/item3d8c_1.jpg",
-      "productos/item3d8c_2.jpg",
-      "productos/item3d8c_3.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1615840287214-7fe58a8f3685?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1582179729302-ac487d55986f?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d9c",
-    title: "Barril Sellado",
-    coctel: "Contrabando",
-    intervencion: "Para Público",
-    ubicacion: "La Ronería",
-    anio: "2024",
-    concepto: "Este barril va completamente cerrado con un cóctel en su interior, como su nombre lo indica, es un contrabando el cual deben consumir una vez resuelves un mensaje secreto.",
-    images: [
-      "productos/item3d9c_1.jpg",
-      "productos/item3d9c_2.jpg",
-      "productos/item3d9c_3.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1517256064527-09c53b2d0bc6?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d10c",
-    title: "Cabina Telefónica",
-    coctel: "London Calling",
-    bartender: "Brian Rey",
-    intervencion: "Para Público",
-    ubicacion: "Ruca Bar",
-    anio: "2023",
-    concepto: "Una cabina telefónica al estilo londinense, con su puerta que permite sacar el cóctel que lleva en su interior.",
-    images: [
-      "productos/item3d10c_1.jpg",
-      "productos/item3d10c_2.jpg",
-      "productos/item3d10c_3.jpg",
-      "productos/item3d10c_4.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d11c",
-    title: "Stand de Matraz",
-    coctel: "Enigma",
-    bartender: "Yefry Avilera",
-    intervencion: "Para Público",
-    ubicacion: "Galpón Italia",
-    anio: "2022",
-    concepto: "Esta es la base de una cafetera japonesa que se replicó y se intervino con un matraz de química como cristalería del cóctel.",
-    images: [
-      "productos/item3d11c_1.jpg",
-      "productos/item3d11c_2.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1615840287214-7fe58a8f3685?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1582179729302-ac487d55986f?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d12c",
-    title: "KRAKEN",
-    coctel: "Kraken",
-    bartender: "Yeni Uribe",
-    intervencion: "Para Público",
-    ubicacion: "Solare",
-    anio: "2023",
-    concepto: "Este cóctel se va a las profundidades del mar, tentáculos pintados a mano con aerógrafo abrazan al cóctel.",
-    images: [
-      "productos/item3d12c_1.jpg",
-      "productos/item3d12c_2.jpg",
-      "productos/item3d12c_3.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1517256064527-09c53b2d0bc6?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d13c",
-    title: "Roca",
-    coctel: "Luna Nueva",
-    bartender: "Yeni Uribe",
-    intervencion: "Para Público",
-    ubicacion: "Solare",
-    anio: "2023",
-    concepto: "Esta es una pequeña roca que soporta este cóctel, tiene una línea que se ilumina desde abajo con una fuente de luz.",
-    images: [
-      "productos/item3d13c_1.jpg",
-      "productos/item3d13c_2.jpg",
-      "productos/item3d13c_3.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d14c",
-    title: "Cofre del Tesoro",
-    coctel: "Perla del Caribe",
-    intervencion: "Para Público",
-    ubicacion: "La Ronería",
-    anio: "2024",
-    concepto: "Un cofre del tesoro, lleno de oro por dentro, una cerradura que permite ingresar humo dentro y que al abrirlo este salga por todos lados. El cóctel va dentro del cofre junto a los tesoros.",
-    images: [
-      "productos/item3d14c_1.jpg",
-      "productos/item3d14c_2.jpg",
-      "productos/item3d14c_3.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1615840287214-7fe58a8f3685?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1582179729302-ac487d55986f?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d15c",
-    title: "Escafandra",
-    coctel: "Sí o Sí Tiki",
-    bartender: "Yefry Avilera",
-    ubicacion: "Galpón Italia",
-    anio: "2022",
-    concepto: "Una escafandra antigua sacada del mar, porta en su interior la cristalería que hace de cristal de los ventanales del casco y contiene el cóctel.",
-    images: [
-      "productos/item3d15c_1.jpg",
-      "productos/item3d15c_2.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1517256064527-09c53b2d0bc6?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d16c",
-    title: "Rayo Catatumbo",
-    coctel: "Catatumbo",
-    bartender: "Edgar Martinez",
-    ubicacion: "Pollozolano",
-    anio: "2022",
-    concepto: "Este cóctel consta de 3 partes: la base representa el agua del lago, la nube que se ilumina perpetuamente por el rayo del Catatumbo, y en medio el cóctel.",
-    images: [
-      "productos/item3d16c_1.jpg",
-      "productos/item3d16c_2.jpg",
-      "productos/item3d16c_3.jpg",
-      "productos/item3d16c_4.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d17c",
-    title: "Alambique",
-    coctel: "En el Valle",
-    bartender: "Yefry Avilera",
-    ubicacion: "Galpón Italia",
-    anio: "2022",
-    concepto: "Este cóctel trae la base de cualquier destilado, el alambique, con un verdadero serpentín de cobre moldeado a mano que envuelve al cóctel.",
-    images: [
-      "productos/item3d17c_1.jpg",
-      "productos/item3d17c_2.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1615840287214-7fe58a8f3685?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1582179729302-ac487d55986f?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d18c",
-    title: "Pulpo Shot",
-    coctel: "Octoshot",
-    bartender: "Yefry Avilera",
-    ubicacion: "Galpón Alonso",
-    anio: "2024",
-    concepto: "Este pulpo trae entre sus tentáculos 7 shots, a su vez tiene un orificio para ingresar humo y que este expulse el humo por sus ojos.",
-    images: [
-      "productos/item3d18c_1.jpg",
-      "productos/item3d18c_2.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1517256064527-09c53b2d0bc6?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d19c",
-    title: "Tocado de Garota",
-    coctel: "Carnaval",
-    bartender: "Yefry Avilera",
-    ubicacion: "Galpón Italia",
-    anio: "2022",
-    concepto: "Este es un mocktail que no pasa desapercibido, un tocado completo de bronce que tiene a su alrededor plumas de colores, muestra por el frente el cóctel.",
-    images: [
-      "productos/item3d19c_1.jpg",
-      "productos/item3d19c_2.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d20c",
-    title: "Barril de Ron",
-    coctel: "No se Nota Pero el Ron se Agota",
-    bartender: "Yeni Uribe",
-    ubicacion: "Solare",
-    anio: "2023",
-    concepto: "Inspirado en la frase del pirata más borracho de los 7 mares, la dejamos en la parte de abajo, y arriba un barril que tiene en su interior la cristalería con el cóctel.",
-    images: [
-      "productos/item3d20c_1.jpg",
-      "productos/item3d20c_2.jpg",
-      "productos/item3d20c_3.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1615840287214-7fe58a8f3685?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1582179729302-ac487d55986f?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&w=800&q=80"
-    ]
-  },
-  {
-    id: "item3d21c",
-    title: "Cuenco levantado",
-    coctel: "Hansa",
-    bartender: "Yefry Avilera",
-    ubicacion: "Galpón Alonso",
-    anio: "2025",
-    concepto: "Este cóctel tiene una base que es un recipiente que contiene cáscaras que se humifican y entre estas sale una mano con un cuenco levantado que te entrega el cóctel.",
-    images: [
-      "productos/item3d21c_1.jpg",
-      "productos/item3d21c_2.jpg"
-    ],
-    fallbacks: [
-      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1517256064527-09c53b2d0bc6?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80"
-    ]
-  }
-];
-
-
-
-
+let gabo3dPortfolio = [];
+let workshopsList = [];
 
 let currentGabo3dItemsList = [];
 let currentGabo3dItemId = null;
@@ -2368,10 +1708,161 @@ function generateGabo3dSEO() {
   script.text = JSON.stringify(schema);
 }
 
-// Renderizar la grilla e inicializar sub-filtros de bartender al cargar
-populateGabo3dBartenderFilters();
-renderGabo3dPortfolio();
-generateGabo3dSEO();
+// Carga asíncrona de los datos del portafolio y talleres para el CMS
+async function loadStaticData() {
+  try {
+    const portfolioRes = await fetch('/data/portfolio.json');
+    if (portfolioRes.ok) {
+      const data = await portfolioRes.json();
+      gabo3dPortfolio = data.portfolio || [];
+    }
+  } catch (e) {
+    console.error('Error cargando portafolio:', e);
+  }
+
+  try {
+    const workshopsRes = await fetch('/data/workshops.json');
+    if (workshopsRes.ok) {
+      const data = await workshopsRes.json();
+      workshopsList = data.workshops || [];
+    }
+  } catch (e) {
+    console.error('Error cargando talleres:', e);
+  }
+
+  // Inicializar UI con los datos cargados
+  populateGabo3dBartenderFilters();
+  renderGabo3dPortfolio();
+  generateGabo3dSEO();
+  renderWorkshops();
+  handleInitialRouting();
+}
+
+function renderWorkshops() {
+  const grid = document.getElementById('workshopsGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  workshopsList.forEach(ws => {
+    const card = document.createElement('div');
+    card.className = "rounded-[30px] border border-white/10 bg-zinc-900/80 backdrop-blur-xl overflow-hidden hover:border-white/20 transition-all duration-300 flex flex-col justify-between";
+    
+    let teachersHtml = '';
+    if (ws.profesores && ws.profesores.length > 0) {
+      ws.profesores.forEach(prof => {
+        teachersHtml += `
+          <div class="flex items-center gap-3 mb-2 bg-white/5 rounded-2xl p-2.5 border border-white/5">
+            <div class="w-9 h-9 rounded-full border border-white/10 overflow-hidden bg-zinc-800 flex items-center justify-center shrink-0">
+              <img src="${prof.avatar}" class="w-full h-full object-cover" />
+            </div>
+            <div>
+              <p class="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold leading-none mb-1">Profesor</p>
+              <a href="${prof.instagram}" target="_blank" class="text-xs font-bold text-zinc-300 hover:text-white hover:underline transition-all duration-300">
+                ${prof.name}
+              </a>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    let detailsHtml = '';
+    if (ws.temario && ws.temario.length > 0) {
+      detailsHtml += `
+        <div class="space-y-2 text-xs text-zinc-500 border-t border-white/5 pt-4">
+          <p class="text-zinc-400 font-semibold mb-1">Veremos:</p>
+          ${ws.temario.map(item => `<div class="flex gap-2"><span>•</span> <span>${item}</span></div>`).join('')}
+        </div>
+      `;
+    }
+
+    if (ws.incluye) {
+      detailsHtml += `
+        <div class="mt-3 text-zinc-500 text-xs leading-relaxed border-t border-white/5 pt-3">
+          <span class="text-zinc-400 font-semibold">Incluye:</span> ${ws.incluye}
+        </div>
+      `;
+    }
+
+    if (ws.clases && ws.clases.length > 0) {
+      detailsHtml += `
+        <div class="space-y-3 text-xs text-zinc-500 border-t border-white/5 pt-4">
+          ${ws.clases.map((clase) => {
+            const parts = clase.split(':');
+            const title = parts[0] + ':';
+            const desc = parts.slice(1).join(':');
+            return `
+              <div class="flex gap-2">
+                <span class="text-zinc-300 font-semibold shrink-0">${title}</span>
+                <span>${desc}</span>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    let actionButton = '';
+    if (ws.type === 'free') {
+      const btnText = ws.buttonText || 'Inscribirse';
+      actionButton = `
+        <a href="${ws.url}" target="_blank" class="mt-5 w-full text-center px-6 py-3 rounded-full bg-white text-black text-sm font-semibold hover:bg-zinc-200 hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-md block">
+          ${btnText}
+        </a>
+      `;
+    } else {
+      actionButton = `
+        <div class="mt-4 flex items-baseline gap-2">
+          <span class="text-2xl font-black text-white">$${ws.price.toLocaleString('es-CL')}</span>
+        </div>
+        <button onclick="openWorkshopPopup('${ws.id}')" class="mt-5 w-full text-center px-6 py-3 rounded-full bg-white text-black text-sm font-semibold hover:bg-zinc-200 hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-md block">
+          Inscribirse
+        </button>
+      `;
+    }
+
+    let badgeHtml = '';
+    if (ws.status === 'no_disponible') {
+      badgeHtml = '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-red-500/10 text-red-400 border border-red-500/20 uppercase tracking-wider">No disponible</span>';
+    } else if (ws.type === 'free') {
+      badgeHtml = '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-green-500/10 text-green-400 border border-green-500/20 uppercase tracking-wider">Gratis</span>';
+    }
+
+    card.innerHTML = `
+      <div class="p-6 flex-grow flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-700 flex items-center justify-center text-lg">${ws.icon}</div>
+              <h2 class="text-xl font-bold text-white">${ws.title}</h2>
+            </div>
+            ${badgeHtml}
+          </div>
+
+          <!-- Profesores -->
+          ${teachersHtml}
+
+          <!-- Horario y Duración -->
+          <div class="mt-1 mb-4 flex flex-wrap gap-2 text-[11px] text-zinc-400">
+            <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/5">📅 ${ws.schedule}</span>
+            <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/5">⏱️ ${ws.duration}</span>
+          </div>
+
+          <p class="text-zinc-400 text-sm leading-relaxed mb-4">
+            ${ws.description}
+          </p>
+
+          ${detailsHtml}
+        </div>
+        
+        <div>
+          ${actionButton}
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
 
 // =========================================
 // HASH-BASED ROUTING
@@ -2452,7 +1943,7 @@ function handleInitialRouting() {
  }
 }
 
-handleInitialRouting();
+loadStaticData();
 
 // WORKSHOP PURCHASE FLOW
 let workshopActiveProduct = '';
@@ -2463,18 +1954,10 @@ function openWorkshopPopup(productId) {
   const titleEl = document.getElementById('workshopPopupTitle');
   const priceEl = document.getElementById('workshopPopupPrice');
   
-  if (productId === 'TALLER_BASICO') {
-    if (titleEl) titleEl.innerText = 'Taller de Fotografía Básico';
-    if (priceEl) priceEl.innerText = '$39.990';
-  } else if (productId === 'TALLER_EXTENDIDO') {
-    if (titleEl) titleEl.innerText = 'Taller de Fotografía Extendido';
-    if (priceEl) priceEl.innerText = '$129.990';
-  } else if (productId === 'TALLER_ILUMINACION') {
-    if (titleEl) titleEl.innerText = 'Taller de Iluminación para Reels';
-    if (priceEl) priceEl.innerText = '$59.990';
-  } else if (productId === 'TALLER_VIDEO') {
-    if (titleEl) titleEl.innerText = 'Taller de Video con Smartphone';
-    if (priceEl) priceEl.innerText = '$59.990';
+  const ws = workshopsList.find(w => w.id === productId);
+  if (ws) {
+    if (titleEl) titleEl.innerText = ws.title;
+    if (priceEl) priceEl.innerText = `$${ws.price.toLocaleString('es-CL')}`;
   }
 
   const popup = document.getElementById('workshopPopup');

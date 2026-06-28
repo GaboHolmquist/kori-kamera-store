@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+
 export default async function handler(req, res) {
   // Permitir solo peticiones POST
   if (req.method !== 'POST') {
@@ -25,7 +28,17 @@ export default async function handler(req, res) {
       invoiceDetails = {}
     } = data;
  
-    const isWorkshop = activeProduct === 'TALLER_BASICO' || activeProduct === 'TALLER_EXTENDIDO' || activeProduct === 'TALLER_ILUMINACION' || activeProduct === 'TALLER_VIDEO';
+    const dataFilePath = path.join(process.cwd(), 'data', 'workshops.json');
+    let workshops = [];
+    try {
+      const fileContent = fs.readFileSync(dataFilePath, 'utf8');
+      const parsedData = JSON.parse(fileContent);
+      workshops = parsedData.workshops || [];
+    } catch (err) {
+      console.error("Error reading workshops.json in backend:", err);
+    }
+    const wsProduct = workshops.find(w => w.id === activeProduct);
+    const isWorkshop = !!wsProduct;
  
     // Validación mínima
     if (!name || (!isWorkshop && !phone)) {
@@ -60,32 +73,11 @@ export default async function handler(req, res) {
  
     const items = [];
  
-    if (activeProduct === 'TALLER_BASICO') {
+    if (isWorkshop) {
       items.push({
-        title: "taller basico fotografia",
+        title: wsProduct.mpName || wsProduct.title,
         quantity: 1,
-        unit_price: 39990,
-        currency_id: 'CLP'
-      });
-    } else if (activeProduct === 'TALLER_EXTENDIDO') {
-      items.push({
-        title: "Taller Extendido",
-        quantity: 1,
-        unit_price: 129990,
-        currency_id: 'CLP'
-      });
-    } else if (activeProduct === 'TALLER_ILUMINACION') {
-      items.push({
-        title: "Taller iluminacion",
-        quantity: 1,
-        unit_price: 59990,
-        currency_id: 'CLP'
-      });
-    } else if (activeProduct === 'TALLER_VIDEO') {
-      items.push({
-        title: "Taller Video",
-        quantity: 1,
-        unit_price: 59990,
+        unit_price: wsProduct.price,
         currency_id: 'CLP'
       });
     } else {

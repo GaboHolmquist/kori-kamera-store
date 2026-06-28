@@ -1,0 +1,80 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "productos"
+public_folder: "productos"
+
+collections:
+  - name: "content"
+    label: "Contenido"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - name: "workshops"
+        label: "Talleres"
+        file: "data/workshops.json"
+        fields:
+          - label: "Talleres"
+            name: "workshops"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "ID del Taller (Ej: TALLER_ILUMINACION)", name: "id", widget: "string" }
+              - { label: "Título del Taller", name: "title", widget: "string" }
+              - { label: "Tipo", name: "type", widget: "select", options: ["paid", "free"] }
+              - { label: "Ícono (Emoji)", name: "icon", widget: "string" }
+              - { label: "Precio", name: "price", widget: "number", value_type: "int" }
+              - { label: "Nombre de Ítem en Mercado Pago", name: "mpName", widget: "string", required: false }
+              - { label: "Horario", name: "schedule", widget: "string" }
+              - { label: "Duración", name: "duration", widget: "string" }
+              - { label: "Descripción", name: "description", widget: "text" }
+              - label: "Profesores"
+                name: "profesores"
+                widget: "list"
+                fields:
+                  - { label: "Nombre del Profesor", name: "name", widget: "string" }
+                  - { label: "Foto de Perfil (Avatar)", name: "avatar", widget: "image" }
+                  - { label: "Enlace de Instagram", name: "instagram", widget: "string" }
+              - label: "Temario (Puntos)"
+                name: "temario"
+                widget: "list"
+                required: false
+                field: { label: "Tema", name: "tema", widget: "string" }
+              - { label: "Texto Incluye", name: "incluye", widget: "string", required: false }
+              - label: "Clases (Talleres Extendidos)"
+                name: "clases"
+                widget: "list"
+                required: false
+                field: { label: "Clase", name: "clase", widget: "string" }
+              - { label: "Link de WhatsApp (Para Talleres Gratuitos)", name: "url", widget: "string", required: false }
+              - { label: "Estado (Opcional)", name: "status", widget: "select", options: ["disponible", "no_disponible"], required: false }
+              - { label: "Texto Personalizado de Botón (Opcional)", name: "buttonText", widget: "string", required: false }
+
+      - name: "portfolio"
+        label: "Portafolio Gabo3Dprint"
+        file: "data/portfolio.json"
+        fields:
+          - label: "Diseños del Portafolio"
+            name: "portfolio"
+            widget: "list"
+            summary: "{{fields.title}} - {{fields.bartender}}"
+            fields:
+              - { label: "ID (Ej: item3d1)", name: "id", widget: "string" }
+              - { label: "Título del Diseño", name: "title", widget: "string" }
+              - { label: "Cóctel", name: "coctel", widget: "string", required: false }
+              - { label: "Bartender", name: "bartender", widget: "string" }
+              - { label: "Categoría/Intervención", name: "intervencion", widget: "select", options: ["Competencia", "Para Público"] }
+              - { label: "Competencia", name: "competencia", widget: "string", required: false }
+              - { label: "Año", name: "anio", widget: "string", required: false }
+              - { label: "Ubicación", name: "ubicacion", widget: "string", required: false }
+              - { label: "Concepto", name: "concepto", widget: "text" }
+              - label: "Imágenes Locales"
+                name: "images"
+                widget: "list"
+                field: { label: "Imagen", name: "image", widget: "image" }
+              - label: "Imágenes de Fallback"
+                name: "fallbacks"
+                widget: "list"
+                field: { label: "URL de Unsplash", name: "url", widget: "string" }
