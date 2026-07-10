@@ -1059,15 +1059,6 @@ async function fetchAndApplyStock(){
     buyBtn.disabled = true;
     buyBtn.innerText = 'Agotado';
     buyBtn.className = 'px-8 py-5 rounded-2xl bg-white/30 text-white/40 font-semibold cursor-not-allowed';
-   } else if (stock <= 3) {
-    let stockNotice = document.getElementById('stockNotice');
-    if (!stockNotice) {
-     stockNotice = document.createElement('p');
-     stockNotice.id = 'stockNotice';
-     stockNotice.className = 'text-xs text-yellow-400 font-semibold mt-2 text-right uppercase tracking-wider animate-pulse';
-     buyBtn.parentNode.insertBefore(stockNotice, buyBtn.nextSibling);
-    }
-    stockNotice.innerText = `¡Solo quedan ${stock} unidades!`;
    }
   }
  } catch (err) {
